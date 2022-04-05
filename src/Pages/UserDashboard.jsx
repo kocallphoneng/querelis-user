@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import Sidebar from "../Components/Sidebar";
-import Body from "../Components/Body";
+import Sidebar from "../Components/Sidebar_";
+import Body from "../Components/Body_"
 import Navbar from "../Components/Navbar";
 import Box from "@mui/material/Box";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +13,9 @@ import Success from "../Components/Success";
 import EditCompany from "../Components/EditCompany";
 import CompanyRequests from "../Components/CompanyRequests";
 import DeleteScreen from "../Components/DeleteScreen";
+import Details from "../Components/Details_"
+import HelperScreen from "../Components/HelperOptionScreen";
+import AddInfo from "../Components/AddInfo";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -28,17 +31,17 @@ function Dashboard() {
     viewEditForm,
     viewPasswordSuccess,
     viewSummary,
+    viewDetails_,
+    viewHelperScreen_,
+    viewAddScreen_
   } = state.displayState;
   const { auth } = state.user;
-  const { getAllStaffs, setIsLoading } = bindActionCreators(
-    actionCreators,
-    dispatch
-  );
+  const { getAllStaffs, setIsLoading, setNotLoading, getAuditTrail } =
+    bindActionCreators(actionCreators, dispatch);
 
   useEffect(() => {
     setIsLoading();
-    // const user = localStorage.getItem("user")
-    if (!localStorage.token || localStorage.user !== "company") {
+    if (!localStorage.token) {
       navigate("/login");
     }
     console.log("test auth", auth.access_token);
@@ -140,6 +143,9 @@ function Dashboard() {
       )}
       {viewEditForm ? <EditCompany /> : ""}
       {viewSummary ? <CompanyRequests /> : ""}
+      {viewDetails_ ? <Details /> : ""}
+      {viewHelperScreen_ ? <HelperScreen /> : ""}
+      {viewAddScreen_? <AddInfo />: ""}
     </Box>
   );
 }

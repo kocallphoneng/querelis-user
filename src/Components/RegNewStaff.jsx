@@ -28,7 +28,7 @@ function RegNewComapany() {
     console.log(values.photo.files);
     const formData = new FormData()
     formData.append("image", values.photo)
-    alert(formData)
+    
     console.log(formData)
     setIsLoading();
     client

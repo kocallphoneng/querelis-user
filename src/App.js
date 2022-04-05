@@ -5,6 +5,7 @@ import Login from "./Pages/Login";
 import CompulsoryPassword from "./Pages/CompulsoryChange";
 import NewPassword from "./Pages/NewPassword";
 import Dashboard from "./Pages/Dashboard";
+import UserDashboard from "./Pages/UserDashboard"
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 
@@ -20,6 +21,7 @@ function App() {
         <Routes>
           <Route path={"/"} element={<Navigate to="/login" />} />
           <Route path={"/dashboard"} element={<Dashboard />} />
+          <Route path={"/userdashboard"} element={<UserDashboard />} />
           <Route path={"/login"} element={<Login />} />
           <Route path={"/resetPassword"} element={<Verification />} />
           <Route path={"/createnewpassword"} element={<NewPassword />} />
