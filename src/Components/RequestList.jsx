@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 
 function RequestList() {
   const state = useSelector((state) => state);
-  const rowsPerPage = 5;
+  const rowsPerPage = 10;
   const [list, setList] = useState([
     {
       id: 0,
@@ -26,7 +26,7 @@ function RequestList() {
   ]);
   const [rowIndex, setRowIndex] = useState(0);
   const [allowedPages, setAllowedPages] = useState(2);
-  const [total, setTotal] = useState(5);
+  const [total, setTotal] = useState(10);
   const [page, setPage] = useState(rowIndex + 1);
 
   const { auditTrail } = state.user;
@@ -157,10 +157,10 @@ function RequestList() {
   const handlePageNumber = () => {
     const remainder = auditTrail.length % 5;
     if (remainder === 0) {
-      setAllowedPages(parseInt(auditTrail.length / 5));
+      setAllowedPages(parseInt(auditTrail.length / 10));
     } else {
       console.log(auditTrail.length / 5 + 1);
-      setAllowedPages(parseInt(auditTrail.length / 5) + 1);
+      setAllowedPages(parseInt(auditTrail.length / 10) + 1);
     }
   };
 

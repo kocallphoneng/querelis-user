@@ -1,4 +1,5 @@
-// name, tel, date, cc, cat, complaint, mcc, mnc, lac, ci, status 
+// cc, tikT, reolvedT, createT, status, assign, details;
+
 export const data = [
   {
     name: "Mtn",
@@ -7,6 +8,9 @@ export const data = [
     cc: "CCT-2020040200000001_voice",
     cat: "For voice service",
     reolvedT: "38838",
+    tikT: "38838",
+    createT: "38838",
+    assign: true,
     complaint: "No Coverage",
     mcc: "621",
     mnc: "3D",

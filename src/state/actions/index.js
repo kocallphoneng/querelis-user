@@ -56,6 +56,10 @@ export const setPassword = () => {
   return (dispatch) => dispatch({ type: "PASSWORD" });
 };
 
+export const setAccepted = () => {
+  return (dispatch) => dispatch({ type: "ACCEPTED" });
+};
+
 export const setSummary = () => {
   return (dispatch) => dispatch({ type: "SUMMARY" });
 };
@@ -122,4 +126,22 @@ export const setUserEmail = (email) => {
 };
 export const setUserOtp = (otp) => {
   return (dispatch) => dispatch({ type: "SETUSEROTP", payload: otp });
+};
+export const showDetail_ = () => {
+  return (dispatch) => dispatch({ type: "SHOWDETAILSCREEN" });
+};
+export const hideDetail_ = () => {
+  return (dispatch) => dispatch({ type: "HIDEDETAILSCREEN" });
+};
+export const showHelper_ = (option) => {
+  return (dispatch) => dispatch({ type: "SHOWHELPERSCREEN", payload: option });
+};
+export const hideHelper_ = () => {
+  return (dispatch) => dispatch({ type: "HIDEHELPERSCREEN" });
+};
+export const showAdd_ = (option) => {
+  return (dispatch) => dispatch({ type: "SHOWADDSCREEN"});
+};
+export const hideAdd_ = () => {
+  return (dispatch) => dispatch({ type: "HIDEADDSCREEN" });
 };

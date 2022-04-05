@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -45,172 +46,258 @@ function Cards() {
   return (
     <Box
       sx={{
+        width: "100%",
         display: "flex",
-        justifyContent: "space-between",
         alignItems: "center",
+        justifyContent: "space-between",
       }}
     >
-      <Card
+      <Paper
         sx={{
-          maxWidth: "210px",
+          borderRadius: "0.5rem",
+          maxWidth: "250px",
+          height: "143px",
           width: "100%",
-          mr: "0.5rem",
-          boxShadow: "0px 4px 7px 3px rgba(0, 0, 0, 0.04)",
-          background: "#FFFFFF",
-          borderRadius: "10px",
-          padding: "0 0.7rem",
+          padding: "1.5rem",
         }}
+        elevation={0}
       >
-        <CardContent>
-          <Typography
-            sx={{
-              color: "#110C0C",
-              lineHeight: "1.7rem",
-              height: "3.5rem",
-              fontSize: "0.9rem",
-              fontWeight: "600",
-            }}
-            variant="h6"
-            component="div"
-          >
-            No of Request In The Month
-          </Typography>
-          <Typography
-            sx={{
-              fontWeight: "bold",
-              fontSize: "2.5rem",
-              lineHeight: "56px",
-              color: "#0257E6",
-              pt: "0.5rem",
-            }}
-            variant="h1"
-            component="div"
-          >
-            {details.companies}
-          </Typography>
-        </CardContent>
-      </Card>
-      <Card
+        <Typography
+          sx={{ fontWeight: "600", lineHeight: "25px", height: "40px" }}
+        >
+          Total Request
+        </Typography>
+        <Typography
+          sx={{ fontWeight: "900", color: "#0257E6", fontSize: "45px" }}
+        >
+          50
+        </Typography>
+      </Paper>
+      <Paper
         sx={{
-          maxWidth: "210px",
+          borderRadius: "0.5rem",
+          maxWidth: "250px",
+          height: "143px",
           width: "100%",
-          mr: "0.5rem",
-          boxShadow: "0px 4px 7px 3px rgba(0, 0, 0, 0.04)",
-          background: "#FFFFFF",
-          borderRadius: "10px",
-          padding: "0 0.7rem",
+          padding: "1.5rem",
         }}
+        elevation={0}
       >
-        <CardContent>
-          <Typography
-            sx={{
-              color: "#110C0C",
-              lineHeight: "1.7rem",
-              height: "3.5rem",
-              fontSize: "0.9rem",
-              fontWeight: "600",
-            }}
-            variant="h6"
-            component="div"
-          >
-            No of Companies
-          </Typography>
-          <Typography
-            sx={{
-              fontWeight: "bold",
-              fontSize: "2.5rem",
-              lineHeight: "56px",
-              color: "#0257E6",
-              pt: "0.5rem",
-            }}
-            variant="h1"
-            component="div"
-          >
-            {details.totalReq}
-          </Typography>
-        </CardContent>
-      </Card>
-      <Card
+        <Typography
+          sx={{ fontWeight: "600", lineHeight: "25px", height: "40px" }}
+        >
+          Total Request
+        </Typography>
+        <Typography
+          sx={{ fontWeight: "900", color: "#0257E6", fontSize: "45px" }}
+        >
+          50
+        </Typography>
+      </Paper>
+      <Paper
         sx={{
-          maxWidth: "210px",
+          borderRadius: "0.5rem",
+          maxWidth: "250px",
+          height: "143px",
           width: "100%",
-          mr: "0.5rem",
-          boxShadow: "0px 4px 7px 3px rgba(0, 0, 0, 0.04)",
-          background: "#FFFFFF",
-          borderRadius: "10px",
-          padding: "0 0.7rem",
+          padding: "1.5rem",
         }}
+        elevation={0}
       >
-        <CardContent>
-          <Typography
-            sx={{
-              color: "#110C0C",
-              lineHeight: "1.7rem",
-              height: "3.5rem",
-              fontSize: "0.9rem",
-              fontWeight: "600",
-            }}
-            variant="h6"
-            component="div"
-          >
-            No of Support Staff
-          </Typography>
-          <Typography
-            sx={{
-              fontWeight: "bold",
-              fontSize: "2.5rem",
-              lineHeight: "56px",
-              color: "#0257E6",
-              pt: "0.5rem",
-            }}
-            variant="h1"
-            component="div"
-          >
-            {details.staffs}
-          </Typography>
-        </CardContent>
-      </Card>
-      <Card
+        <Typography
+          sx={{ fontWeight: "600", lineHeight: "25px", height: "40px" }}
+        >
+          Total Request
+        </Typography>
+        <Typography
+          sx={{ fontWeight: "900", color: "#0257E6", fontSize: "45px" }}
+        >
+          50
+        </Typography>
+      </Paper>
+      <Paper
         sx={{
-          maxWidth: "210px",
+          borderRadius: "0.5rem",
+          maxWidth: "250px",
+          height: "143px",
           width: "100%",
-          mr: "0.5rem",
-          boxShadow: "0px 4px 7px 3px rgba(0, 0, 0, 0.04)",
-          background: "#FFFFFF",
-          borderRadius: "10px",
-          padding: "0 0.7rem",
+          padding: "1.5rem",
         }}
+        elevation={0}
       >
-        <CardContent>
-          <Typography
-            sx={{
-              color: "#110C0C",
-              lineHeight: "1.7rem",
-              height: "3.5rem",
-              fontSize: "0.9rem",
-              fontWeight: "600",
-            }}
-            variant="h6"
-            component="div"
-          >
-            No of Unanswered Request
-          </Typography>
-          <Typography
-            sx={{
-              fontWeight: "bold",
-              fontSize: "2.5rem",
-              lineHeight: "56px",
-              color: "#0257E6",
-              pt: "0.5rem",
-            }}
-            variant="h1"
-            component="div"
-          >
-            {details.unansweredReq}
-          </Typography>
-        </CardContent>
-      </Card>
+        <Typography
+          sx={{ fontWeight: "600", lineHeight: "25px", height: "40px" }}
+        >
+          Total Request
+        </Typography>
+        <Typography
+          sx={{ fontWeight: "900", color: "#0257E6", fontSize: "45px" }}
+        >
+          50
+        </Typography>
+      </Paper>
+      
     </Box>
+    // <Card
+    //   sx={{
+    //     maxWidth: "210px",
+    //     width: "100%",
+    //     mr: "0.5rem",
+    //     boxShadow: "0px 4px 7px 3px rgba(0, 0, 0, 0.04)",
+    //     background: "#FFFFFF",
+    //     borderRadius: "10px",
+    //     padding: "0 0.7rem",
+    //   }}
+    // >
+    //   <CardContent>
+    //     <Typography
+    //       sx={{
+    //         color: "#110C0C",
+    //         lineHeight: "1.7rem",
+    //         height: "3.5rem",
+    //         fontSize: "0.9rem",
+    //         fontWeight: "600",
+    //       }}
+    //       variant="h6"
+    //       component="div"
+    //     >
+    //       No of Request In The Month
+    //     </Typography>
+    //     <Typography
+    //       sx={{
+    //         fontWeight: "bold",
+    //         fontSize: "2.5rem",
+    //         lineHeight: "56px",
+    //         color: "#0257E6",
+    //         pt: "0.5rem",
+    //       }}
+    //       variant="h1"
+    //       component="div"
+    //     >
+    //       {details.companies}
+    //     </Typography>
+    //   </CardContent>
+    // </Card>
+    // <Card
+    //   sx={{
+    //     maxWidth: "210px",
+    //     width: "100%",
+    //     mr: "0.5rem",
+    //     boxShadow: "0px 4px 7px 3px rgba(0, 0, 0, 0.04)",
+    //     background: "#FFFFFF",
+    //     borderRadius: "10px",
+    //     padding: "0 0.7rem",
+    //   }}
+    // >
+    //   <CardContent>
+    //     <Typography
+    //       sx={{
+    //         color: "#110C0C",
+    //         lineHeight: "1.7rem",
+    //         height: "3.5rem",
+    //         fontSize: "0.9rem",
+    //         fontWeight: "600",
+    //       }}
+    //       variant="h6"
+    //       component="div"
+    //     >
+    //       No of Companies
+    //     </Typography>
+    //     <Typography
+    //       sx={{
+    //         fontWeight: "bold",
+    //         fontSize: "2.5rem",
+    //         lineHeight: "56px",
+    //         color: "#0257E6",
+    //         pt: "0.5rem",
+    //       }}
+    //       variant="h1"
+    //       component="div"
+    //     >
+    //       {details.totalReq}
+    //     </Typography>
+    //   </CardContent>
+    // </Card>
+    // <Card
+    //   sx={{
+    //     maxWidth: "210px",
+    //     width: "100%",
+    //     mr: "0.5rem",
+    //     boxShadow: "0px 4px 7px 3px rgba(0, 0, 0, 0.04)",
+    //     background: "#FFFFFF",
+    //     borderRadius: "10px",
+    //     padding: "0 0.7rem",
+    //   }}
+    // >
+    //   <CardContent>
+    //     <Typography
+    //       sx={{
+    //         color: "#110C0C",
+    //         lineHeight: "1.7rem",
+    //         height: "3.5rem",
+    //         fontSize: "0.9rem",
+    //         fontWeight: "600",
+    //       }}
+    //       variant="h6"
+    //       component="div"
+    //     >
+    //       No of Support Staff
+    //     </Typography>
+    //     <Typography
+    //       sx={{
+    //         fontWeight: "bold",
+    //         fontSize: "2.5rem",
+    //         lineHeight: "56px",
+    //         color: "#0257E6",
+    //         pt: "0.5rem",
+    //       }}
+    //       variant="h1"
+    //       component="div"
+    //     >
+    //       {details.staffs}
+    //     </Typography>
+    //   </CardContent>
+    // </Card>
+    // <Card
+    //   sx={{
+    //     maxWidth: "210px",
+    //     width: "100%",
+    //     mr: "0.5rem",
+    //     boxShadow: "0px 4px 7px 3px rgba(0, 0, 0, 0.04)",
+    //     background: "#FFFFFF",
+    //     borderRadius: "10px",
+    //     padding: "0 0.7rem",
+    //   }}
+    // >
+    //   <CardContent>
+    //     <Typography
+    //       sx={{
+    //         color: "#110C0C",
+    //         lineHeight: "1.7rem",
+    //         height: "3.5rem",
+    //         fontSize: "0.9rem",
+    //         fontWeight: "600",
+    //       }}
+    //       variant="h6"
+    //       component="div"
+    //     >
+    //       No of Unanswered Request
+    //     </Typography>
+    //     <Typography
+    //       sx={{
+    //         fontWeight: "bold",
+    //         fontSize: "2.5rem",
+    //         lineHeight: "56px",
+    //         color: "#0257E6",
+    //         pt: "0.5rem",
+    //       }}
+    //       variant="h1"
+    //       component="div"
+    //     >
+    //       {details.unansweredReq}
+    //     </Typography>
+    //   </CardContent>
+    // </Card>
   );
 }
 

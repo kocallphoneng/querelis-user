@@ -26,11 +26,10 @@ function Login() {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const state = useSelector((state) => state);
-  const { auth, } = state.user;
+  const { auth } = state.user;
 
   const { login, firstTimeEmail, setIsLoading, setNotLoading } =
     bindActionCreators(actionCreators, dispatch);
@@ -43,24 +42,27 @@ function Login() {
     };
     try {
       const res = await client.post("/login", user);
-      console.log(res);
       const token = res.data.access_token;
       localStorage.setItem("token", token);
-      localStorage.setItem("name", res.data.user.name);
+      localStorage.setItem("user", res.data.user.user_type);
       login(res.data);
-      setNotLoading()
-      navigate("/dashboard");
+      console.log("log user",res.data.user)
+      setNotLoading();
+      if (res.data.user.user_type === "support_staff") {
+        navigate("/userdashboard");
+      } else if (res.data.user.user_type === "company") {
+        navigate("/dashboard");
+      }
     } catch (err) {
-      console.log(err.response.data)
+      console.log(err.response.data);
       if (err.response.data.code === "FIRST_LOGIN") {
         firstTimeEmail(values.email);
         setNotLoading();
         navigate("/createnewpassword");
       } else {
-        console.log(err)
+        console.log(err);
         setNotLoading();
       }
-      
     }
   };
   useEffect(() => console.log("auth", auth), [auth]);

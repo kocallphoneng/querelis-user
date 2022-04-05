@@ -2,6 +2,7 @@
 const initialState = {
   dashboard: true,
   staff: false,
+  accepted: false,
   audit: false,
   password: false,
   summary: false,
@@ -18,6 +19,10 @@ const initialState = {
   viewEditSuccess: false,
   viewPasswordSuccess: false,
   viewSummary: false,
+  viewDetails_: false,
+  viewHelperScreen_: false,
+  helperOption_: "",
+  viewAddScreen_: false,
 };
 
 const stateReducer = (state = initialState, action) => {
@@ -25,6 +30,7 @@ const stateReducer = (state = initialState, action) => {
     case "DASHBOARD":
       return (state = {
         ...state,
+        accepted: false,
         dashboard: true,
         staff: false,
         audit: false,
@@ -40,6 +46,7 @@ const stateReducer = (state = initialState, action) => {
     case "STAFF":
       return (state = {
         ...state,
+        accepted: false,
         dashboard: false,
         staff: true,
         audit: false,
@@ -64,6 +71,7 @@ const stateReducer = (state = initialState, action) => {
         regedCompanies: true,
         editedCompany: false,
         navBtn: false,
+        accepted: false,
       });
     case "EDITCOMPANY":
       return (state = {
@@ -78,7 +86,9 @@ const stateReducer = (state = initialState, action) => {
         regedCompanies: false,
         editedCompany: true,
         navBtn: true,
+        accepted: false,
       });
+
     case "AUDIT":
       return (state = {
         ...state,
@@ -93,10 +103,12 @@ const stateReducer = (state = initialState, action) => {
         regedCompanies: false,
         editedCompany: false,
         navBtn: false,
+        accepted: false,
       });
     case "SUMMARY":
       return (state = {
         ...state,
+        accepted: false,
         dashboard: false,
         staff: false,
         audit: false,
@@ -122,6 +134,7 @@ const stateReducer = (state = initialState, action) => {
         regedCompanies: false,
         editedCompany: false,
         navBtn: false,
+        accepted: false,
       });
     case "SHOWNOTIFICATION":
       return (state = {
@@ -137,6 +150,23 @@ const stateReducer = (state = initialState, action) => {
         regedCompanies: false,
         editedCompany: false,
         navBtn: false,
+        accepted: false,
+      });
+    case "ACCEPTED":
+      return (state = {
+        ...state,
+        dashboard: false,
+        staff: false,
+        audit: false,
+        password: false,
+        summary: false,
+        notify: false,
+        welcome: false,
+        newCompany: false,
+        regedCompanies: false,
+        editedCompany: false,
+        navBtn: false,
+        accepted: true,
       });
     case "SHOWACTIVATIONSCREEN":
       return (state = { ...state, viewActivationScreen: true });
@@ -170,6 +200,22 @@ const stateReducer = (state = initialState, action) => {
       return (state = { ...state, viewSummary: true });
     case "HIDESUMMARYREPORT":
       return (state = { ...state, viewSummary: false });
+    case "SHOWDETAILSCREEN":
+      return (state = { ...state, viewDetails_: true });
+    case "HIDEDETAILSCREEN":
+      return (state = { ...state, viewDetails_: false });
+    case "SHOWHELPERSCREEN":
+      return (state = {
+        ...state,
+        viewHelperScreen_: true,
+        helperOption_: action.payload,
+      });
+    case "HIDEHELPERSCREEN":
+      return (state = { ...state, viewHelperScreen_: false });
+    case "SHOWADDSCREEN":
+      return (state = { ...state, viewAddScreen_: true });
+    case "HIDEADDSCREEN":
+      return (state = { ...state, viewAddScreen_: false });
 
     default:
       return state;
