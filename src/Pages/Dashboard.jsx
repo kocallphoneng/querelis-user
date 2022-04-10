@@ -37,15 +37,17 @@ function Dashboard() {
 
   useEffect(() => {
     setIsLoading();
-    // const user = localStorage.getItem("user")
+    console.log("from auth", auth.access_token)
+
     if (!localStorage.token || localStorage.user !== "company") {
       navigate("/login");
     }
-    console.log("test auth", auth.access_token);
+    const token = localStorage.getItem("token")
+    console.log("token test", token);
 
     client.interceptors.request.use(
       (config) => {
-        config.headers.authorization = `Bearer ${auth.access_token}`;
+        config.headers.authorization = `Bearer ${token}`;
         return config;
       },
       (error) => {
@@ -55,7 +57,9 @@ function Dashboard() {
     try {
       const fetchData = async () => {
         const staffRes = await client.get("/support-staff");
+        const supRes = await client.get("/support-requests")
         console.log("/support-staff", staffRes);
+        console.log("/support-requests", supRes);
         getAllStaffs(staffRes.data.data);
       };
       fetchData();

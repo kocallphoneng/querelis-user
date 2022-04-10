@@ -13,13 +13,16 @@ function Navbar() {
   const { welcome, navBtn } = state.displayState;
   const { auth } = state.user;
   const dispatch = useDispatch();
-  const { showEditForm, showNotification } = bindActionCreators(actionCreators, dispatch);
-  
-  const handleNotification = (e) =>{
-    e.preventDefault()
+  const { showEditForm, showNotification } = bindActionCreators(
+    actionCreators,
+    dispatch
+  );
+
+  const handleNotification = (e) => {
+    e.preventDefault();
     console.log(auth);
-    showNotification()
-  }
+    showNotification();
+  };
   return (
     <Box
       sx={{
@@ -82,15 +85,20 @@ function Navbar() {
           alignItems: "center",
         }}
       >
-        <MailOutlineSharpIcon
-          onClick={(e)=> handleNotification(e)}
-          sx={{
-            mr: "2rem",
-            color: "#C4C4C4",
-            fontSize: "1.5rem",
-            cursor: "pointer"
-          }}
-        />
+        {localStorage.user === "support_staff" ? (
+          <MailOutlineSharpIcon
+            onClick={(e) => handleNotification(e)}
+            sx={{
+              mr: "2rem",
+              color: "#C4C4C4",
+              fontSize: "1.5rem",
+              cursor: "pointer",
+            }}
+          />
+        ) : (
+          ""
+        )}
+
         <Avatar
           alt="user avatar"
           src="/user.jpg"
@@ -113,9 +121,6 @@ function Navbar() {
               fontSize: "0.9rem",
               fontWeight: "600",
             }}
-            variant="h6"
-            gutterBottom
-            component="div"
           >
             {localStorage.name}
           </Typography>
@@ -125,11 +130,8 @@ function Navbar() {
               fontSize: "0.9rem",
               fontWeight: "100",
             }}
-            variant="body2"
-            gutterBottom
-            component="div"
           >
-            Admin
+            {localStorage.user === "support_staff"? "Support Staff": "Company"}
           </Typography>
         </Box>
       </Box>

@@ -9,23 +9,22 @@ import { actionCreators } from "../state/index";
 
 function CompanyRequests() {
   const state = useSelector((state) => state);
-  const { companies, companyId, summaryDate } = state.user;
-  const [company, setCompany] = useState({
+  const { staffs, staffId, summaryDate } = state.user;
+  const [staff, setStaff] = useState({
     total: 0,
-    answered: 0,
-    unanswered: 0,
-    support_staff: 0,
+    completed: 0,
+    uncompleted: 0,
+    status: "offline",
   });
   const dispatch = useDispatch();
 
   const { hideSummaryReport } = bindActionCreators(actionCreators, dispatch);
 
   const display = () => {
-    companies.forEach((select) => {
-      if (select.id === companyId) {
-        setCompany({
-          ...company,
-          support_staff: select.support_staff.length,
+    staffs.forEach((select) => {
+      if (select.id === staffId) {
+        setStaff({
+          ...staff,
         });
       }
     });
@@ -60,7 +59,7 @@ function CompanyRequests() {
             fontSize: "1.5rem",
           }}
         >
-          REQUEST REPORT
+          STAFF REPORT
         </Typography>
         <Typography
           sx={{
@@ -90,7 +89,7 @@ function CompanyRequests() {
             }}
           >
             <Typography sx={{ fontWeight: "600" }}>Total Request:</Typography>
-            <Typography>{company.total}</Typography>
+            <Typography>{staff.total}</Typography>
           </Box>
 
           <Box
@@ -105,7 +104,7 @@ function CompanyRequests() {
             <Typography sx={{ fontWeight: "600" }}>
               Number of Answered Request:
             </Typography>
-            <Typography>{company.answered}</Typography>
+            <Typography>{staff.completed}</Typography>
           </Box>
           <Box
             sx={{
@@ -119,7 +118,7 @@ function CompanyRequests() {
             <Typography sx={{ fontWeight: "600" }}>
               Number of Unanswered Request:
             </Typography>
-            <Typography>{company.unanswered}</Typography>
+            <Typography>{staff.uncompleted}</Typography>
           </Box>
           <Box
             sx={{
@@ -133,7 +132,7 @@ function CompanyRequests() {
             <Typography sx={{ fontWeight: "600" }}>
               Number of Support Staff:
             </Typography>
-            <Typography>{company.support_staff}</Typography>
+            <Typography>{staff.status}</Typography>
           </Box>
 
           <Box

@@ -45,8 +45,8 @@ function Login() {
       const token = res.data.access_token;
       localStorage.setItem("token", token);
       localStorage.setItem("user", res.data.user.user_type);
+      localStorage.setItem("name", res.data.user.name);
       login(res.data);
-      console.log("log user",res.data.user)
       setNotLoading();
       if (res.data.user.user_type === "support_staff") {
         navigate("/userdashboard");

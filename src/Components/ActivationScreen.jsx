@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
@@ -7,21 +7,39 @@ import { useSelector, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
+import client from "../helpers/axiosInstance";
 
 function ActivationScreen() {
   const state = useSelector((state) => state);
-  const { staffId } = state.user;
+  const { staffId, active } = state.user;
 
   const dispatch = useDispatch();
 
   const { hideActivationScreen } = bindActionCreators(actionCreators, dispatch);
-
+  console.log("active", active);
+  console.log("id", staffId);
   const cancel = () => {
-    hideActivationScreen()
-  }
+    hideActivationScreen();
+  };
   const proceed = () => {
-    hideActivationScreen()
-  }
+    if (active === 0) {
+      client
+        .patch(`/support-staff/${staffId}/activate`)
+        .then((res) => {
+          console.log(res);
+          hideActivationScreen();
+        })
+        .catch((err) => console.log(err));
+    } else if (active === 1) {
+      client
+        .patch(`/support-staff/${staffId}/deactivate`)
+        .then((res) => {
+          console.log(res);
+          hideActivationScreen();
+        })
+        .catch((err) => console.log(err));
+    }
+  };
 
   return (
     <Box
@@ -50,16 +68,22 @@ function ActivationScreen() {
         }}
       >
         <HelpOutlineOutlinedIcon sx={{ fontSize: "20rem", color: "#0257E6" }} />
-        <Typography>Do you want activate?</Typography>
+        <Typography>{`Do you want ${active === 1? "deactivate":"activate"}?`}</Typography>
         <Box
           sx={{
             display: "flex",
             width: "30%",
             justifyContent: "space-between",
-            pt: "1rem"
+            pt: "1rem",
           }}
         >
-          <Button onClick={()=> proceed()} sx={{ background: "#0257E6", color: "white" }}>Yes</Button>
+          <Button
+            variant="contained"
+            onClick={() => proceed()}
+            sx={{ background: "#0257E6", color: "white" }}
+          >
+            Yes
+          </Button>
           <Button
             onClick={() => cancel()}
             variant="outline"

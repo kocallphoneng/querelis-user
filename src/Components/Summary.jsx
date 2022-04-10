@@ -17,9 +17,9 @@ import { actionCreators } from "../state/index";
 
 function Summary() {
   const state = useSelector((state) => state);
-  const { staff } = state.user;
+  const { staffs } = state.user;
   const dispatch = useDispatch();
-  const { showSummaryReport, setSummaryDate, setCompanyId } =
+  const { showSummaryReport, setSummaryDate, setStaffId } =
     bindActionCreators(actionCreators, dispatch);
 
   const handleSubmit = (values) => {
@@ -35,7 +35,8 @@ function Summary() {
 
     const date = `${startDay}-${startMonth}-${startYear} - ${endDay}-${endMonth}-${endYear}`;
     setSummaryDate(date);
-    setCompanyId(name);
+    setStaffId(name);
+    console.log("cuhcijiciiciijojijivvjvvik")
     showSummaryReport();
   };
 
@@ -177,11 +178,11 @@ function Summary() {
                 <MenuItem value="">
                   <em>Select Staff</em>
                 </MenuItem>
-                {/* {staff.map((company) => (
+                {staffs.map((company) => (
                   <MenuItem key={company.id} value={company.id}>
                     {company.name}
                   </MenuItem>
-                ))} */}
+                ))}
               </Select>
               <ErrorMessage name="name" />
             </FormControl>

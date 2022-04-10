@@ -10,6 +10,7 @@ import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
 import client from "../helpers/axiosInstance";
 import DeleteIcon from "@mui/icons-material/Delete";
+import empty from "../images/empty.svg";
 
 function SupportList() {
   const state = useSelector((state) => state);
@@ -21,8 +22,13 @@ function SupportList() {
   const [total, setTotal] = useState(5);
   const [page, setPage] = useState(rowIndex + 1);
 
-  const { setStaffId, showActivationScreen, showDeleteScreen, getAllStaffs } =
-    bindActionCreators(actionCreators, dispatch);
+  const {
+    setStaffId,
+    setActive,
+    showActivationScreen,
+    showDeleteScreen,
+    getAllStaffs,
+  } = bindActionCreators(actionCreators, dispatch);
   const setStaffs = () => {
     try {
       const fetchData = async () => {
@@ -39,6 +45,7 @@ function SupportList() {
 
   useEffect(() => {
     setStaffs();
+
     setList(staffs);
     handlePageNumber();
 
@@ -50,12 +57,12 @@ function SupportList() {
     name,
     email,
     completedR,
-    PendingR,
+    pendingR,
     status,
     active,
     del
   ) => {
-    return { id, name, email, completedR, PendingR, status, active, del };
+    return { id, name, email, completedR, pendingR, status, active, del };
   };
   console.log(list);
 
@@ -68,90 +75,19 @@ function SupportList() {
     { id: 5, name: "" },
     { id: 6, name: "" },
   ];
-  const rows = [
-    {
-      id: 0,
-      name: "tester",
-      email: "tester@mail.com",
-      completedR: 20,
-      pendingR: 30,
-      status: "online",
-      active: 0,
-      del: true,
-    },
-    {
-      id: 1,
-      name: "tester",
-      email: "tester@mail.com",
-      completedR: 20,
-      pendingR: 30,
-      status: "online",
-      active: 1,
-      del: true,
-    },
-    {
-      id: 2,
-      name: "tester",
-      email: "tester@mail.com",
-      completedR: 20,
-      pendingR: 30,
-      status: "online",
-      active: 0,
-      del: true,
-    },
-    {
-      id: 3,
-      name: "tester",
-      email: "tester@mail.com",
-      completedR: 20,
-      pendingR: 30,
-      status: "online",
-      active: 1,
-      del: true,
-    },
-    {
-      id: 4,
-      name: "tester",
-      email: "tester@mail.com",
-      completedR: 20,
-      pendingR: 30,
-      status: "online",
-      active: 0,
-      del: true,
-    },
-    {
-      id: 5,
-      name: "tester",
-      email: "tester@mail.com",
-      completedR: 20,
-      pendingR: 30,
-      status: "online",
-      active: 0,
-      del: true,
-    },
-    {
-      id: 5,
-      name: "tester",
-      email: "tester@mail.com",
-      completedR: 20,
-      pendingR: 30,
-      status: "online",
-      active: 0,
-      del: true,
-    },
-  ];
-  // const rows = list.map((company) =>
-  //   createData(
-  //     "company.id",
-  //     "company.name",
-  //     "company.phone_number",
-  //     "company.support_staff.length",
-  //     0,
-  //     0,
-  //     "view"
-  //   )
-  // );
 
+  const rows = list.map((staff) =>
+    createData(
+      staff.id,
+      staff.name,
+      staff.email,
+      0,
+      0,
+      "offline",
+      staff.is_active,
+      true
+    )
+  );
   const handlePageNumber = () => {
     const remainder = rows.length % 5;
     console.log("remainder", remainder);
@@ -180,15 +116,10 @@ function SupportList() {
       setTotal(total - rowsPerPage);
     }
   };
-  // const handleView = (e, id) => {
-  //   e.preventDefault();
-  //   setCompanyId(id);
-  //   showCompanyInfo();
-  // };
-
-  const handleActivation = (e, id) => {
+  const handleActivation = (e, id, active) => {
     e.preventDefault();
     setStaffId(id);
+    setActive(active);
     showActivationScreen();
   };
   const handleDelete = (e, id) => {
@@ -196,6 +127,7 @@ function SupportList() {
     setStaffId(id);
     showDeleteScreen();
   };
+
   return (
     <Box sx={{ width: "100%" }}>
       <Typography
@@ -227,7 +159,7 @@ function SupportList() {
               sx={{
                 maxWidth: "14.29%",
                 width: "100%",
-                fontSize: "0.9rem",
+                fontSize: "0.7rem",
                 fontWeight: "600",
                 textTransform: "capitalize",
                 pr: "1rem",
@@ -238,132 +170,173 @@ function SupportList() {
             </Typography>
           ))}
         </Paper>
-        <Box sx={{ pb: "2rem", minHeight: "220px" }}>
-          {rows.slice(rowIndex * rowsPerPage, total).map((staff) => (
-            <Paper
-              key={staff.id}
-              elevation={0}
+        {staffs.length === 0 ? (
+          <Box
+            sx={{
+              width: "100%",
+              height: "200px",
+              display: "flex",
+              justifyContent: "center",
+              flexDirection: "column",
+              alignItems: "center",
+              margin: "2rem 0 4rem 0",
+            }}
+          >
+            <img
+              src={empty}
+              style={{
+                width: "150px",
+                padding: "0",
+                margin: "0",
+              }}
+              alt="...."
+            />
+            <Typography
               sx={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "space-between",
-                padding: "0.5rem 1rem",
-                alignItems: "flex-start",
-                marginTop: "0.5rem",
+                fontSize: "1.3rem",
+                fontWeight: "900",
+                color: "lightgray",
               }}
             >
-              <Typography
+              No request made yet!!
+            </Typography>
+          </Box>
+        ) : (
+          <Box sx={{ pb: "2rem", minHeight: "100px" }}>
+            {rows.slice(rowIndex * rowsPerPage, total).map((staff) => (
+              <Paper
+                key={staff.id}
+                elevation={0}
                 sx={{
-                  maxWidth: "14.29%",
                   width: "100%",
-                  fontSize: "0.7rem",
-                  fontWeight: "600",
-                  textTransform: "capitalize",
-                  pr: "0.5rem",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  padding: "0.5rem 1rem",
+                  alignItems: "flex-start",
+                  marginTop: "0.5rem",
                 }}
               >
-                {staff.name}
-              </Typography>
-              <Typography
-                sx={{
-                  maxWidth: "14.29%",
-                  width: "100%",
-                  fontSize: "0.7rem",
-                  fontWeight: "600",
-                  textTransform: "capitalize",
-                  pr: "0.5rem",
-                }}
-              >
-                {staff.email}
-              </Typography>
-              <Typography
-                sx={{
-                  maxWidth: "14.29%",
-                  width: "100%",
-                  fontSize: "0.7rem",
-                  fontWeight: "600",
-                  textTransform: "capitalize",
-                  pr: "0.5rem",
-                }}
-              >
-                {staff.completedR}
-              </Typography>
-              <Typography
-                sx={{
-                  maxWidth: "14.29%",
-                  width: "100%",
-                  fontSize: "0.7rem",
-                  fontWeight: "600",
-                  textTransform: "capitalize",
-                  pr: "0.5rem",
-                }}
-              >
-                {staff.pendingR}
-              </Typography>
-              <Typography
-                sx={{
-                  maxWidth: "14.29%",
-                  width: "100%",
-                  fontSize: "0.7rem",
-                  fontWeight: "600",
-                  textTransform: "capitalize",
-                  pr: "0.5rem",
-                  color: staff.status === "online" ? "green" : "red",
-                }}
-              >
-                {staff.status}
-              </Typography>
-              <Box
-                sx={{
-                  maxWidth: "14.29%",
-                  width: "100%",
-                  fontSize: "0.7rem",
-                  fontWeight: "600",
-                  textTransform: "capitalize",
-                  pr: "0.5rem",
-                }}
-              >
-                <button
-                  style={{
-                    padding: "0.3rem 1rem",
-                    background: staff.active === 1 ? "green" : "red",
-                    color: "white",
-                    textAlign: "center",
+                <Typography
+                  sx={{
+                    maxWidth: "14.29%",
+                    width: "100%",
                     fontSize: "0.7rem",
                     fontWeight: "600",
+                    textTransform: "capitalize",
                     pr: "0.5rem",
-                    width: "100%",
-                    cursor: "pointer",
-                    border: "none",
-                    borderRadius: "0.3rem",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
                   }}
-                  onClick={(e) => handleActivation(e, staff.id)}
                 >
-                  {staff.active === 1 ? "Activate" : "Deactivate"}
-                </button>
-              </Box>
-              <Box
-                sx={{
-                  maxWidth: "14.29%",
-                  width: "100%",
-                  fontSize: "0.7rem",
-                  fontWeight: "600",
-                  textTransform: "capitalize",
-                  pr: "0.5rem",
-                }}
-              >
-                <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-                  <Button
-                    sx={{ background: "transparent", color: "#110C0C" }}
-                    onClick={(e) => handleDelete(e, staff.id)}
+                  {staff.name}
+                </Typography>
+                <Typography
+                  sx={{
+                    maxWidth: "14.29%",
+                    width: "100%",
+                    fontSize: "0.7rem",
+                    fontWeight: "600",
+                    textTransform: "capitalize",
+                    pr: "1rem",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {staff.email}
+                </Typography>
+                <Typography
+                  sx={{
+                    maxWidth: "14.29%",
+                    width: "100%",
+                    fontSize: "0.7rem",
+                    fontWeight: "600",
+                    textTransform: "capitalize",
+                    pr: "0.5rem",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {staff.completedR}
+                </Typography>
+                <Typography
+                  sx={{
+                    maxWidth: "14.29%",
+                    width: "100%",
+                    fontSize: "0.7rem",
+                    fontWeight: "600",
+                    textTransform: "capitalize",
+                    pr: "0.5rem",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {staff.pendingR}
+                </Typography>
+                <Typography
+                  sx={{
+                    maxWidth: "14.29%",
+                    width: "100%",
+                    fontSize: "0.7rem",
+                    fontWeight: "600",
+                    textTransform: "capitalize",
+                    pr: "0.5rem",
+                    color: staff.status === "online" ? "green" : "red",
+                  }}
+                >
+                  {staff.status}
+                </Typography>
+                <Box
+                  sx={{
+                    maxWidth: "14.29%",
+                    width: "100%",
+                    fontSize: "0.7rem",
+                    fontWeight: "600",
+                    textTransform: "capitalize",
+                    pr: "0.5rem",
+                  }}
+                >
+                  <button
+                    style={{
+                      padding: "0.3rem 1rem",
+                      background: staff.active === 0 ? "green" : "red",
+                      color: "white",
+                      textAlign: "center",
+                      fontSize: "0.7rem",
+                      fontWeight: "600",
+                      pr: "0.5rem",
+                      width: "100%",
+                      cursor: "pointer",
+                      border: "none",
+                      borderRadius: "0.3rem",
+                    }}
+                    onClick={(e) => handleActivation(e, staff.id, staff.active)}
                   >
-                    <DeleteIcon color="#110C0C" />
-                  </Button>
+                    {staff.active === 0 ? "Activate" : "Deactivate"}
+                  </button>
                 </Box>
-              </Box>
-            </Paper>
-          ))}
-        </Box>
+                <Box
+                  sx={{
+                    maxWidth: "14.29%",
+                    width: "100%",
+                    fontSize: "0.7rem",
+                    fontWeight: "600",
+                    textTransform: "capitalize",
+                    pr: "0.5rem",
+                  }}
+                >
+                  <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                    <Button
+                      sx={{ background: "transparent", color: "#110C0C" }}
+                      onClick={(e) => handleDelete(e, staff.id)}
+                    >
+                      <DeleteIcon color="#110C0C" />
+                    </Button>
+                  </Box>
+                </Box>
+              </Paper>
+            ))}
+          </Box>
+        )}
         {rows.length > 5 ? (
           <Box
             sx={{
