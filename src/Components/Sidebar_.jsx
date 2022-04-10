@@ -3,14 +3,13 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import DomainAddOutlinedIcon from "@mui/icons-material/DomainAddOutlined";
-import DvrOutlinedIcon from "@mui/icons-material/DvrOutlined";
 import LockClockOutlinedIcon from "@mui/icons-material/LockClockOutlined";
-import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import LogoutSharpIcon from "@mui/icons-material/LogoutSharp";
 import { useSelector, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
 import { useNavigate } from "react-router-dom";
+import logo from "../images/logo.png";
 
 function Sidebar() {
   const navigate = useNavigate();
@@ -67,13 +66,12 @@ function Sidebar() {
   useEffect(() => {
     setDisplay(state.displayState);
   }, [state]);
-  const {  accepted, dashboard, password,  } = display;
+  const { accepted, dashboard, password } = display;
 
-  const {
-    setAccepted,
-    setDashboard,
-    setPassword,
-  } = bindActionCreators(actionCreators, dispatch);
+  const { setAccepted, setDashboard, setPassword } = bindActionCreators(
+    actionCreators,
+    dispatch
+  );
 
   return (
     <Box
@@ -86,11 +84,13 @@ function Sidebar() {
         left: "0",
         bottom: "0",
         background: "#0257E6",
-        pt: "4rem",
         cursor: "pointer",
         zIndex: "999",
       }}
     >
+      <Box sx={{ width: "100%", height: "4rem" }}>
+        <img src={logo} style={{ width: "70%", height: "4rem" }} alt="..." />
+      </Box>
       <Box
         onClick={(e) => {
           e.preventDefault();

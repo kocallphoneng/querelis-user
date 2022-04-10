@@ -1,21 +1,23 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import client from '../helpers/axiosInstance';
-import { useSelector } from 'react-redux';
+import client from "../helpers/axiosInstance";
+import { useSelector } from "react-redux";
+import SkipNextOutlinedIcon from "@mui/icons-material/SkipNextOutlined";
+import SkipPreviousOutlinedIcon from "@mui/icons-material/SkipPreviousOutlined";
 
 function Cards() {
   const [details, setDetails] = useState({
     totalReq: 0,
-    companies: 0,
-    staffs: 0,
-    unansweredReq: 0
-  })
-  const state = useSelector(state => state)
-  const {auth} = state.user
+    answered: 0,
+    active: 0,
+    unanswered: 0,
+    allowed: 0,
+  });
+  const [scroll, setScroll] = useState(false);
+  const state = useSelector((state) => state);
+  const { auth } = state.user;
   const support = () => {
     client.interceptors.request.use(
       (config) => {
@@ -27,278 +29,200 @@ function Cards() {
       }
     );
     client
-      .get("/admin-statistics")
-      .then((res) =>
+      .get("/company-statistics")
+      .then((res) => {
         setDetails({
-          totalReq: res.data.no_of_companies,
-          companies: res.data.no_of_request_in_the_month,
-          staffs: res.data.no_of_support_staff,
+          totalReq: res.data.no_of_request_in_the_month,
+          allowed: res.data.no_allowed_support_staff,
+          answered: res.data.no_of_requests_answered,
+          active: res.data.no_of_active_support_staff,
           unansweredReq: res.data.no_of_unanswered_request,
-        })
-      )
+        });
+      })
       .catch((err) => console.log(err));
-  }
+  };
+  console.log(scroll);
   useEffect(() => {
-
-    support()
+    support();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <Box
       sx={{
+        position: "relative",
         width: "100%",
         display: "flex",
         alignItems: "center",
-        justifyContent: "space-between",
       }}
     >
-      <Paper
+      {scroll ? (
+        <Box
+          sx={{
+            background: "#0257E6",
+            position: "absolute",
+            borderRadius: "50%",
+            padding: "0.5rem",
+            left: "0",
+            zIndex: "111",
+            cursor: "pointer",
+          }}
+        >
+          <SkipPreviousOutlinedIcon
+            sx={{ fontSize: "2rem", color: "#fff" }}
+            onClick={() => setScroll(false)}
+          />
+        </Box>
+      ) : (
+        ""
+      )}
+
+      <Box
         sx={{
-          borderRadius: "0.5rem",
-          maxWidth: "250px",
-          height: "143px",
           width: "100%",
-          padding: "1.5rem",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          transform: scroll ? "translateX(-25%)" : "translateX(1%)",
+          transition: "all 0.5s ease-in-out",
         }}
-        elevation={0}
       >
-        <Typography
-          sx={{ fontWeight: "600", lineHeight: "25px", height: "40px" }}
+        {/* <Box sx={{ width: "300px" }}></Box> */}
+        <Paper
+          sx={{
+            borderRadius: "0.5rem",
+            maxWidth: "250px",
+            minWidth: "230px",
+            height: "143px",
+            width: "100%",
+            padding: "1.5rem",
+          }}
+          elevation={0}
         >
-          Total Request
-        </Typography>
-        <Typography
-          sx={{ fontWeight: "900", color: "#0257E6", fontSize: "45px" }}
+          <Typography
+            sx={{ fontWeight: "600", lineHeight: "25px", height: "40px" }}
+          >
+            No of Requests In The Month
+          </Typography>
+          <Typography
+            sx={{ fontWeight: "900", color: "#0257E6", fontSize: "45px" }}
+          >
+            {details.totalReq}
+          </Typography>
+        </Paper>
+        <Paper
+          sx={{
+            borderRadius: "0.5rem",
+            maxWidth: "250px",
+            marginLeft: "1.5rem",
+            minWidth: "230px",
+            height: "143px",
+            width: "100%",
+            padding: "1.5rem",
+          }}
+          elevation={0}
         >
-          50
-        </Typography>
-      </Paper>
-      <Paper
-        sx={{
-          borderRadius: "0.5rem",
-          maxWidth: "250px",
-          height: "143px",
-          width: "100%",
-          padding: "1.5rem",
-        }}
-        elevation={0}
-      >
-        <Typography
-          sx={{ fontWeight: "600", lineHeight: "25px", height: "40px" }}
+          <Typography
+            sx={{ fontWeight: "600", lineHeight: "25px", height: "40px" }}
+          >
+            No of Answered Requests
+          </Typography>
+          <Typography
+            sx={{ fontWeight: "900", color: "#0257E6", fontSize: "45px" }}
+          >
+            {details.answered}
+          </Typography>
+        </Paper>
+        <Paper
+          sx={{
+            borderRadius: "0.5rem",
+            maxWidth: "250px",
+            marginLeft: "1.5rem",
+            minWidth: "230px",
+            height: "143px",
+            width: "100%",
+            padding: "1.5rem",
+          }}
+          elevation={0}
         >
-          Total Request
-        </Typography>
-        <Typography
-          sx={{ fontWeight: "900", color: "#0257E6", fontSize: "45px" }}
+          <Typography
+            sx={{ fontWeight: "600", lineHeight: "25px", height: "40px" }}
+          >
+            No of Active Support Staff
+          </Typography>
+          <Typography
+            sx={{ fontWeight: "900", color: "#0257E6", fontSize: "45px" }}
+          >
+            {details.active}
+          </Typography>
+        </Paper>
+        <Paper
+          sx={{
+            borderRadius: "0.5rem",
+            maxWidth: "250px",
+            marginLeft: "1.5rem",
+            minWidth: "230px",
+            height: "143px",
+            width: "100%",
+            padding: "1.5rem",
+          }}
+          elevation={0}
         >
-          50
-        </Typography>
-      </Paper>
-      <Paper
-        sx={{
-          borderRadius: "0.5rem",
-          maxWidth: "250px",
-          height: "143px",
-          width: "100%",
-          padding: "1.5rem",
-        }}
-        elevation={0}
-      >
-        <Typography
-          sx={{ fontWeight: "600", lineHeight: "25px", height: "40px" }}
+          <Typography
+            sx={{ fontWeight: "600", lineHeight: "25px", height: "40px" }}
+          >
+            No of Allowed Support Staff
+          </Typography>
+          <Typography
+            sx={{ fontWeight: "900", color: "#0257E6", fontSize: "45px" }}
+          >
+            {details.allowed}
+          </Typography>
+        </Paper>
+        <Paper
+          sx={{
+            borderRadius: "0.5rem",
+            maxWidth: "250px",
+            marginLeft: "1.5rem",
+            minWidth: "230px",
+            height: "143px",
+            width: "100%",
+            padding: "1.5rem",
+          }}
+          elevation={0}
         >
-          Total Request
-        </Typography>
-        <Typography
-          sx={{ fontWeight: "900", color: "#0257E6", fontSize: "45px" }}
+          <Typography
+            sx={{ fontWeight: "600", lineHeight: "25px", height: "40px" }}
+          >
+            No of Unanswered Request
+          </Typography>
+          <Typography
+            sx={{ fontWeight: "900", color: "#0257E6", fontSize: "45px" }}
+          >
+            {details.unansweredReq}
+          </Typography>
+        </Paper>
+      </Box>
+      {!scroll ? (
+        <Box
+          sx={{
+            background: "#0257E6",
+            position: "absolute",
+            borderRadius: "50%",
+            padding: "0.5rem",
+            right: "1rem",
+            cursor: "pointer",
+          }}
         >
-          50
-        </Typography>
-      </Paper>
-      <Paper
-        sx={{
-          borderRadius: "0.5rem",
-          maxWidth: "250px",
-          height: "143px",
-          width: "100%",
-          padding: "1.5rem",
-        }}
-        elevation={0}
-      >
-        <Typography
-          sx={{ fontWeight: "600", lineHeight: "25px", height: "40px" }}
-        >
-          Total Request
-        </Typography>
-        <Typography
-          sx={{ fontWeight: "900", color: "#0257E6", fontSize: "45px" }}
-        >
-          50
-        </Typography>
-      </Paper>
-      
+          <SkipNextOutlinedIcon
+            sx={{ fontSize: "2rem", color: "#fff" }}
+            onClick={() => setScroll(true)}
+          />
+        </Box>
+      ) : (
+        ""
+      )}
     </Box>
-    // <Card
-    //   sx={{
-    //     maxWidth: "210px",
-    //     width: "100%",
-    //     mr: "0.5rem",
-    //     boxShadow: "0px 4px 7px 3px rgba(0, 0, 0, 0.04)",
-    //     background: "#FFFFFF",
-    //     borderRadius: "10px",
-    //     padding: "0 0.7rem",
-    //   }}
-    // >
-    //   <CardContent>
-    //     <Typography
-    //       sx={{
-    //         color: "#110C0C",
-    //         lineHeight: "1.7rem",
-    //         height: "3.5rem",
-    //         fontSize: "0.9rem",
-    //         fontWeight: "600",
-    //       }}
-    //       variant="h6"
-    //       component="div"
-    //     >
-    //       No of Request In The Month
-    //     </Typography>
-    //     <Typography
-    //       sx={{
-    //         fontWeight: "bold",
-    //         fontSize: "2.5rem",
-    //         lineHeight: "56px",
-    //         color: "#0257E6",
-    //         pt: "0.5rem",
-    //       }}
-    //       variant="h1"
-    //       component="div"
-    //     >
-    //       {details.companies}
-    //     </Typography>
-    //   </CardContent>
-    // </Card>
-    // <Card
-    //   sx={{
-    //     maxWidth: "210px",
-    //     width: "100%",
-    //     mr: "0.5rem",
-    //     boxShadow: "0px 4px 7px 3px rgba(0, 0, 0, 0.04)",
-    //     background: "#FFFFFF",
-    //     borderRadius: "10px",
-    //     padding: "0 0.7rem",
-    //   }}
-    // >
-    //   <CardContent>
-    //     <Typography
-    //       sx={{
-    //         color: "#110C0C",
-    //         lineHeight: "1.7rem",
-    //         height: "3.5rem",
-    //         fontSize: "0.9rem",
-    //         fontWeight: "600",
-    //       }}
-    //       variant="h6"
-    //       component="div"
-    //     >
-    //       No of Companies
-    //     </Typography>
-    //     <Typography
-    //       sx={{
-    //         fontWeight: "bold",
-    //         fontSize: "2.5rem",
-    //         lineHeight: "56px",
-    //         color: "#0257E6",
-    //         pt: "0.5rem",
-    //       }}
-    //       variant="h1"
-    //       component="div"
-    //     >
-    //       {details.totalReq}
-    //     </Typography>
-    //   </CardContent>
-    // </Card>
-    // <Card
-    //   sx={{
-    //     maxWidth: "210px",
-    //     width: "100%",
-    //     mr: "0.5rem",
-    //     boxShadow: "0px 4px 7px 3px rgba(0, 0, 0, 0.04)",
-    //     background: "#FFFFFF",
-    //     borderRadius: "10px",
-    //     padding: "0 0.7rem",
-    //   }}
-    // >
-    //   <CardContent>
-    //     <Typography
-    //       sx={{
-    //         color: "#110C0C",
-    //         lineHeight: "1.7rem",
-    //         height: "3.5rem",
-    //         fontSize: "0.9rem",
-    //         fontWeight: "600",
-    //       }}
-    //       variant="h6"
-    //       component="div"
-    //     >
-    //       No of Support Staff
-    //     </Typography>
-    //     <Typography
-    //       sx={{
-    //         fontWeight: "bold",
-    //         fontSize: "2.5rem",
-    //         lineHeight: "56px",
-    //         color: "#0257E6",
-    //         pt: "0.5rem",
-    //       }}
-    //       variant="h1"
-    //       component="div"
-    //     >
-    //       {details.staffs}
-    //     </Typography>
-    //   </CardContent>
-    // </Card>
-    // <Card
-    //   sx={{
-    //     maxWidth: "210px",
-    //     width: "100%",
-    //     mr: "0.5rem",
-    //     boxShadow: "0px 4px 7px 3px rgba(0, 0, 0, 0.04)",
-    //     background: "#FFFFFF",
-    //     borderRadius: "10px",
-    //     padding: "0 0.7rem",
-    //   }}
-    // >
-    //   <CardContent>
-    //     <Typography
-    //       sx={{
-    //         color: "#110C0C",
-    //         lineHeight: "1.7rem",
-    //         height: "3.5rem",
-    //         fontSize: "0.9rem",
-    //         fontWeight: "600",
-    //       }}
-    //       variant="h6"
-    //       component="div"
-    //     >
-    //       No of Unanswered Request
-    //     </Typography>
-    //     <Typography
-    //       sx={{
-    //         fontWeight: "bold",
-    //         fontSize: "2.5rem",
-    //         lineHeight: "56px",
-    //         color: "#0257E6",
-    //         pt: "0.5rem",
-    //       }}
-    //       variant="h1"
-    //       component="div"
-    //     >
-    //       {details.unansweredReq}
-    //     </Typography>
-    //   </CardContent>
-    // </Card>
   );
 }
 
-export default Cards
+export default Cards;

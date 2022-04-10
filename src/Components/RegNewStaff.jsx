@@ -24,7 +24,6 @@ function RegNewComapany() {
     password: yup.string().required("*Required"),
   });
   const handleSubmit = (values) => {
-    showCreateSuccess();
     console.log(values.photo.files);
     const formData = new FormData()
     formData.append("image", values.photo)

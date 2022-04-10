@@ -1,6 +1,8 @@
 const initialState = {
   auth: {},
   staffs: [],
+  staffs: [],
+  requests: [],
   auditTrail: [],
   firstEmail: "",
   firstTimeUser: false,
@@ -9,6 +11,7 @@ const initialState = {
   token: "",
   err: "",
   staffId: 0,
+  active: 0,
   summaryDate: "",
   userEmail: "",
   otp: 0,
@@ -20,6 +23,8 @@ const userReducer = (state = initialState, action) => {
       return (state = { ...state, auth: action.payload });
     case "GETSTAFFS":
       return (state = { ...state, staffs: action.payload });
+    case "GETREQUESTS":
+      return (state = { ...state, requests: action.payload });
     case "GET_AUDIT_TRAIL":
       return (state = { ...state, auditTrail: action.payload });
     case "FIRST_LOGIN":
@@ -44,6 +49,8 @@ const userReducer = (state = initialState, action) => {
       return (state = { ...state, err: "" });
     case "SETSTAFFID":
       return (state = { ...state, staffId: action.payload });
+    case "SETACTIVE":
+      return (state = { ...state, active: action.payload });
     case "SETSUMMARYDATE":
       return (state = { ...state, summaryDate: action.payload });
     case "SETUSEREMAIL":

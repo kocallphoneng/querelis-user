@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
@@ -7,10 +7,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
+import client from "../helpers/axiosInstance";
 
 function DeleteScreen() {
   const state = useSelector((state) => state);
-  //   const { staffId } = state.user;
+  const { staffId } = state.user;
   const dispatch = useDispatch();
 
   const { hideDeleteScreen } = bindActionCreators(actionCreators, dispatch);
@@ -19,7 +20,13 @@ function DeleteScreen() {
     hideDeleteScreen();
   };
   const proceed = () => {
-    hideDeleteScreen();
+    client
+      .delete(`/support-staff/${staffId}`)
+      .then((res) => {
+        console.log(res);
+        hideDeleteScreen();
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -48,9 +55,7 @@ function DeleteScreen() {
           padding: "2rem",
         }}
       >
-        <HighlightOffOutlinedIcon
-          sx={{ fontSize: "20rem", color: "red" }}
-        />
+        <HighlightOffOutlinedIcon sx={{ fontSize: "20rem", color: "red" }} />
         <Typography>Do you want delete?</Typography>
         <Box
           sx={{
@@ -61,6 +66,7 @@ function DeleteScreen() {
           }}
         >
           <Button
+            variant="contained"
             onClick={() => proceed()}
             sx={{ background: "#0257E6", color: "white" }}
           >

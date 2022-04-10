@@ -1,4 +1,3 @@
-
 export const login = (userData) => {
   return (dispatch) => {
     dispatch({
@@ -11,7 +10,7 @@ export const login = (userData) => {
 export const firstTimeEmail = (email) => {
   return (dispatch) => {
     dispatch({ type: "FIRST_EMAIL", payload: email });
-    dispatch({type: "FIRSTTIMER"})
+    dispatch({ type: "FIRSTTIMER" });
   };
 };
 
@@ -21,7 +20,13 @@ export const getAllStaffs = (data) => {
   };
 };
 
-export const getAuditTrail= (data) => {
+export const getAllRequests = (data) => {
+  return (dispatch) => {
+    dispatch({ type: "GETREQUESTS", payload: data });
+  };
+};
+
+export const getAuditTrail = (data) => {
   return (dispatch) => {
     dispatch({ type: "GET_AUDIT_TRAIL", payload: data });
   };
@@ -63,7 +68,6 @@ export const setAccepted = () => {
 export const setSummary = () => {
   return (dispatch) => dispatch({ type: "SUMMARY" });
 };
-
 export const showNotification = () => {
   return (dispatch) => dispatch({ type: "SHOWNOTIFICATION" });
 };
@@ -76,9 +80,12 @@ export const viewEditCompany = () => {
 export const setStaffId = (id) => {
   return (dispatch) => dispatch({ type: "SETSTAFFID", payload: id });
 };
+export const setActive = (is_active) => {
+  return (dispatch) => dispatch({ type: "SETACTIVE", payload: is_active });
+};
 export const showActivationScreen = () => {
   return (dispatch) => dispatch({ type: "SHOWACTIVATIONSCREEN" });
-}
+};
 export const hideActivationScreen = () => {
   return (dispatch) => dispatch({ type: "HIDEACTIVATIONSCREEN" });
 };
@@ -140,7 +147,7 @@ export const hideHelper_ = () => {
   return (dispatch) => dispatch({ type: "HIDEHELPERSCREEN" });
 };
 export const showAdd_ = (option) => {
-  return (dispatch) => dispatch({ type: "SHOWADDSCREEN"});
+  return (dispatch) => dispatch({ type: "SHOWADDSCREEN" });
 };
 export const hideAdd_ = () => {
   return (dispatch) => dispatch({ type: "HIDEADDSCREEN" });

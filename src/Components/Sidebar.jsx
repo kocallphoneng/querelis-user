@@ -2,18 +2,20 @@ import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
-import DomainAddOutlinedIcon from "@mui/icons-material/DomainAddOutlined";
-import DvrOutlinedIcon from "@mui/icons-material/DvrOutlined";
 import LockClockOutlinedIcon from "@mui/icons-material/LockClockOutlined";
-import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import LogoutSharpIcon from "@mui/icons-material/LogoutSharp";
 import { useSelector, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
 import { useNavigate } from "react-router-dom";
+import logo from "../images/logo.png";
+import NoteAddOutlinedIcon from "@mui/icons-material/NoteAddOutlined";
+import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
+import ContactPageOutlinedIcon from "@mui/icons-material/ContactPageOutlined";
+import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 
 function Sidebar() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const select = {
     background: "white",
     display: "flex",
@@ -60,7 +62,7 @@ function Sidebar() {
     password: false,
     summary: false,
     logout: false,
-    notify: false
+    notify: false,
   });
   const state = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -75,7 +77,7 @@ function Sidebar() {
     setDashboard,
     setPassword,
     setSummary,
-    showNotification
+    showNotification,
   } = bindActionCreators(actionCreators, dispatch);
 
   return (
@@ -89,11 +91,14 @@ function Sidebar() {
         left: "0",
         bottom: "0",
         background: "#0257E6",
-        pt: "4rem",
+
         cursor: "pointer",
         zIndex: "999",
       }}
     >
+      <Box sx={{ width: "100%", height: "4rem" }}>
+        <img src={logo} style={{ width: "70%", height: "4rem" }} alt="..." />
+      </Box>
       <Box
         onClick={(e) => {
           e.preventDefault();
@@ -111,9 +116,9 @@ function Sidebar() {
           e.preventDefault();
           setStaff();
         }}
-        sx={staff? select : unSelect}
+        sx={staff ? select : unSelect}
       >
-        <DomainAddOutlinedIcon sx={staff ? selectIcon : unSelectIcon} />
+        <NoteAddOutlinedIcon sx={staff ? selectIcon : unSelectIcon} />
         <Typography sx={staff ? selectText : unSelectText}>
           Create New Support
         </Typography>
@@ -125,7 +130,7 @@ function Sidebar() {
         }}
         sx={audit ? select : unSelect}
       >
-        <DvrOutlinedIcon sx={audit ? selectIcon : unSelectIcon} />
+        <ListAltOutlinedIcon sx={audit ? selectIcon : unSelectIcon} />
         <Typography sx={audit ? selectText : unSelectText}>
           View Request Full Table
         </Typography>
@@ -137,7 +142,7 @@ function Sidebar() {
         }}
         sx={summary ? select : unSelect}
       >
-        <DescriptionOutlinedIcon sx={summary ? selectIcon : unSelectIcon} />
+        <ContactPageOutlinedIcon sx={summary ? selectIcon : unSelectIcon} />
         <Typography sx={summary ? selectText : unSelectText}>
           Staff Summary
         </Typography>
@@ -161,7 +166,7 @@ function Sidebar() {
         }}
         sx={notify ? select : unSelect}
       >
-        <DescriptionOutlinedIcon sx={notify ? selectIcon : unSelectIcon} />
+        <EmailRoundedIcon sx={notify ? selectIcon : unSelectIcon} />
         <Typography sx={notify ? selectText : unSelectText}>
           Notification
         </Typography>
