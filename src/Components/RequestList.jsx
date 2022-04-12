@@ -4,21 +4,28 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import SkipNextOutlinedIcon from "@mui/icons-material/SkipNextOutlined";
 import SkipPreviousOutlinedIcon from "@mui/icons-material/SkipPreviousOutlined";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { bindActionCreators } from "redux";
+import { actionCreators } from "../state/index";
 import empty from "../images/void.svg";
-import { data } from "./testData";
 import HourglassTopOutlinedIcon from "@mui/icons-material/HourglassTopOutlined";
+import client from "../helpers/axiosInstance";
 // import HourglassBottomOutlinedIcon from "@mui/icons-material/HourglassBottomOutlined";
 
 function RequestList() {
+  const [rowIndex, setRowIndex] = useState(0);
+  const [allowedPages, setAllowedPages] = useState(2);
+  const [total, setTotal] = useState(5);
+  const [page, setPage] = useState(rowIndex + 1);
+
   const state = useSelector((state) => state);
   const rowsPerPage = 5;
   const [list, setList] = useState([
     {
       id: 0,
-      name: "",
+      company: { name: "" },
       tel: "",
-      date: "",
+      date: "DD/MM/YYYY/T/DD/MM/YYYY/.",
       cc: "",
       cat: "",
       reoslvedT: "",
@@ -29,16 +36,26 @@ function RequestList() {
       status: "",
     },
   ]);
-  const [rowIndex, setRowIndex] = useState(0);
-  const [allowedPages, setAllowedPages] = useState(2);
-  const [total, setTotal] = useState(5);
-  const [page, setPage] = useState(rowIndex + 1);
 
   const { requests } = state.user;
+  const dispatch = useDispatch();
+  const { getAllRequests } = bindActionCreators(actionCreators, dispatch);
+  const setRequests = () => {
+    try {
+      const fetchData = async () => {
+        const req = await client.get("/support-requests");
+        getAllRequests(req.data.data);
+      };
+      fetchData();
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
-    setList(data);
-    console.log("from requests", requests);
+    console.log("requests", requests);
+    setList(requests);
+    setRequests();
     handlePageNumber();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -87,36 +104,15 @@ function RequestList() {
     { id: "status", label: "Status" },
   ];
 
-  // const rows = list.map((req) =>
-  //   createData(
-  //     req.id,
-  //     req.company.name,
-  //     req.phone_number,
-  //     `${req.created_at.slice(0, req.created_at.indexOf("T"))}\n
-  //       ${req.created_at.slice(
-  //         req.created_at.indexOf("T") + 1,
-  //         req.created_at.indexOf(".")
-  //       )}`,
-  //     req.cc_ticket_id,
-  //     req.category,
-  //     req.resolved_time,
-  //     req.mcc,
-  //     req.mnc,
-  //     req.lac,
-  //     req.ci,
-  //     req.status
-  //   )
-  // );
-
   const rows = list.map((req) =>
     createData(
       req.id,
-      req.name,
-      req.tel,
-      req.date.day,
-      req.cc,
-      req.cat,
-      req.reoslvedT,
+      req.company.name,
+      req.phone_number,
+      req.date,
+      req.cc_ticket_id,
+      req.category,
+      req.resolved_time,
       req.mcc,
       req.mnc,
       req.lac,
@@ -124,6 +120,7 @@ function RequestList() {
       req.status
     )
   );
+
   const handlePageNumber = () => {
     const remainder = list.length % 5;
     if (remainder === 0) {
@@ -132,6 +129,7 @@ function RequestList() {
       setAllowedPages(parseInt(list.length / 5) + 1);
     }
   };
+  console.log(list);
 
   const handleAddPage = (e) => {
     e.preventDefault();
@@ -188,7 +186,7 @@ function RequestList() {
             </Typography>
           ))}
         </Paper>
-        {list.length === 0 ? (
+        {requests.length === 0 ? (
           <Box
             sx={{
               width: "100%",
@@ -362,15 +360,42 @@ function RequestList() {
                       alignItems: "center",
                     }}
                   >
-                    <Box
-                      sx={{
-                        padding: "0.3rem",
-                        borderRadius: "50%",
-                        mr: "1rem",
-                        background:
-                          request.status === "pending" ? "red" : "green",
-                      }}
-                    ></Box>
+                    {request.status === "pending" ? (
+                      <Box
+                        sx={{
+                          padding: "0.3rem",
+                          borderRadius: "50%",
+                          mr: "1rem",
+                          background: "yellow",
+                        }}
+                      ></Box>
+                    ) : (
+                      ""
+                    )}
+                    {request.status === "resolved" ? (
+                      <Box
+                        sx={{
+                          padding: "0.3rem",
+                          borderRadius: "50%",
+                          mr: "1rem",
+                          background: "green",
+                        }}
+                      ></Box>
+                    ) : (
+                      ""
+                    )}
+                    {request.status === "unresolved" ? (
+                      <Box
+                        sx={{
+                          padding: "0.3rem",
+                          borderRadius: "50%",
+                          mr: "1rem",
+                          background: "red",
+                        }}
+                      ></Box>
+                    ) : (
+                      ""
+                    )}
                     <Typography
                       sx={{
                         fontSize: "0.7rem",

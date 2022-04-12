@@ -6,9 +6,10 @@ import Paper from "@mui/material/Paper";
 import SkipNextOutlinedIcon from "@mui/icons-material/SkipNextOutlined";
 import SkipPreviousOutlinedIcon from "@mui/icons-material/SkipPreviousOutlined";
 import { useSelector, useDispatch } from "react-redux";
-import { data } from "./testData";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
+import client from "../helpers/axiosInstance";
+import HourglassTopOutlinedIcon from "@mui/icons-material/HourglassTopOutlined";
 
 function Audit() {
   const state = useSelector((state) => state);
@@ -16,13 +17,13 @@ function Audit() {
   const [list, setList] = useState([
     {
       id: 0,
-      name: "",
+      company: {},
       tel: "",
       date: "",
       cc: "",
       tikT: "",
-      reolvedT: "",
-      createT: "",
+      reolvedT: true,
+      createT: "2022-04-09T16:30:55.000000Z",
       status: "",
       assign: false,
       details: "",
@@ -33,22 +34,36 @@ function Audit() {
   const [total, setTotal] = useState(10);
   const [page, setPage] = useState(rowIndex + 1);
 
-  const { auditTrail } = state.user;
+  const { requests } = state.user;
+
+  const dispatch = useDispatch();
+  const { showDetail_, getAllRequests, setReqId } = bindActionCreators(
+    actionCreators,
+    dispatch
+  );
+  const setRequests = () => {
+    try {
+      const fetchData = async () => {
+        const req = await client.get("/support-requests");
+        getAllRequests(req.data.data);
+      };
+      fetchData();
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
-    setList(auditTrail);
-    console.log("from audit", auditTrail);
+    setRequests();
+    console.log("requests", requests);
+    setList(requests);
     handlePageNumber();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const dispatch = useDispatch();
-  const { showDetail_} = bindActionCreators(actionCreators, dispatch);
-
-
   const createData = (
     id,
-    name,
+    company,
     tel,
     date,
     cc,
@@ -59,15 +74,19 @@ function Audit() {
     assign,
     details
   ) => {
+    const newT = createT.split("T")[1];
+    const newT_ = newT.split(".")[0];
+    const newD = `${date.slice(0, date.indexOf("T"))}\n
+      ${date.slice(date.indexOf("T") + 1, date.indexOf("."))}`;
     return {
       id,
-      name,
+      company,
       tel,
-      date,
+      newD,
       cc,
       tikT,
       reolvedT,
-      createT,
+      newT_,
       status,
       assign,
       details,
@@ -87,42 +106,25 @@ function Audit() {
     { id: "lac", label: "Assign" },
     { id: "ci", label: "Details" },
   ];
-  const rows = data.map((details) =>
+  const rows = requests.map((req) =>
     createData(
-      0,
-      details.name,
-      details.tel,
-      details.date.day,
-      details.cc,
-      details.tikT,
-      details.reolvedT,
-      details.createT,
-      details.status,
-      details.assign,
+      req.id,
+      req.company,
+      req.phone_number,
+      req.created_at,
+      req.cc_ticket_id,
+      "details.tikT",
+      true,
+      req.created_at,
+      req.status,
+      req.assigned_to,
       "view"
     )
   );
-  // const rows = auditTrail.map((company) =>
-  //   createData(
-  //     company.id,
-  //     company.company.name,
-  //     company.phone_number,
-  //     `${company.created_at.slice(0, company.created_at.indexOf("T"))}\n
-  //     ${company.created_at.slice(
-  //       company.created_at.indexOf("T") + 1,
-  //       company.created_at.indexOf(".")
-  //     )}`,
-  //     company.cc_ticket_id,
-  //     company.category,
-  //     company.complaint,
-  //     company.mcc,
-  //     company.mnc,
-  //     company.lac,
-  //     company.ci,
-  //     company.status
-  //   )
-  // );
-
+  const setView = (id) => {
+    setReqId(id);
+    showDetail_();
+  };
   const handlePageNumber = () => {
     const remainder = rows.length % 10;
     if (remainder === 0) {
@@ -141,9 +143,6 @@ function Audit() {
       setTotal(total + rowsPerPage);
     }
   };
-  console.log(total);
-  console.log("total", total);
-  console.log("rowIndex", rowIndex);
 
   const handleReducePage = (e) => {
     e.preventDefault();
@@ -155,7 +154,7 @@ function Audit() {
   };
 
   // const handleAccept = () => {
-    
+
   // }
 
   return (
@@ -198,9 +197,9 @@ function Audit() {
           ))}
         </Paper>
         <Box sx={{ pb: "2rem", minHeight: "400px" }}>
-          {rows.slice(rowIndex * rowsPerPage, total).map((company) => (
+          {rows.slice(rowIndex * rowsPerPage, total).map((req) => (
             <Paper
-              key={company.name}
+              key={req.id}
               elevation={0}
               sx={{
                 width: "100%",
@@ -220,7 +219,7 @@ function Audit() {
                   textOverflow: "ellipsis",
                 }}
               >
-                {company.name}
+                {req.company.name}
               </Typography>
               <Typography
                 sx={{
@@ -231,7 +230,7 @@ function Audit() {
                   textOverflow: "ellipsis",
                 }}
               >
-                {company.tel}
+                {req.tel}
               </Typography>
               <Typography
                 sx={{
@@ -242,7 +241,7 @@ function Audit() {
                   textOverflow: "ellipsis",
                 }}
               >
-                {company.date}
+                {req.newD}
               </Typography>
 
               <Typography
@@ -254,7 +253,7 @@ function Audit() {
                   textOverflow: "ellipsis",
                 }}
               >
-                {company.cc}
+                {req.cc}
               </Typography>
               <Typography
                 sx={{
@@ -265,7 +264,7 @@ function Audit() {
                   textOverflow: "ellipsis",
                 }}
               >
-                {company.tikT}
+                {req.tikT}
               </Typography>
 
               <Typography
@@ -277,23 +276,21 @@ function Audit() {
                   textOverflow: "ellipsis",
                 }}
               >
-                {company.createT}
+                {req.newT_}
               </Typography>
-              <Typography
+              <Box
                 sx={{
                   width: "9%",
-                  fontSize: "0.7rem",
-                  pr: "1rem",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
+                  display: "flex",
+                  justifyContent: "center",
                 }}
               >
-                {company.reolvedT}
-              </Typography>
+                <HourglassTopOutlinedIcon />
+              </Box>
 
               <Box
                 sx={{
-                  width: "10.1%",
+                  width: "9%",
                   fontSize: "0.7rem",
                   pr: "0.5rem",
                 }}
@@ -304,7 +301,7 @@ function Audit() {
                     alignItems: "center",
                   }}
                 >
-                  {company.status === "pending" ? (
+                  {req.status === "pending" ? (
                     <Box
                       sx={{
                         padding: "0.3rem",
@@ -316,7 +313,7 @@ function Audit() {
                   ) : (
                     ""
                   )}
-                  {company.status === "resolved" ? (
+                  {req.status === "resolved" ? (
                     <Box
                       sx={{
                         padding: "0.3rem",
@@ -328,7 +325,7 @@ function Audit() {
                   ) : (
                     ""
                   )}
-                  {company.status === "unresolved" ? (
+                  {req.status === "unresolved" ? (
                     <Box
                       sx={{
                         padding: "0.3rem",
@@ -348,7 +345,7 @@ function Audit() {
                       pr: "0.5rem",
                     }}
                   >
-                    {company.status}
+                    {req.status}
                   </Typography>
                 </Box>
               </Box>
@@ -365,8 +362,9 @@ function Audit() {
                     color: "#fff",
                     fontSize: "0.7rem",
                     textTransform: "capitalize",
-                    background: company.assign === true ? "#F42C2C" : "#C4C4C4",
+                    background: req.assign ? "#F42C2C" : "#C4C4C4",
                   }}
+                  variant="contained"
                 >
                   accept
                 </Button>
@@ -384,7 +382,7 @@ function Audit() {
                     fontSize: "0.7rem",
                     textTransform: "capitalize",
                   }}
-                  onClick={() => showDetail_()}
+                  onClick={() => setView(req.id)}
                 >
                   View
                 </Button>

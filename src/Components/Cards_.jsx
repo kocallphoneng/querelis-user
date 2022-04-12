@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
 import Paper from "@mui/material/Paper";
-import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import client from "../helpers/axiosInstance";
 import { useSelector } from "react-redux";
@@ -10,8 +8,7 @@ import { useSelector } from "react-redux";
 function Cards() {
   const [details, setDetails] = useState({
     totalReq: 0,
-    companies: 0,
-    staffs: 0,
+    answered: 0,
     unansweredReq: 0,
   });
   const state = useSelector((state) => state);
@@ -27,15 +24,15 @@ function Cards() {
       }
     );
     client
-      .get("/admin-statistics")
-      .then((res) =>
+      .get("/support-staff-statistics")
+      .then((res) => {
+        console.log(res);
         setDetails({
-          totalReq: res.data.no_of_companies,
-          companies: res.data.no_of_request_in_the_month,
-          staffs: res.data.no_of_support_staff,
+          totalReq: res.data.no_of_request_in_the_month,
+          answered: res.data.no_of_requests_answered_by_staff,
           unansweredReq: res.data.no_of_unanswered_request,
-        })
-      )
+        });
+      })
       .catch((err) => console.log(err));
   };
   useEffect(() => {
@@ -76,7 +73,7 @@ function Cards() {
           <Typography
             sx={{ fontWeight: "900", color: "#0257E6", fontSize: "45px" }}
           >
-            50
+            {details.totalReq}
           </Typography>
         </Paper>
         <Paper
@@ -97,7 +94,7 @@ function Cards() {
           <Typography
             sx={{ fontWeight: "900", color: "#0257E6", fontSize: "45px" }}
           >
-            50
+            {details.answered}
           </Typography>
         </Paper>
         <Paper
@@ -134,7 +131,7 @@ function Cards() {
           <Typography
             sx={{ fontWeight: "900", color: "#0257E6", fontSize: "45px" }}
           >
-            50
+            {details.unansweredReq}
           </Typography>
         </Paper>
       </Box>

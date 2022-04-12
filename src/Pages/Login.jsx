@@ -59,6 +59,10 @@ function Login() {
         firstTimeEmail(values.email);
         setNotLoading();
         navigate("/createnewpassword");
+      } else if (err.response.data.code === "EXPIRED_PASSWORD") {
+        firstTimeEmail(values.email);
+        setNotLoading();
+        navigate("/compulsorypasswordreset");
       } else {
         console.log(err);
         setNotLoading();

@@ -77,8 +77,12 @@ export const viewRegedComapnies = () => {
 export const viewEditCompany = () => {
   return (dispatch) => dispatch({ type: "EDITCOMPANY" });
 };
+
 export const setStaffId = (id) => {
   return (dispatch) => dispatch({ type: "SETSTAFFID", payload: id });
+};
+export const setReqId = (id) => {
+  return (dispatch) => dispatch({ type: "SETREQID", payload: id });
 };
 export const setActive = (is_active) => {
   return (dispatch) => dispatch({ type: "SETACTIVE", payload: is_active });

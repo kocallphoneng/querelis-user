@@ -21,10 +21,6 @@ function ChangePass() {
       .required("*Required"),
   });
   const handleSubmit = (values) => {
-    console.log(values);
-    const formData = new FormData();
-    formData.append("photo", values.photo);
-    
     client
       .post("/change-password", {
         email: values.email,

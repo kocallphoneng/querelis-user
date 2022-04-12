@@ -45,13 +45,11 @@ function SupportList() {
 
   useEffect(() => {
     setStaffs();
-
     setList(staffs);
     handlePageNumber();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [staffs]);
-  console.log("list", list);
   const createData = (
     id,
     name,
@@ -64,8 +62,6 @@ function SupportList() {
   ) => {
     return { id, name, email, completedR, pendingR, status, active, del };
   };
-  console.log(list);
-
   const columns = [
     { id: 0, name: "Name" },
     { id: 1, name: "Email" },
@@ -90,11 +86,9 @@ function SupportList() {
   );
   const handlePageNumber = () => {
     const remainder = rows.length % 5;
-    console.log("remainder", remainder);
     if (remainder === 0) {
       setAllowedPages(parseInt(rows.length / 5));
     } else {
-      console.log(rows.length / 5);
       setAllowedPages(parseInt(rows.length / 5) + 1);
     }
   };

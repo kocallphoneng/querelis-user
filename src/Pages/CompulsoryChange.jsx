@@ -8,18 +8,23 @@ import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
-// import client from "../helpers/axiosInstance";
+import client from "../helpers/axiosInstance";
+import { useSelector } from "react-redux";
 
 function CompulsoryPassword() {
+  const state = useSelector((state) => state);
+  const { firstEmail } = state.user;
+  
   const [display, setDisplay] = React.useState({
     view1: false,
     view2: false,
     view3: false,
   });
-
+  const navigate = useNavigate()
+  
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
@@ -32,6 +37,20 @@ function CompulsoryPassword() {
 
   const handleSubmit = (values) => {
     console.log(values);
+    client
+      .post("/change-password", {
+        email: firstEmail,
+        password: values.password2,
+        password_confirmation: values.password3,
+      })
+      .then((res) => {
+        console.log(res);
+        navigate("/login");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  
   };
   const formValidation = yup.object().shape({
     password1: yup.string().required("*Required"),
