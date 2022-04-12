@@ -1,18 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import { Button, fabClasses, Box } from "@mui/material";
+import { Button,  Box } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { useSelector, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
+import client from "../helpers/axiosInstance";
 
 function AddInfo() {
-    const dispatch = useDispatch();
-    const { hideAdd_, showHelper_, showAdd_ } = bindActionCreators(
-      actionCreators,
-      dispatch
-    );
+  const state = useSelector((state) => state);
+  const { reqId} = state.user;
+  const dispatch = useDispatch();
+  const { hideAdd_, } = bindActionCreators(
+    actionCreators,
+    dispatch
+  );
+  const [text, setText] = useState("");
+  const [err, setErr] = useState(false);
+  const handleChange = (e) => {
+    setText(e.target.value);
+    if (text.length < 3) {
+      setErr(true);
+    } else {
+      setErr(false);
+    }
+  };
+  const handleSubmit = () => {
+    if (text.length < 3) {
+      setErr(true);
+    } else {
+      setErr(false);
+      
+      client
+        .patch(`/support-requests/${reqId}`, )
+        .then((res) => {
+          console.log(res)
+          hideAdd_();
+        })
+        .catch((err) => console.log(err));
+    }
+  };
   return (
     <Box
       sx={{
@@ -47,8 +75,13 @@ function AddInfo() {
           id="outlined-multiline-static"
           label=""
           multiline
+          value={text}
+          onChange={handleChange}
           rows={3}
         />
+        {err?<Typography sx={{ fontWeight: "300", p: "0.5rem 0", color: "red" }}>
+          *Required and should be a minimum of 3 letters
+        </Typography>: ""}
         <Box
           sx={{
             display: "flex",
@@ -57,7 +90,7 @@ function AddInfo() {
           }}
         >
           <Box>
-            <Button onClick={() => hideAdd_()} variant="contained">
+            <Button onClick={() => handleSubmit()} variant="contained">
               Add
             </Button>
             <Button

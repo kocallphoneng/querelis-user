@@ -1,7 +1,6 @@
 const initialState = {
   auth: {},
   staffs: [],
-  staffs: [],
   requests: [],
   auditTrail: [],
   firstEmail: "",
@@ -11,6 +10,7 @@ const initialState = {
   token: "",
   err: "",
   staffId: 0,
+  reqId: 0,
   active: 0,
   summaryDate: "",
   userEmail: "",
@@ -49,6 +49,8 @@ const userReducer = (state = initialState, action) => {
       return (state = { ...state, err: "" });
     case "SETSTAFFID":
       return (state = { ...state, staffId: action.payload });
+    case "SETREQID":
+      return (state = { ...state, reqId: action.payload });
     case "SETACTIVE":
       return (state = { ...state, active: action.payload });
     case "SETSUMMARYDATE":

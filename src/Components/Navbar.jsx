@@ -4,19 +4,16 @@ import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 import MailOutlineSharpIcon from "@mui/icons-material/MailOutlineSharp";
 import { useDispatch, useSelector } from "react-redux";
-import Button from "@mui/material/Button";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 
 function Navbar() {
   const state = useSelector((state) => state);
-  const { welcome, navBtn } = state.displayState;
+  const { welcome, accepted } = state.displayState;
   const { auth } = state.user;
   const dispatch = useDispatch();
-  const { showEditForm, showNotification } = bindActionCreators(
-    actionCreators,
-    dispatch
-  );
+  const { showNotification } = bindActionCreators(actionCreators, dispatch);
 
   const handleNotification = (e) => {
     e.preventDefault();
@@ -63,18 +60,45 @@ function Navbar() {
         ) : (
           ""
         )}
-        {navBtn ? (
-          <Button
-            variant="contained"
-            onClick={() => showEditForm()}
+        {accepted ? (
+          <Box
             sx={{
-              p: "0.3rem 1.5rem",
-              fontSize: "0.7rem",
-              borderRadius: "0.7rem",
+              width: "486px",
+              background: "#0257E6",
+              display: "flex",
+              padding: "0.5rem",
+              borderRadius: "1rem",
+              justifyContent: "space-between",
             }}
           >
-            Registered Companies
-          </Button>
+            <SearchOutlinedIcon sx={{ width: "5%", color: "#fff" }} />
+            <input
+              className="search"
+              placeholder="Request ID or Phone Number"
+              style={{
+                border: "none",
+                outline: "none",
+                width: "80%",
+                color: "#fff",
+                background: "transparent",
+                padding: "0 1rem"
+              }}
+            />
+            <button
+              style={{
+                border: "none",
+                outline: "none",
+                width: "15%",
+                background: "#fff",
+                color: "#0257E6",
+                padding: "0 1rem",
+                borderRadius: "1rem",
+                cursor: "pointer"
+              }}
+            >
+              Search
+            </button>
+          </Box>
         ) : (
           ""
         )}
@@ -131,7 +155,9 @@ function Navbar() {
               fontWeight: "100",
             }}
           >
-            {localStorage.user === "support_staff"? "Support Staff": "Company"}
+            {localStorage.user === "support_staff"
+              ? "Support Staff"
+              : "Company"}
           </Typography>
         </Box>
       </Box>

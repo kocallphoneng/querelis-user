@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
@@ -7,20 +7,27 @@ import { useSelector, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
+// import client from "../helpers/axiosInstance";
 
 function HelperScreen() {
   const state = useSelector((state) => state);
-  const { staffId, helperOption } = state.user;
+  // const { reqId, helperOption_ } = state.displayState;
+  const {  helperOption_ } = state.displayState;
 
   const dispatch = useDispatch();
 
   const { hideHelper_ } = bindActionCreators(actionCreators, dispatch);
-
+  console.log(helperOption_);
   const cancel = () => {
     hideHelper_();
   };
   const proceed = () => {
     hideHelper_();
+    if (helperOption_ === "reject") {
+      console.log(helperOption_);
+    } else if (helperOption_ === "complete") {
+      console.log(helperOption_);
+    }
   };
 
   return (
@@ -49,9 +56,9 @@ function HelperScreen() {
           padding: "2rem",
         }}
       >
-        <HelpOutlineOutlinedIcon sx={{ fontSize: "20rem", color: "#0257E6" }} />
+        <HelpOutlineOutlinedIcon sx={{ fontSize: "20rem", color: "#0257E6", textAlign: "center" }} />
         <Typography>
-          Are you sure you want to {helperOption} this request?
+          Are you sure you want to {helperOption_} this request?
         </Typography>
         <Box
           sx={{

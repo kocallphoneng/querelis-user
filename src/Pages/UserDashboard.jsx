@@ -36,7 +36,7 @@ function Dashboard() {
     viewAddScreen_
   } = state.displayState;
   const { auth } = state.user;
-  const { getAllStaffs, setIsLoading, setNotLoading, getAuditTrail } =
+  const { getAllRequests, setIsLoading, setNotLoading} =
     bindActionCreators(actionCreators, dispatch);
 
   useEffect(() => {
@@ -57,13 +57,16 @@ function Dashboard() {
     );
     try {
       const fetchData = async () => {
-        const staffRes = await client.get("/support-staff");
-        console.log("/support-staff", staffRes);
-        getAllStaffs(staffRes.data.data);
+        const req = await client.get("/support-requests");
+        console.log("/support-requests", req);
+        setNotLoading()
+        getAllRequests(req.data.data);
+
       };
       fetchData();
     } catch (err) {
       console.log(err);
+      setNotLoading();
       const message = err.response.data.message;
       if (message === "Unauthenticated.") {
         navigate("/login");
@@ -72,24 +75,7 @@ function Dashboard() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  // useEffect(() => {
-  //   try {
-  //     const fetchData = async () => {
-  //       const auditRes = await client.get("/audit-trail");
-  //       console.log(auditRes);
-  //       getAuditTrail(auditRes.data.data);
-  //       setNotLoading();
-  //     };
-  //     fetchData();
-  //   } catch (err) {
-  //     console.log(err);
-  //     const message = err.response.data.message;
-  //     if (message === "Unauthenticated.") {
-  //       navigate("/login");
-  //     }
-  //   }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+  
 
   return (
     <Box

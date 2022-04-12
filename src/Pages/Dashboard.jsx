@@ -30,7 +30,7 @@ function Dashboard() {
     viewSummary,
   } = state.displayState;
   const { auth } = state.user;
-  const { getAllStaffs, setIsLoading } = bindActionCreators(
+  const { getAllStaffs, setIsLoading, getAllRequests } = bindActionCreators(
     actionCreators,
     dispatch
   );
@@ -57,10 +57,11 @@ function Dashboard() {
     try {
       const fetchData = async () => {
         const staffRes = await client.get("/support-staff");
-        const supRes = await client.get("/support-requests")
+        const supReq = await client.get("/support-requests")
         console.log("/support-staff", staffRes);
-        console.log("/support-requests", supRes);
+        console.log("/support-requests", supReq);
         getAllStaffs(staffRes.data.data);
+        getAllRequests(supReq.data.data);
       };
       fetchData();
     } catch (err) {

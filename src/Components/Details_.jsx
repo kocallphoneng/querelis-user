@@ -2,26 +2,27 @@ import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import { Button, fabClasses } from "@mui/material";
+import { Button} from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
+import client from "../helpers/axiosInstance";
 
 function Detail() {
   const state = useSelector((state) => state);
-  //   const { companies, companyId } = state.user;
-  const [company, setCompany] = useState({
-    name: "testerman",
-    number: "0019202",
-    date: "DD/MM/YYYY",
-    cc: "Badman cc",
-    cat: "Badman Badman",
-    complaints: "mx nkxkkxk kxkxkkxkne ",
-    mcc: "749029i49994994",
-    mnc: "4999499949949",
-    lac: "399939993993939",
-    createdT: "00:00:00",
+    const { reqId } = state.user;
+  const [request, setRequest] = useState({
+    name: "",
+    number: "",
+    date: "",
+    cc: "",
+    cat: "",
+    complaints: "",
+    mcc: "",
+    mnc: "",
+    lac: "",
+    createdT: "",
   });
   const dispatch = useDispatch();
   const { hideDetail_, showHelper_, showAdd_ } = bindActionCreators(
@@ -29,15 +30,33 @@ function Detail() {
     dispatch
   );
 
-  //   const display = () => {
-  //     companies.forEach((company) => {
-  //       if (company.id === companyId) {
-  //         setCompany(company);
-  //       }
-  //     });
-  //   };
+    const display = () => {
+      client.get(`/support-requests/${reqId}`)
+        .then(res => {
+          console.log(res)
+          setRequest({
+            name: res.data.data.company.name,
+            number: res.data.data.phone_number,
+            date: res.data.data.date,
+            cc: res.data.data.cc_ticket_id,
+            cat: res.data.data.category,
+            complaints: res.data.data.complaint,
+            mcc: res.data.data.mcc,
+            mnc: res.data.data.mnc,
+            lac: res.data.data.lac,
+            createdT: `${res.data.data.created_at.slice(
+              0,
+              res.data.data.created_at.indexOf("T")
+            )} /
+      ${res.data.data.created_at.slice(
+        res.data.data.created_at.indexOf("T") + 1,
+        res.data.data.created_at.indexOf(".")
+      )}`,
+          });
+      }).catch(err=> console.log(err))
+    };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  //   useEffect(() => display(), []);
+    useEffect(() => display(), []);
   const [viewOptions, setViewOptions] = useState(false);
   const [add, setAdd] = useState(true);
   const [reject, setReject] = useState(false);
@@ -179,7 +198,7 @@ function Detail() {
               Name
             </Typography>
             <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
-              {company.name}
+              {request.name}
             </Typography>
           </Box>
           <Box
@@ -195,7 +214,7 @@ function Detail() {
               phone number
             </Typography>
             <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
-              {company.number}
+              {request.number}
             </Typography>
           </Box>
 
@@ -212,7 +231,7 @@ function Detail() {
               Date
             </Typography>
             <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
-              {company.date}
+              {request.date}
             </Typography>
           </Box>
           <Box
@@ -228,7 +247,7 @@ function Detail() {
               CC Ticket ID
             </Typography>
             <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
-              {company.cc}
+              {request.cc}
             </Typography>
           </Box>
           <Box
@@ -244,7 +263,7 @@ function Detail() {
               Category
             </Typography>
             <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
-              {company.cat}
+              {request.cat}
             </Typography>
           </Box>
           <Box
@@ -260,7 +279,7 @@ function Detail() {
               Complaint
             </Typography>
             <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
-              {company.complaints}
+              {request.complaints}
             </Typography>
           </Box>
           <Box
@@ -276,7 +295,7 @@ function Detail() {
               MCC
             </Typography>
             <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
-              {company.mcc}
+              {request.mcc}
             </Typography>
           </Box>
           <Box
@@ -292,7 +311,7 @@ function Detail() {
               MNC
             </Typography>
             <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
-              {company.mnc}
+              {request.mnc}
             </Typography>
           </Box>
           <Box
@@ -308,7 +327,7 @@ function Detail() {
               LAC
             </Typography>
             <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
-              {company.lac}
+              {request.lac}
             </Typography>
           </Box>
           <Box
@@ -324,7 +343,7 @@ function Detail() {
               Created Time
             </Typography>
             <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
-              {company.createdT}
+              {request.createdT}
             </Typography>
           </Box>
           <Box

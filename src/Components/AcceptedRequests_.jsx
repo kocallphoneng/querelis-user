@@ -6,9 +6,9 @@ import Paper from "@mui/material/Paper";
 import SkipNextOutlinedIcon from "@mui/icons-material/SkipNextOutlined";
 import SkipPreviousOutlinedIcon from "@mui/icons-material/SkipPreviousOutlined";
 import { useSelector, useDispatch } from "react-redux";
-import { data } from "./testData";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
+import HourglassTopOutlinedIcon from "@mui/icons-material/HourglassTopOutlined";
 
 function Accepted() {
   const state = useSelector((state) => state);
@@ -16,7 +16,7 @@ function Accepted() {
   const [list, setList] = useState([
     {
       id: 0,
-      name: "",
+      company: { name: "" },
       tel: "",
       date: "",
       cc: "",
@@ -30,11 +30,11 @@ function Accepted() {
   const [total, setTotal] = useState(10);
   const [page, setPage] = useState(rowIndex + 1);
 
-  const { auditTrail } = state.user;
+  const { requests } = state.user;
 
   useEffect(() => {
-    setList(auditTrail);
-    console.log("from audit", auditTrail);
+    setList(requests);
+    console.log("from audit", requests);
     handlePageNumber();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -42,10 +42,21 @@ function Accepted() {
   const dispatch = useDispatch();
   const { showDetail_ } = bindActionCreators(actionCreators, dispatch);
 
-  const createData = (id, name, tel, date, cc, reolvedT, status, details) => {
+  const createData = (
+    id,
+    company,
+    tel,
+    date,
+    cc,
+    reolvedT,
+    status,
+    details
+  ) => {
+    const newName = company.name;
+
     return {
       id,
-      name,
+      newName,
       tel,
       date,
       cc,
@@ -66,38 +77,18 @@ function Accepted() {
     { id: "ci", label: "Details" },
   ];
 
-  const rows = data.map((details) =>
+  const rows = list.map((details) =>
     createData(
-      0,
-      details.name,
-      details.tel,
-      details.date.day,
-      details.cc,
-      details.reolvedT,
+      details.id,
+      details.company,
+      details.phone_number,
+      details.date,
+      details.cc_ticket_id,
+      true,
       details.status,
       "view"
     )
   );
-  // const rows = auditTrail.map((company) =>
-  //   createData(
-  //     company.id,
-  //     company.company.name,
-  //     company.phone_number,
-  //     `${company.created_at.slice(0, company.created_at.indexOf("T"))}\n
-  //     ${company.created_at.slice(
-  //       company.created_at.indexOf("T") + 1,
-  //       company.created_at.indexOf(".")
-  //     )}`,
-  //     company.cc_ticket_id,
-  //     company.category,
-  //     company.complaint,
-  //     company.mcc,
-  //     company.mnc,
-  //     company.lac,
-  //     company.ci,
-  //     company.status
-  //   )
-  // );
 
   const handlePageNumber = () => {
     const remainder = rows.length % 10;
@@ -147,7 +138,7 @@ function Accepted() {
           sx={{
             width: "100",
             display: "flex",
-            justifyContent: "space-evenly",
+            justifyContent: "space-between",
             padding: "0.7rem 1rem",
             alignItems: "start",
           }}
@@ -156,11 +147,11 @@ function Accepted() {
           {columns.map((col) => (
             <Typography
               sx={{
-                width: "9%",
-                fontSize: "0.75rem",
-                fontWeight: "700",
-                textTransform: "capitalize",
+                width: "calc(100% / 7)",
+                fontSize: "0.7rem",
                 pr: "1rem",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
               }}
               key={col.id}
             >
@@ -169,14 +160,14 @@ function Accepted() {
           ))}
         </Paper>
         <Box sx={{ pb: "2rem", minHeight: "400px" }}>
-          {rows.slice(rowIndex * rowsPerPage, total).map((company) => (
+          {rows.slice(rowIndex * rowsPerPage, total).map((req) => (
             <Paper
-              key={company.name}
+              key={req.id}
               elevation={0}
               sx={{
                 width: "100%",
                 display: "flex",
-                justifyContent: "space-evenly",
+                justifyContent: "space-between",
                 padding: "0.5rem 1rem",
                 alignItems: "center",
                 marginTop: "0.5rem",
@@ -184,65 +175,62 @@ function Accepted() {
             >
               <Typography
                 sx={{
-                  width: "9%",
+                  width: "calc(100% / 7)",
                   fontSize: "0.7rem",
                   pr: "1rem",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                 }}
               >
-                {company.name}
+                {req.newName}
               </Typography>
               <Typography
                 sx={{
-                  width: "9%",
+                  width: "calc(100% / 7)",
                   fontSize: "0.7rem",
                   pr: "1rem",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                 }}
               >
-                {company.tel}
+                {req.tel}
               </Typography>
               <Typography
                 sx={{
-                  width: "9%",
+                  width: "calc(100% / 7)",
                   fontSize: "0.7rem",
                   pr: "1rem",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                 }}
               >
-                {company.date}
+                {req.date}
               </Typography>
 
               <Typography
                 sx={{
-                  width: "9%",
+                  width: "calc(100% / 7)",
                   fontSize: "0.7rem",
                   pr: "1rem",
                   overflow: "hidden",
                   textOverflow: "ellipsis",
                 }}
               >
-                {company.cc}
-              </Typography>
-              
-              <Typography
-                sx={{
-                  width: "9%",
-                  fontSize: "0.7rem",
-                  pr: "1rem",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                {company.reolvedT}
+                {req.cc}
               </Typography>
 
               <Box
                 sx={{
-                  width: "10.1%",
+                  width: "calc(100% / 7)",
+                  display: "flex",
+                }}
+              >
+                <HourglassTopOutlinedIcon />
+              </Box>
+
+              <Box
+                sx={{
+                  width: "calc(100% / 7)",
                   fontSize: "0.7rem",
                   pr: "0.5rem",
                 }}
@@ -253,7 +241,7 @@ function Accepted() {
                     alignItems: "center",
                   }}
                 >
-                  {company.status === "pending" ? (
+                  {req.status === "pending" ? (
                     <Box
                       sx={{
                         padding: "0.3rem",
@@ -265,7 +253,7 @@ function Accepted() {
                   ) : (
                     ""
                   )}
-                  {company.status === "resolved" ? (
+                  {req.status === "resolved" ? (
                     <Box
                       sx={{
                         padding: "0.3rem",
@@ -277,7 +265,7 @@ function Accepted() {
                   ) : (
                     ""
                   )}
-                  {company.status === "unresolved" ? (
+                  {req.status === "unresolved" ? (
                     <Box
                       sx={{
                         padding: "0.3rem",
@@ -292,16 +280,16 @@ function Accepted() {
 
                   <Typography
                     sx={{
-                      width: "10.1%",
+                      width: "calc(100% / 7)",
                       fontSize: "0.7rem",
                       pr: "0.5rem",
                     }}
                   >
-                    {company.status}
+                    {req.status}
                   </Typography>
                 </Box>
               </Box>
-              
+
               <Box
                 sx={{
                   width: "9%",
@@ -323,64 +311,68 @@ function Accepted() {
             </Paper>
           ))}
         </Box>
-        <Box
-          sx={{
-            width: "90%",
-            display: "flex",
-            justifyContent: "center",
-            position: "absolute",
-          }}
-        >
+        {rows.length > 10 ? (
           <Box
             sx={{
+              width: "90%",
               display: "flex",
               justifyContent: "center",
-              pb: "2rem",
+              position: "absolute",
             }}
           >
-            <SkipPreviousOutlinedIcon
-              className="icon"
-              onClick={(e) => handleReducePage(e)}
-              style={{
-                color: "#0257E6",
-                cursor: "pointer",
-              }}
-            />
-            <Typography
+            <Box
               sx={{
-                p: " 0.2rem 0.7rem",
-                background: page !== 1 ? "#0257E6" : "#C4C4C4",
-                color: "#fff",
-                borderRadius: "0.3rem",
-                m: "0 1rem",
-                fontSize: "0.8rem",
+                display: "flex",
+                justifyContent: "center",
+                pb: "2rem",
               }}
             >
-              {page}
-            </Typography>
-            <Typography>of</Typography>
-            <Typography
-              sx={{
-                p: " 0.2rem 0.7rem",
-                background: page !== allowedPages ? "#0257E6" : "#C4C4C4",
-                color: "#fff",
-                borderRadius: "0.3rem",
-                m: "0 1rem",
-                fontSize: "0.8rem",
-              }}
-            >
-              {allowedPages}
-            </Typography>
-            <SkipNextOutlinedIcon
-              className="icon"
-              onClick={(e) => handleAddPage(e)}
-              style={{
-                color: "#0257E6",
-                cursor: "pointer",
-              }}
-            />
+              <SkipPreviousOutlinedIcon
+                className="icon"
+                onClick={(e) => handleReducePage(e)}
+                style={{
+                  color: "#0257E6",
+                  cursor: "pointer",
+                }}
+              />
+              <Typography
+                sx={{
+                  p: " 0.2rem 0.7rem",
+                  background: page !== 1 ? "#0257E6" : "#C4C4C4",
+                  color: "#fff",
+                  borderRadius: "0.3rem",
+                  m: "0 1rem",
+                  fontSize: "0.8rem",
+                }}
+              >
+                {page}
+              </Typography>
+              <Typography>of</Typography>
+              <Typography
+                sx={{
+                  p: " 0.2rem 0.7rem",
+                  background: page !== allowedPages ? "#0257E6" : "#C4C4C4",
+                  color: "#fff",
+                  borderRadius: "0.3rem",
+                  m: "0 1rem",
+                  fontSize: "0.8rem",
+                }}
+              >
+                {allowedPages}
+              </Typography>
+              <SkipNextOutlinedIcon
+                className="icon"
+                onClick={(e) => handleAddPage(e)}
+                style={{
+                  color: "#0257E6",
+                  cursor: "pointer",
+                }}
+              />
+            </Box>
           </Box>
-        </Box>
+        ) : (
+          ""
+        )}
       </Box>
     </Box>
   );

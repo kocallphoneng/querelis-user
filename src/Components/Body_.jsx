@@ -1,10 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import Main from "./Main_";
-import NewStaff from "./RegNewStaff";
-import Audit from "./Audit";
 import ChangePass from "./ChangePass";
-import Summary from "./Summary";
 import Notification from "./Notication";
 import AcceptedRequests from "./AcceptedRequests_"
 import { useSelector } from "react-redux";

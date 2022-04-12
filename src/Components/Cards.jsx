@@ -86,7 +86,6 @@ function Cards() {
           transition: "all 0.5s ease-in-out",
         }}
       >
-        {/* <Box sx={{ width: "300px" }}></Box> */}
         <Paper
           sx={{
             borderRadius: "0.5rem",
