@@ -17,9 +17,13 @@ import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import client from "../helpers/axiosInstance";
+import ClipLoader from "../Components/Spinners/ClipSpinner";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Login() {
   const [showPassword, setShowPassword] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword(!showPassword);
 
@@ -31,11 +35,13 @@ function Login() {
   const state = useSelector((state) => state);
   const { auth } = state.user;
 
-  const { login, firstTimeEmail, setIsLoading, setNotLoading } =
-    bindActionCreators(actionCreators, dispatch);
+  const { login, firstTimeEmail } = bindActionCreators(
+    actionCreators,
+    dispatch
+  );
 
   const handleSubmit = async (values) => {
-    setIsLoading();
+    setLoading(true);
     const user = {
       email: values.email,
       password: values.password,
@@ -46,26 +52,38 @@ function Login() {
       localStorage.setItem("token", token);
       localStorage.setItem("user", res.data.user.user_type);
       localStorage.setItem("name", res.data.user.name);
+      localStorage.setItem("id_", res.data.user.id);
       login(res.data);
-      setNotLoading();
+      setLoading(false);
       if (res.data.user.user_type === "support_staff") {
         navigate("/userdashboard");
       } else if (res.data.user.user_type === "company") {
         navigate("/dashboard");
       }
     } catch (err) {
-      console.log(err.response.data);
+      setLoading(false);
       if (err.response.data.code === "FIRST_LOGIN") {
         firstTimeEmail(values.email);
-        setNotLoading();
         navigate("/createnewpassword");
       } else if (err.response.data.code === "EXPIRED_PASSWORD") {
         firstTimeEmail(values.email);
-        setNotLoading();
         navigate("/compulsorypasswordreset");
       } else {
-        console.log(err);
-        setNotLoading();
+        err.response.data.message === "Invalid credentials"
+          ? toast.error("Invalid credentials !", {
+              position: toast.POSITION.TOP_RIGHT,
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+            })
+          : toast.error("Please try again later", {
+              position: toast.POSITION.TOP_RIGHT,
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              delay: 500,
+            });
+        setLoading(false);
       }
     }
   };
@@ -191,11 +209,18 @@ function Login() {
               </FormControl>
 
               <Button
-                sx={{ width: "100%", padding: "0.5rem", mt: "0.5rem" }}
+                sx={{
+                  width: "100%",
+                  padding: "0.5rem",
+                  height: "2rem",
+                  mt: "0.5rem",
+                  position: "relative",
+                }}
                 variant="contained"
                 type="submit"
+                disabled={loading}
               >
-                {state.loading ? "Loading..." : "SEND"}
+                {loading ? <ClipLoader /> : "SEND"}
               </Button>
 
               <Typography

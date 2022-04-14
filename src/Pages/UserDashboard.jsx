@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import Sidebar from "../Components/Sidebar_";
-import Body from "../Components/Body_"
+import Body from "../Components/Body_";
 import Navbar from "../Components/Navbar";
 import Box from "@mui/material/Box";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,7 +13,7 @@ import Success from "../Components/Success";
 import EditCompany from "../Components/EditCompany";
 import CompanyRequests from "../Components/CompanyRequests";
 import DeleteScreen from "../Components/DeleteScreen";
-import Details from "../Components/Details_"
+import Details from "../Components/Details_";
 import HelperScreen from "../Components/HelperOptionScreen";
 import AddInfo from "../Components/AddInfo";
 
@@ -33,19 +33,20 @@ function Dashboard() {
     viewSummary,
     viewDetails_,
     viewHelperScreen_,
-    viewAddScreen_
+    viewAddScreen_,
   } = state.displayState;
   const { auth } = state.user;
-  const { getAllRequests, setIsLoading, setNotLoading} =
-    bindActionCreators(actionCreators, dispatch);
+  const {
+    getAllRequests,
+    hideLoading2,
+    showLoading2,
+  } = bindActionCreators(actionCreators, dispatch);
 
   useEffect(() => {
-    setIsLoading();
+    showLoading2();
     if (!localStorage.token) {
       navigate("/login");
     }
-    console.log("test auth", auth.access_token);
-
     client.interceptors.request.use(
       (config) => {
         config.headers.authorization = `Bearer ${auth.access_token}`;
@@ -59,14 +60,12 @@ function Dashboard() {
       const fetchData = async () => {
         const req = await client.get("/support-requests");
         console.log("/support-requests", req);
-        setNotLoading()
         getAllRequests(req.data.data);
-
+        hideLoading2();
       };
       fetchData();
     } catch (err) {
-      console.log(err);
-      setNotLoading();
+      hideLoading2();
       const message = err.response.data.message;
       if (message === "Unauthenticated.") {
         navigate("/login");
@@ -75,7 +74,6 @@ function Dashboard() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
 
   return (
     <Box
@@ -131,7 +129,7 @@ function Dashboard() {
       {viewSummary ? <CompanyRequests /> : ""}
       {viewDetails_ ? <Details /> : ""}
       {viewHelperScreen_ ? <HelperScreen /> : ""}
-      {viewAddScreen_? <AddInfo />: ""}
+      {viewAddScreen_ ? <AddInfo /> : ""}
     </Box>
   );
 }

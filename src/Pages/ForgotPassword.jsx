@@ -13,29 +13,43 @@ import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import client from "../helpers/axiosInstance";
+import ClipLoader from "../Components/Spinners/ClipSpinner";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function ForgotPassword() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
-  const { setUserEmail, setIsLoading, setNotLoading } = bindActionCreators(actionCreators, dispatch);
+  const [loading, setLoading] = React.useState(false);
+  const { setUserEmail } = bindActionCreators(actionCreators, dispatch);
   
   const handleSubmit = (values) => {
-    console.log(values)
-    setIsLoading()
+    setLoading(true)
     client.post("/get-otp", {
       email: values.email
     }).then(res => {
-      console.log(res)
+      setLoading(false);
       setUserEmail(values.email);
-      setNotLoading()
       navigate("/resetPassword");
     }).catch(err => {
-      console.log(err)
-      setNotLoading();
+      setLoading(false);
+      err.response.data.message === "The selected email is invalid."
+        ? toast.error("Email not found !", {
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+          })
+        : toast.error("Please try again later", {
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            delay: 500,
+          });
+       
     })
   };
-
   const formValidation = yup.object().shape({
     email: yup.string().email("Invalid Email Addresss").required("*Required"),
   });
@@ -139,8 +153,9 @@ function ForgotPassword() {
                 }}
                 variant="contained"
                 type="submit"
+                disabled={loading}
               >
-                Send
+                {loading ? <ClipLoader /> : "SEND"}
               </Button>
             </Form>
           )}

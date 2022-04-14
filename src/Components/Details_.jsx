@@ -2,16 +2,19 @@ import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import { Button} from "@mui/material";
+import { Button } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import client from "../helpers/axiosInstance";
+import { ClipLoader } from "react-spinners";
+import { toast } from "react-toastify";
 
 function Detail() {
   const state = useSelector((state) => state);
-    const { reqId } = state.user;
+  const { reqId } = state.user;
+  const { accepted, loading5 } = state.displayState;
   const [request, setRequest] = useState({
     name: "",
     number: "",
@@ -25,38 +28,47 @@ function Detail() {
     createdT: "",
   });
   const dispatch = useDispatch();
-  const { hideDetail_, showHelper_, showAdd_ } = bindActionCreators(
-    actionCreators,
-    dispatch
-  );
+  const { hideDetail_, showHelper_, showAdd_, showLoading5, hideLoading5 } =
+    bindActionCreators(actionCreators, dispatch);
 
-    const display = () => {
-      client.get(`/support-requests/${reqId}`)
-        .then(res => {
-          console.log(res)
-          setRequest({
-            name: res.data.data.company.name,
-            number: res.data.data.phone_number,
-            date: res.data.data.date,
-            cc: res.data.data.cc_ticket_id,
-            cat: res.data.data.category,
-            complaints: res.data.data.complaint,
-            mcc: res.data.data.mcc,
-            mnc: res.data.data.mnc,
-            lac: res.data.data.lac,
-            createdT: `${res.data.data.created_at.slice(
-              0,
-              res.data.data.created_at.indexOf("T")
-            )} /
+  const display = () => {
+    showLoading5();
+    client
+      .get(`/support-requests/${reqId}`)
+      .then((res) => {
+        setRequest({
+          name: res.data.data.company.name,
+          number: res.data.data.phone_number,
+          date: res.data.data.date,
+          cc: res.data.data.cc_ticket_id,
+          cat: res.data.data.category,
+          complaints: res.data.data.complaint,
+          mcc: res.data.data.mcc,
+          mnc: res.data.data.mnc,
+          lac: res.data.data.lac,
+          createdT: `${res.data.data.created_at.slice(
+            0,
+            res.data.data.created_at.indexOf("T")
+          )} /
       ${res.data.data.created_at.slice(
         res.data.data.created_at.indexOf("T") + 1,
         res.data.data.created_at.indexOf(".")
       )}`,
-          });
-      }).catch(err=> console.log(err))
-    };
+        });
+        hideLoading5();
+      })
+      .catch((err) => {
+        toast.error("Couldn't load data !", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+        });
+        hideLoading5()
+      });
+  };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-    useEffect(() => display(), []);
+  useEffect(() => display(), []);
   const [viewOptions, setViewOptions] = useState(false);
   const [add, setAdd] = useState(true);
   const [reject, setReject] = useState(false);
@@ -122,10 +134,14 @@ function Detail() {
           >
             Details
           </Typography>
-          <MoreVertOutlinedIcon
-            onClick={() => setViewOptions(!viewOptions)}
-            sx={{ cursor: "pointer" }}
-          />
+          {accepted ? (
+            <MoreVertOutlinedIcon
+              onClick={() => setViewOptions(!viewOptions)}
+              sx={{ cursor: "pointer" }}
+            />
+          ) : (
+            ""
+          )}
         </Box>
         {viewOptions ? (
           <Box
@@ -198,7 +214,7 @@ function Detail() {
               Name
             </Typography>
             <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
-              {request.name}
+              {loading5 ? <ClipLoader /> : request.name}
             </Typography>
           </Box>
           <Box
@@ -214,7 +230,7 @@ function Detail() {
               phone number
             </Typography>
             <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
-              {request.number}
+              {loading5 ? <ClipLoader /> : request.number}
             </Typography>
           </Box>
 
@@ -231,7 +247,7 @@ function Detail() {
               Date
             </Typography>
             <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
-              {request.date}
+              {loading5 ? <ClipLoader /> : request.date}
             </Typography>
           </Box>
           <Box
@@ -247,7 +263,7 @@ function Detail() {
               CC Ticket ID
             </Typography>
             <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
-              {request.cc}
+              {loading5 ? <ClipLoader /> : request.cc}
             </Typography>
           </Box>
           <Box
@@ -263,7 +279,7 @@ function Detail() {
               Category
             </Typography>
             <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
-              {request.cat}
+              {loading5 ? <ClipLoader /> : request.cat}
             </Typography>
           </Box>
           <Box
@@ -279,7 +295,7 @@ function Detail() {
               Complaint
             </Typography>
             <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
-              {request.complaints}
+              {loading5 ? <ClipLoader /> : request.complaints}
             </Typography>
           </Box>
           <Box
@@ -295,7 +311,7 @@ function Detail() {
               MCC
             </Typography>
             <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
-              {request.mcc}
+              {loading5 ? <ClipLoader /> : request.mcc}
             </Typography>
           </Box>
           <Box
@@ -311,7 +327,7 @@ function Detail() {
               MNC
             </Typography>
             <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
-              {request.mnc}
+              {loading5 ? <ClipLoader /> : request.mnc}
             </Typography>
           </Box>
           <Box
@@ -327,7 +343,7 @@ function Detail() {
               LAC
             </Typography>
             <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
-              {request.lac}
+              {loading5 ? <ClipLoader /> : request.lac}
             </Typography>
           </Box>
           <Box
@@ -343,7 +359,7 @@ function Detail() {
               Created Time
             </Typography>
             <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
-              {request.createdT}
+              {loading5 ? <ClipLoader /> : request.createdT}
             </Typography>
           </Box>
           <Box

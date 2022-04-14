@@ -2,6 +2,7 @@ const initialState = {
   auth: {},
   staffs: [],
   requests: [],
+  acceptedRequests: [],
   auditTrail: [],
   firstEmail: "",
   firstTimeUser: false,
@@ -25,6 +26,8 @@ const userReducer = (state = initialState, action) => {
       return (state = { ...state, staffs: action.payload });
     case "GETREQUESTS":
       return (state = { ...state, requests: action.payload });
+    case "GETACCEPTEDREQUESTS":
+      return (state = { ...state, acceptedRequests: action.payload });
     case "GET_AUDIT_TRAIL":
       return (state = { ...state, auditTrail: action.payload });
     case "FIRST_LOGIN":

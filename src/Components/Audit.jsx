@@ -4,12 +4,10 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import SkipNextOutlinedIcon from "@mui/icons-material/SkipNextOutlined";
 import SkipPreviousOutlinedIcon from "@mui/icons-material/SkipPreviousOutlined";
-import { useSelector, useDispatch } from "react-redux";
-import { bindActionCreators } from "redux";
-import { actionCreators } from "../state/index";
+import { useSelector } from "react-redux";
 import empty from "../images/void.svg";
 import HourglassTopOutlinedIcon from "@mui/icons-material/HourglassTopOutlined";
-import client from "../helpers/axiosInstance";
+
 // import HourglassBottomOutlinedIcon from "@mui/icons-material/HourglassBottomOutlined";
 
 function AllRequestList() {
@@ -37,24 +35,10 @@ function AllRequestList() {
   ]);
 
   const { requests } = state.user;
-  const dispatch = useDispatch();
-  const { getAllRequests } = bindActionCreators(actionCreators, dispatch);
-  const setRequests = () => {
-    try {
-      const fetchData = async () => {
-        const req = await client.get("/support-requests");
-        getAllRequests(req.data.data);
-      };
-      fetchData();
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
+  
   useEffect(() => {
     console.log("requests", );
     setList(requests);
-    setRequests();
     handlePageNumber();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

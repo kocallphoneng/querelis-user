@@ -6,6 +6,9 @@ import client from "../helpers/axiosInstance";
 import { useSelector } from "react-redux";
 import SkipNextOutlinedIcon from "@mui/icons-material/SkipNextOutlined";
 import SkipPreviousOutlinedIcon from "@mui/icons-material/SkipPreviousOutlined";
+import ClipLoader from "../Components/Spinners/ClipSpinner";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Cards() {
   const [details, setDetails] = useState({
@@ -15,10 +18,12 @@ function Cards() {
     unanswered: 0,
     allowed: 0,
   });
+  const [loading, setLoading] = useState(false);
   const [scroll, setScroll] = useState(false);
   const state = useSelector((state) => state);
   const { auth } = state.user;
   const support = () => {
+    setLoading(true);
     client.interceptors.request.use(
       (config) => {
         config.headers.authorization = `Bearer ${auth.access_token}`;
@@ -38,8 +43,18 @@ function Cards() {
           active: res.data.no_of_active_support_staff,
           unansweredReq: res.data.no_of_unanswered_request,
         });
+        setLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch(() => {
+        toast.error("Please try again later", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          delay: 500,
+        });
+        setLoading(false);
+      });
   };
   console.log(scroll);
   useEffect(() => {
@@ -105,7 +120,7 @@ function Cards() {
           <Typography
             sx={{ fontWeight: "900", color: "#0257E6", fontSize: "45px" }}
           >
-            {details.totalReq}
+            {loading ? <ClipLoader /> : details.totalReq}
           </Typography>
         </Paper>
         <Paper
@@ -128,7 +143,7 @@ function Cards() {
           <Typography
             sx={{ fontWeight: "900", color: "#0257E6", fontSize: "45px" }}
           >
-            {details.answered}
+            {loading ? <ClipLoader /> : details.answered}
           </Typography>
         </Paper>
         <Paper
@@ -151,7 +166,7 @@ function Cards() {
           <Typography
             sx={{ fontWeight: "900", color: "#0257E6", fontSize: "45px" }}
           >
-            {details.active}
+            {loading ? <ClipLoader /> : details.active}
           </Typography>
         </Paper>
         <Paper
@@ -174,7 +189,7 @@ function Cards() {
           <Typography
             sx={{ fontWeight: "900", color: "#0257E6", fontSize: "45px" }}
           >
-            {details.allowed}
+            {loading ? <ClipLoader /> : details.allowed}
           </Typography>
         </Paper>
         <Paper
@@ -197,7 +212,7 @@ function Cards() {
           <Typography
             sx={{ fontWeight: "900", color: "#0257E6", fontSize: "45px" }}
           >
-            {details.unansweredReq}
+            {loading ? <ClipLoader /> : details.unansweredReq}
           </Typography>
         </Paper>
       </Box>

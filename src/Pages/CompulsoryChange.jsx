@@ -13,11 +13,14 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import client from "../helpers/axiosInstance";
 import { useSelector } from "react-redux";
+import ClipLoader from "../Components/Spinners/ClipSpinner";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function CompulsoryPassword() {
   const state = useSelector((state) => state);
   const { firstEmail } = state.user;
-  
+  const [loading, setLoading] = React.useState(false);
   const [display, setDisplay] = React.useState({
     view1: false,
     view2: false,
@@ -44,11 +47,27 @@ function CompulsoryPassword() {
         password_confirmation: values.password3,
       })
       .then((res) => {
-        console.log(res);
+        toast.success("Successful !", {
+          position: toast.POSITION.TOP_Right,
+        });
         navigate("/login");
       })
       .catch((err) => {
-        console.log(err);
+        err.response.data.message === "Invalid credentials"
+          ? toast.error("Invalid credentials !", {
+              position: toast.POSITION.TOP_RIGHT,
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+            })
+          : toast.error("Please try again later", {
+              position: toast.POSITION.TOP_RIGHT,
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              delay: 500,
+            });
+        setLoading(false);
       });
   
   };
@@ -246,8 +265,9 @@ function CompulsoryPassword() {
                 sx={{ width: "100%", padding: "1rem", mt: "1rem" }}
                 variant="contained"
                 type="submit"
+                disabled={loading}
               >
-                Save
+                {loading ? <ClipLoader /> : "SAVE"}
               </Button>
             </Form>
           )}

@@ -4,12 +4,11 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import SkipNextOutlinedIcon from "@mui/icons-material/SkipNextOutlined";
 import SkipPreviousOutlinedIcon from "@mui/icons-material/SkipPreviousOutlined";
-import { useSelector, useDispatch } from "react-redux";
-import { bindActionCreators } from "redux";
-import { actionCreators } from "../state/index";
+import { useSelector } from "react-redux";
+import ClipLoader from "../Components/Spinners/ClipSpinner";
 import empty from "../images/void.svg";
 import HourglassTopOutlinedIcon from "@mui/icons-material/HourglassTopOutlined";
-import client from "../helpers/axiosInstance";
+
 // import HourglassBottomOutlinedIcon from "@mui/icons-material/HourglassBottomOutlined";
 
 function RequestList() {
@@ -37,28 +36,16 @@ function RequestList() {
     },
   ]);
 
-  const { requests } = state.user;
-  const dispatch = useDispatch();
-  const { getAllRequests } = bindActionCreators(actionCreators, dispatch);
-  const setRequests = () => {
-    try {
-      const fetchData = async () => {
-        const req = await client.get("/support-requests");
-        getAllRequests(req.data.data);
-      };
-      fetchData();
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const { requests, loading } = state.user;
+  
 
   useEffect(() => {
     console.log("requests", requests);
     setList(requests);
-    setRequests();
+
     handlePageNumber();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [requests]);
 
   const createData = (
     id,
@@ -186,228 +173,244 @@ function RequestList() {
             </Typography>
           ))}
         </Paper>
-        {requests.length === 0 ? (
+        {loading ? (
           <Box
             sx={{
               width: "100%",
-              height: "200px",
+              height: "90px",
               display: "flex",
               justifyContent: "center",
-              flexDirection: "column",
-              alignItems: "center",
-              margin: "2rem 0 4rem 0",
+              alignItem: "center",
             }}
           >
-            <img
-              src={empty}
-              style={{
-                width: "150px",
-                padding: "0",
-                margin: "0",
-              }}
-              alt="...."
-            />
-            <Typography
-              sx={{
-                fontSize: "1.3rem",
-                fontWeight: "900",
-                color: "lightgray",
-              }}
-            >
-              No request made yet!!
-            </Typography>
+            <ClipLoader />
           </Box>
         ) : (
-          <Box sx={{ pb: "2rem", minHeight: "100px" }}>
-            {rows.slice(rowIndex * rowsPerPage, total).map((request) => (
-              <Paper
-                key={request.id}
-                elevation={0}
+          <>
+            {requests.length === 0 ? (
+              <Box
                 sx={{
                   width: "100%",
+                  height: "200px",
                   display: "flex",
-                  justifyContent: "space-between",
-                  padding: "0.5rem 1rem",
+                  justifyContent: "center",
+                  flexDirection: "column",
                   alignItems: "center",
-                  marginTop: "0.5rem",
+                  margin: "2rem 0 4rem 0",
                 }}
               >
+                <img
+                  src={empty}
+                  style={{
+                    width: "150px",
+                    padding: "0",
+                    margin: "0",
+                  }}
+                  alt="...."
+                />
                 <Typography
                   sx={{
-                    width: "calc(100% / 11)",
-                    fontSize: "0.7rem",
-                    pr: "0.5rem",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
+                    fontSize: "1.3rem",
+                    fontWeight: "900",
+                    color: "lightgray",
                   }}
                 >
-                  {request.name}
+                  No request made yet!!
                 </Typography>
-
-                <Typography
-                  sx={{
-                    width: "calc(100% / 11)",
-                    fontSize: "0.7rem",
-                    pr: "0.5rem",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  {request.tel}
-                </Typography>
-                <Typography
-                  sx={{
-                    width: "calc(100% / 11)",
-                    fontSize: "0.7rem",
-                    pr: "0.5rem",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  {request.date}
-                </Typography>
-
-                <Typography
-                  sx={{
-                    width: "calc(100% / 11)",
-                    fontSize: "0.7rem",
-                    pr: "0.5rem",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  {request.cc}
-                </Typography>
-
-                <Typography
-                  sx={{
-                    width: "calc(100% / 11)",
-                    fontSize: "0.7rem",
-                    pr: "0.5rem",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  {request.cat}
-                </Typography>
-
-                <Box
-                  sx={{
-                    width: "calc(100% / 11)",
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  <HourglassTopOutlinedIcon />
-                </Box>
-                <Typography
-                  sx={{
-                    width: "calc(100% / 11)",
-                    fontSize: "0.7rem",
-                    pr: "0.5rem",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  {request.mcc}
-                </Typography>
-
-                <Typography
-                  sx={{
-                    width: "calc(100% / 11)",
-                    fontSize: "0.7rem",
-                    pr: "0.5rem",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  {request.mnc}
-                </Typography>
-                <Typography
-                  sx={{
-                    width: "calc(100% / 11)",
-                    fontSize: "0.7rem",
-                    pr: "0.5rem",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  {request.lac}
-                </Typography>
-                <Typography
-                  sx={{
-                    width: "calc(100% / 11)",
-                    fontSize: "0.7rem",
-                    pr: "0.5rem",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  {request.ci}
-                </Typography>
-
-                <Box
-                  sx={{
-                    width: "calc(100% / 11)",
-                    fontSize: "0.7rem",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  <Box
+              </Box>
+            ) : (
+              <Box sx={{ pb: "2rem", minHeight: "100px" }}>
+                {rows.slice(rowIndex * rowsPerPage, total).map((request) => (
+                  <Paper
+                    key={request.id}
+                    elevation={0}
                     sx={{
+                      width: "100%",
                       display: "flex",
+                      justifyContent: "space-between",
+                      padding: "0.5rem 1rem",
                       alignItems: "center",
+                      marginTop: "0.5rem",
                     }}
                   >
-                    {request.status === "pending" ? (
-                      <Box
-                        sx={{
-                          padding: "0.3rem",
-                          borderRadius: "50%",
-                          mr: "1rem",
-                          background: "yellow",
-                        }}
-                      ></Box>
-                    ) : (
-                      ""
-                    )}
-                    {request.status === "resolved" ? (
-                      <Box
-                        sx={{
-                          padding: "0.3rem",
-                          borderRadius: "50%",
-                          mr: "1rem",
-                          background: "green",
-                        }}
-                      ></Box>
-                    ) : (
-                      ""
-                    )}
-                    {request.status === "unresolved" ? (
-                      <Box
-                        sx={{
-                          padding: "0.3rem",
-                          borderRadius: "50%",
-                          mr: "1rem",
-                          background: "red",
-                        }}
-                      ></Box>
-                    ) : (
-                      ""
-                    )}
                     <Typography
                       sx={{
+                        width: "calc(100% / 11)",
                         fontSize: "0.7rem",
+                        pr: "0.5rem",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
                       }}
                     >
-                      {request.status}
+                      {request.name}
                     </Typography>
-                  </Box>
-                </Box>
-              </Paper>
-            ))}
-          </Box>
+
+                    <Typography
+                      sx={{
+                        width: "calc(100% / 11)",
+                        fontSize: "0.7rem",
+                        pr: "0.5rem",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {request.tel}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        width: "calc(100% / 11)",
+                        fontSize: "0.7rem",
+                        pr: "0.5rem",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {request.date}
+                    </Typography>
+
+                    <Typography
+                      sx={{
+                        width: "calc(100% / 11)",
+                        fontSize: "0.7rem",
+                        pr: "0.5rem",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {request.cc}
+                    </Typography>
+
+                    <Typography
+                      sx={{
+                        width: "calc(100% / 11)",
+                        fontSize: "0.7rem",
+                        pr: "0.5rem",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {request.cat}
+                    </Typography>
+
+                    <Box
+                      sx={{
+                        width: "calc(100% / 11)",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <HourglassTopOutlinedIcon />
+                    </Box>
+                    <Typography
+                      sx={{
+                        width: "calc(100% / 11)",
+                        fontSize: "0.7rem",
+                        pr: "0.5rem",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {request.mcc}
+                    </Typography>
+
+                    <Typography
+                      sx={{
+                        width: "calc(100% / 11)",
+                        fontSize: "0.7rem",
+                        pr: "0.5rem",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {request.mnc}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        width: "calc(100% / 11)",
+                        fontSize: "0.7rem",
+                        pr: "0.5rem",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {request.lac}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        width: "calc(100% / 11)",
+                        fontSize: "0.7rem",
+                        pr: "0.5rem",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {request.ci}
+                    </Typography>
+
+                    <Box
+                      sx={{
+                        width: "calc(100% / 11)",
+                        fontSize: "0.7rem",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        {request.status === "pending" ? (
+                          <Box
+                            sx={{
+                              padding: "0.3rem",
+                              borderRadius: "50%",
+                              mr: "1rem",
+                              background: "yellow",
+                            }}
+                          ></Box>
+                        ) : (
+                          ""
+                        )}
+                        {request.status === "resolved" ? (
+                          <Box
+                            sx={{
+                              padding: "0.3rem",
+                              borderRadius: "50%",
+                              mr: "1rem",
+                              background: "green",
+                            }}
+                          ></Box>
+                        ) : (
+                          ""
+                        )}
+                        {request.status === "unresolved" ? (
+                          <Box
+                            sx={{
+                              padding: "0.3rem",
+                              borderRadius: "50%",
+                              mr: "1rem",
+                              background: "red",
+                            }}
+                          ></Box>
+                        ) : (
+                          ""
+                        )}
+                        <Typography
+                          sx={{
+                            fontSize: "0.7rem",
+                          }}
+                        >
+                          {request.status}
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Paper>
+                ))}
+              </Box>
+            )}
+          </>
         )}
         {rows.length > 5 ? (
           <Box
