@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
@@ -7,24 +7,62 @@ import { useSelector, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
-// import client from "../helpers/axiosInstance";
+import client from "../helpers/axiosInstance";
+import { ClipLoader } from "react-spinners";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function HelperScreen() {
   const state = useSelector((state) => state);
-  // const { reqId, helperOption_ } = state.displayState;
-  const {  helperOption_ } = state.displayState;
-
+  const { helperOption_ } = state.displayState;
+  const { reqId } = state.user;
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-
-  const { hideHelper_ } = bindActionCreators(actionCreators, dispatch);
-  console.log(helperOption_);
+  const navigate = useNavigate();
+  const { hideHelper_, getAllRequests } = bindActionCreators(
+    actionCreators,
+    dispatch
+  );
+  const restore = async () => {
+    try {
+      const fetchData = async () => {
+        const req = await client.get("/support-requests");
+        console.log("/support-requests", req);
+        getAllRequests(req.data.data);
+      };
+      fetchData();
+    } catch (err) {
+      const message = err.response.data.message;
+      if (message === "Unauthenticated." || message === "Unauthorized") {
+        navigate("/login");
+      }
+    }
+  };
   const cancel = () => {
     hideHelper_();
   };
   const proceed = () => {
-    hideHelper_();
+    setLoading(true);
     if (helperOption_ === "reject") {
       console.log(helperOption_);
+      client
+        .patch(`/support-requests/${reqId}/unassign`)
+        .then(() => {
+          restore();
+          setLoading(false);
+          hideHelper_();
+        })
+        .catch(() => {
+          setLoading(false);
+          toast.err("Failed to reject request !", {
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+          });
+          setLoading(false);
+          hideHelper_();
+        });
     } else if (helperOption_ === "complete") {
       console.log(helperOption_);
     }
@@ -56,7 +94,9 @@ function HelperScreen() {
           padding: "2rem",
         }}
       >
-        <HelpOutlineOutlinedIcon sx={{ fontSize: "20rem", color: "#0257E6", textAlign: "center" }} />
+        <HelpOutlineOutlinedIcon
+          sx={{ fontSize: "20rem", color: "#0257E6", textAlign: "center" }}
+        />
         <Typography>
           Are you sure you want to {helperOption_} this request?
         </Typography>
@@ -73,7 +113,7 @@ function HelperScreen() {
             sx={{ background: "#0257E6", color: "white" }}
             variant="contained"
           >
-            Yes
+            {loading ? <ClipLoader /> : "Yes"}
           </Button>
           <Button
             onClick={() => cancel()}

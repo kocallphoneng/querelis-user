@@ -4,6 +4,8 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import client from "../helpers/axiosInstance";
 import { useSelector } from "react-redux";
+import ClipLoader from "../Components/Spinners/ClipSpinner";
+import "react-toastify/dist/ReactToastify.css";
 
 function Cards() {
   const [details, setDetails] = useState({
@@ -13,7 +15,10 @@ function Cards() {
   });
   const state = useSelector((state) => state);
   const { auth } = state.user;
+  const [loading, setLoading] = useState(false);
+
   const support = () => {
+    setLoading(true);
     client.interceptors.request.use(
       (config) => {
         config.headers.authorization = `Bearer ${auth.access_token}`;
@@ -26,14 +31,16 @@ function Cards() {
     client
       .get("/support-staff-statistics")
       .then((res) => {
-        console.log(res);
         setDetails({
           totalReq: res.data.no_of_request_in_the_month,
           answered: res.data.no_of_requests_answered_by_staff,
           unansweredReq: res.data.no_of_unanswered_request,
         });
+        setLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch(() => {
+        setLoading(false);
+      });
   };
   useEffect(() => {
     support();
@@ -73,7 +80,7 @@ function Cards() {
           <Typography
             sx={{ fontWeight: "900", color: "#0257E6", fontSize: "45px" }}
           >
-            {details.totalReq}
+            {loading ? <ClipLoader /> : details.totalReq}
           </Typography>
         </Paper>
         <Paper
@@ -94,7 +101,7 @@ function Cards() {
           <Typography
             sx={{ fontWeight: "900", color: "#0257E6", fontSize: "45px" }}
           >
-            {details.answered}
+            {loading ? <ClipLoader /> : details.answered}
           </Typography>
         </Paper>
         <Paper
@@ -131,7 +138,7 @@ function Cards() {
           <Typography
             sx={{ fontWeight: "900", color: "#0257E6", fontSize: "45px" }}
           >
-            {details.unansweredReq}
+            {loading ? <ClipLoader /> : details.unansweredReq}
           </Typography>
         </Paper>
       </Box>

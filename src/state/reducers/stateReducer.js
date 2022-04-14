@@ -23,6 +23,12 @@ const initialState = {
   viewHelperScreen_: false,
   helperOption_: "",
   viewAddScreen_: false,
+  supLoading: false,
+  activeLoading: false,
+  reqLoading: false,
+  delLoading: false,
+  loading: false,
+  loading5: false,
 };
 
 const stateReducer = (state = initialState, action) => {
@@ -216,7 +222,30 @@ const stateReducer = (state = initialState, action) => {
       return (state = { ...state, viewAddScreen_: true });
     case "HIDEADDSCREEN":
       return (state = { ...state, viewAddScreen_: false });
-
+    case "LOADINGSUP":
+      return (state = { ...state, supLoading: true });
+    case "NOTLOADINGSUP":
+      return (state = { ...state, supLoading: false });
+    case "LOADINGREQ":
+      return (state = { ...state, reqLoading: true });
+    case "NOTLOADINGREQ":
+      return (state = { ...state, reqLoading: false });
+    case "LOADING_":
+      return (state = { ...state, loading: true });
+    case "NOTLOADING_":
+      return (state = { ...state, loading: false });
+    case "ACTIVELOADING":
+      return (state = { ...state, activeLoading: true });
+    case "NOTACTIVELOADING":
+      return (state = { ...state, activeLoading: false });
+    case "LOADINGDEL":
+      return (state = { ...state, delLoading: true });
+    case "NOTLOADINGDEL":
+      return (state = { ...state, delLoading: false });
+    case "LOADING5":
+      return (state = { ...state, loading5: true });
+    case "NOTLOADING5":
+      return (state = { ...state, loading5: false });
     default:
       return state;
   }

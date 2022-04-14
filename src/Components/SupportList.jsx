@@ -8,9 +8,10 @@ import SkipPreviousOutlinedIcon from "@mui/icons-material/SkipPreviousOutlined";
 import { useSelector, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
-import client from "../helpers/axiosInstance";
 import DeleteIcon from "@mui/icons-material/Delete";
 import empty from "../images/empty.svg";
+import ClipLoader from "../Components/Spinners/ClipSpinner";
+import "react-toastify/dist/ReactToastify.css";
 
 function SupportList() {
   const state = useSelector((state) => state);
@@ -21,33 +22,15 @@ function SupportList() {
   const [allowedPages, setAllowedPages] = useState(2);
   const [total, setTotal] = useState(5);
   const [page, setPage] = useState(rowIndex + 1);
-
-  const {
-    setStaffId,
-    setActive,
-    showActivationScreen,
-    showDeleteScreen,
-    getAllStaffs,
-  } = bindActionCreators(actionCreators, dispatch);
-  const setStaffs = () => {
-    try {
-      const fetchData = async () => {
-        const staffRes = await client.get("/support-staff");
-        getAllStaffs(staffRes.data.data);
-      };
-      fetchData();
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const { setStaffId, setActive, showActivationScreen, showDeleteScreen,  } =
+    bindActionCreators(actionCreators, dispatch);
 
   const { staffs } = state.user;
-
+  const { supLoading, delLoading, activeLoading } = state.displayState;
+ 
   useEffect(() => {
-    setStaffs();
     setList(staffs);
     handlePageNumber();
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [staffs]);
   const createData = (
@@ -164,172 +147,200 @@ function SupportList() {
             </Typography>
           ))}
         </Paper>
-        {staffs.length === 0 ? (
+        {supLoading ? (
           <Box
             sx={{
               width: "100%",
-              height: "200px",
+              height: "90px",
               display: "flex",
               justifyContent: "center",
-              flexDirection: "column",
-              alignItems: "center",
-              margin: "2rem 0 4rem 0",
+              alignItem: "center",
             }}
           >
-            <img
-              src={empty}
-              style={{
-                width: "150px",
-                padding: "0",
-                margin: "0",
-              }}
-              alt="...."
-            />
-            <Typography
-              sx={{
-                fontSize: "1.3rem",
-                fontWeight: "900",
-                color: "lightgray",
-              }}
-            >
-              No request made yet!!
-            </Typography>
+            <ClipLoader />
           </Box>
         ) : (
-          <Box sx={{ pb: "2rem", minHeight: "100px" }}>
-            {rows.slice(rowIndex * rowsPerPage, total).map((staff) => (
-              <Paper
-                key={staff.id}
-                elevation={0}
+          <>
+            {staffs.length === 0 ? (
+              <Box
                 sx={{
                   width: "100%",
+                  height: "200px",
                   display: "flex",
-                  justifyContent: "space-between",
-                  padding: "0.5rem 1rem",
-                  alignItems: "flex-start",
-                  marginTop: "0.5rem",
+                  justifyContent: "center",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  margin: "2rem 0 4rem 0",
                 }}
               >
+                <img
+                  src={empty}
+                  style={{
+                    width: "150px",
+                    padding: "0",
+                    margin: "0",
+                  }}
+                  alt="...."
+                />
                 <Typography
                   sx={{
-                    maxWidth: "14.29%",
-                    width: "100%",
-                    fontSize: "0.7rem",
-                    fontWeight: "600",
-                    textTransform: "capitalize",
-                    pr: "0.5rem",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
+                    fontSize: "1.3rem",
+                    fontWeight: "900",
+                    color: "lightgray",
                   }}
                 >
-                  {staff.name}
+                  No request made yet!!
                 </Typography>
-                <Typography
-                  sx={{
-                    maxWidth: "14.29%",
-                    width: "100%",
-                    fontSize: "0.7rem",
-                    fontWeight: "600",
-                    textTransform: "capitalize",
-                    pr: "1rem",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  {staff.email}
-                </Typography>
-                <Typography
-                  sx={{
-                    maxWidth: "14.29%",
-                    width: "100%",
-                    fontSize: "0.7rem",
-                    fontWeight: "600",
-                    textTransform: "capitalize",
-                    pr: "0.5rem",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  {staff.completedR}
-                </Typography>
-                <Typography
-                  sx={{
-                    maxWidth: "14.29%",
-                    width: "100%",
-                    fontSize: "0.7rem",
-                    fontWeight: "600",
-                    textTransform: "capitalize",
-                    pr: "0.5rem",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  {staff.pendingR}
-                </Typography>
-                <Typography
-                  sx={{
-                    maxWidth: "14.29%",
-                    width: "100%",
-                    fontSize: "0.7rem",
-                    fontWeight: "600",
-                    textTransform: "capitalize",
-                    pr: "0.5rem",
-                    color: staff.status === "online" ? "green" : "red",
-                  }}
-                >
-                  {staff.status}
-                </Typography>
-                <Box
-                  sx={{
-                    maxWidth: "14.29%",
-                    width: "100%",
-                    fontSize: "0.7rem",
-                    fontWeight: "600",
-                    textTransform: "capitalize",
-                    pr: "0.5rem",
-                  }}
-                >
-                  <button
-                    style={{
-                      padding: "0.3rem 1rem",
-                      background: staff.active === 0 ? "green" : "red",
-                      color: "white",
-                      textAlign: "center",
-                      fontSize: "0.7rem",
-                      fontWeight: "600",
-                      pr: "0.5rem",
+              </Box>
+            ) : (
+              <Box sx={{ pb: "2rem", minHeight: "100px" }}>
+                {rows.slice(rowIndex * rowsPerPage, total).map((staff) => (
+                  <Paper
+                    key={staff.id}
+                    elevation={0}
+                    sx={{
                       width: "100%",
-                      cursor: "pointer",
-                      border: "none",
-                      borderRadius: "0.3rem",
+                      display: "flex",
+                      justifyContent: "space-between",
+                      padding: "0.5rem 1rem",
+                      alignItems: "flex-start",
+                      marginTop: "0.5rem",
                     }}
-                    onClick={(e) => handleActivation(e, staff.id, staff.active)}
                   >
-                    {staff.active === 0 ? "Activate" : "Deactivate"}
-                  </button>
-                </Box>
-                <Box
-                  sx={{
-                    maxWidth: "14.29%",
-                    width: "100%",
-                    fontSize: "0.7rem",
-                    fontWeight: "600",
-                    textTransform: "capitalize",
-                    pr: "0.5rem",
-                  }}
-                >
-                  <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-                    <Button
-                      sx={{ background: "transparent", color: "#110C0C" }}
-                      onClick={(e) => handleDelete(e, staff.id)}
+                    <Typography
+                      sx={{
+                        maxWidth: "14.29%",
+                        width: "100%",
+                        fontSize: "0.7rem",
+                        fontWeight: "600",
+                        textTransform: "capitalize",
+                        pr: "0.5rem",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
                     >
-                      <DeleteIcon color="#110C0C" />
-                    </Button>
-                  </Box>
-                </Box>
-              </Paper>
-            ))}
-          </Box>
+                      {staff.name}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        maxWidth: "14.29%",
+                        width: "100%",
+                        fontSize: "0.7rem",
+                        fontWeight: "600",
+                        textTransform: "capitalize",
+                        pr: "1rem",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {staff.email}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        maxWidth: "14.29%",
+                        width: "100%",
+                        fontSize: "0.7rem",
+                        fontWeight: "600",
+                        textTransform: "capitalize",
+                        pr: "0.5rem",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {staff.completedR}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        maxWidth: "14.29%",
+                        width: "100%",
+                        fontSize: "0.7rem",
+                        fontWeight: "600",
+                        textTransform: "capitalize",
+                        pr: "0.5rem",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {staff.pendingR}
+                    </Typography>
+                    <Typography
+                      sx={{
+                        maxWidth: "14.29%",
+                        width: "100%",
+                        fontSize: "0.7rem",
+                        fontWeight: "600",
+                        textTransform: "capitalize",
+                        pr: "0.5rem",
+                        color: staff.status === "online" ? "green" : "red",
+                      }}
+                    >
+                      {staff.status}
+                    </Typography>
+                    <Box
+                      sx={{
+                        maxWidth: "14.29%",
+                        width: "100%",
+                        fontSize: "0.7rem",
+                        fontWeight: "600",
+                        textTransform: "capitalize",
+                        pr: "0.5rem",
+                      }}
+                    >
+                      <button
+                        style={{
+                          padding: "0.3rem 1rem",
+                          background: staff.active === 0 ? "green" : "red",
+                          color: "white",
+                          textAlign: "center",
+                          fontSize: "0.7rem",
+                          fontWeight: "600",
+                          pr: "0.5rem",
+                          width: "100%",
+                          cursor: "pointer",
+                          border: "none",
+                          borderRadius: "0.3rem",
+                        }}
+                        disabled={activeLoading}
+                        onClick={(e) =>
+                          handleActivation(e, staff.id, staff.active)
+                        }
+                      >
+                        {activeLoading ? (
+                          <ClipLoader />
+                        ) : (
+                          <>{staff.active === 0 ? "Activate" : "Deactivate"}</>
+                        )}
+                      </button>
+                    </Box>
+                    <Box
+                      sx={{
+                        maxWidth: "14.29%",
+                        width: "100%",
+                        fontSize: "0.7rem",
+                        fontWeight: "600",
+                        textTransform: "capitalize",
+                        pr: "0.5rem",
+                      }}
+                    >
+                      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                        <Button
+                          sx={{ background: "transparent", color: "#110C0C" }}
+                          onClick={(e) => handleDelete(e, staff.id)}
+                          disabled={delLoading}
+                        >
+                          {delLoading ? (
+                            <ClipLoader />
+                          ) : (
+                            <DeleteIcon color="#110C0C" />
+                          )}
+                        </Button>
+                      </Box>
+                    </Box>
+                  </Paper>
+                ))}
+              </Box>
+            )}
+          </>
         )}
         {rows.length > 5 ? (
           <Box

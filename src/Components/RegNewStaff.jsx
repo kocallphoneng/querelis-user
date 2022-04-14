@@ -1,21 +1,29 @@
-import React, { useState } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import client from "../helpers/axiosInstance";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { ClipLoader } from "react-spinners";
 
 function RegNewComapany() {
+  const state = useSelector((state) => state);
+  const navigate = useNavigate();
+  const { loading } = state.displayState;
   const dispatch = useDispatch();
-  const { showCreateSuccess, setIsLoading, setNotLoading } = bindActionCreators(
-    actionCreators,
-    dispatch
-  );
-  const [err, setErr] = useState("");
+  const {
+    showCreateSuccess,
+    showLoading,
+    hideLoading,
+    getAllStaffs,
+    getAllRequests,
+  } = bindActionCreators(actionCreators, dispatch);
   const formValidation = yup.object().shape({
     staffName: yup.string().required("*Required"),
     staffId: yup.number().required("*Required"),
@@ -23,13 +31,54 @@ function RegNewComapany() {
     email: yup.string().email("Invalid Email Addresss").required("*Required"),
     password: yup.string().required("*Required"),
   });
+  const restore = () => {
+    if (!localStorage.token || localStorage.user !== "company") {
+      navigate("/login");
+    }
+    const token = localStorage.getItem("token");
+    client.interceptors.request.use(
+      (config) => {
+        config.headers.authorization = `Bearer ${token}`;
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
+      }
+    );
+    try {
+      const fetchData = async () => {
+        const staffRes = await client.get("/support-staff");
+        const supReq = await client.get("/support-requests");
+        getAllStaffs(staffRes.data.data);
+        getAllRequests(supReq.data.data);
+        toast.success("Successful !", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+        });
+      };
+      fetchData();
+    } catch (err) {
+      const message = err.response.data.message;
+      if (message === "Unauthenticated" || message === "Unauthorized") {
+        navigate("/login");
+      } else {
+        toast.error("Couldn't load data, please refresh !", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+        });
+      }
+    }
+  };
   const handleSubmit = (values) => {
     console.log(values.photo.files);
-    const formData = new FormData()
-    formData.append("image", values.photo)
-    
-    console.log(formData)
-    setIsLoading();
+    const formData = new FormData();
+    formData.append("image", values.photo);
+
+    showLoading();
     client
       .post("/support-staff", {
         name: values.staffName,
@@ -37,17 +86,31 @@ function RegNewComapany() {
         phone_number: values.contact,
         email: values.email,
         password: values.password,
-        image: values.photo
+        image: values.photo,
       })
       .then((res) => {
         console.log(res);
-        setNotLoading();
+        hideLoading();
+        restore();
         showCreateSuccess();
       })
       .catch((err) => {
-        setNotLoading();
-        console.log("error", err);
-        setErr(err.response.data.message);
+        hideLoading();
+        if (err.response.data.message === "The email has already been taken.") {
+          toast.error("Email is already taken !", {
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+          });
+        } else {
+          toast.error("Couldn't load data, please refresh !", {
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+          });
+        }
       });
   };
   return (
@@ -78,11 +141,6 @@ function RegNewComapany() {
       >
         Register A Support Staff
       </Typography>
-      <Typography
-        sx={{ color: "red", textAlign: "center", fontSize: "0.8rem" }}
-      >
-        {err}
-      </Typography>
 
       <Formik
         initialValues={{
@@ -94,7 +152,10 @@ function RegNewComapany() {
           email: "",
         }}
         validationSchema={formValidation}
-        onSubmit={(values) => handleSubmit(values)}
+        onSubmit={(values, { resetForm }) => {
+          handleSubmit(values);
+          resetForm();
+        }}
       >
         {(props) => (
           <Form style={{ background: "white", padding: "0 2rem 1rem 2rem" }}>
@@ -275,8 +336,9 @@ function RegNewComapany() {
               }}
               type="submit"
               variant="contained"
+              disabled={loading}
             >
-              REGISTER
+              {loading ? <ClipLoader /> : "REGISTER"}
             </Button>
           </Form>
         )}

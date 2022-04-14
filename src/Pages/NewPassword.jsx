@@ -8,47 +8,44 @@ import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
-import { useDispatch, useSelector } from "react-redux";
-import { bindActionCreators } from "redux";
-import { actionCreators } from "../state/index";
+import {  useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import client from "../helpers/axiosInstance";
+import ClipLoader from "../Components/Spinners/ClipSpinner";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function NewPassword() {
   const state = useSelector((state) => state);
   const { userEmail, otp, firstEmail, firstTimeUser} = state.user;
-  
+  const [loading, setLoading] = React.useState(false);
+
   const [values, setValues] = React.useState({
     view1: false,
     view2: false,
   });
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { setIsLoading, setNotLoading } = bindActionCreators(
-    actionCreators,
-    dispatch
-  );
 
+  const navigate = useNavigate();
+  
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
   const handleSubmit = (values) => {
-    setIsLoading()
+    setLoading(true)
     if (firstTimeUser) {
       client.post("/change-password", {
         email: firstEmail,
         password: values.password,
         password_confirmation: values.cfPassword
       }).then(res => {
-        console.log(res)
-        setNotLoading()
+        setLoading(false);
         navigate("/login")
 
       }).catch(err => {
         console.log(err)
-        setNotLoading();
+        setLoading(false);
       })
     }
     client
@@ -58,14 +55,29 @@ function NewPassword() {
         password_confirmation: values.cfPassword,
         token: otp,
       })
-      .then((res) => {
-        console.log(res);
+      .then(() => {
+        setLoading(false);
+        toast.success("Successful !", {
+          position: toast.POSITION.TOP_Right,
+        });
         navigate("/login");
-        setNotLoading();
       })
       .catch((err) => {
-        console.log(err);
-        setNotLoading();
+        err.response.data.message === "Your password must be different from the previous password"
+          ? toast.error("Your password must be different from the previous password !", {
+              position: toast.POSITION.TOP_RIGHT,
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+            })
+          : toast.error("Please try again later", {
+              position: toast.POSITION.TOP_RIGHT,
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              delay: 500,
+            });
+        setLoading(false);
       });
   };
   
@@ -238,8 +250,9 @@ function NewPassword() {
                 sx={{ width: "100%", padding: "0.5rem", m: "0.5rem 0" }}
                 variant="contained"
                 type="submit"
+                disabled={loading}
               >
-                Save
+                {loading ? <ClipLoader /> : "SAVE"}
               </Button>
             </Form>
           )}

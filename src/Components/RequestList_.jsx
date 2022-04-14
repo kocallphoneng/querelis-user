@@ -10,10 +10,13 @@ import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
 import client from "../helpers/axiosInstance";
 import HourglassTopOutlinedIcon from "@mui/icons-material/HourglassTopOutlined";
+import { ClipLoader } from "react-spinners";
+import { useNavigate } from "react-router-dom";
 
 function Audit() {
   const state = useSelector((state) => state);
   const rowsPerPage = 10;
+  // eslint-disable-next-line no-unused-vars
   const [list, setList] = useState([
     {
       id: 0,
@@ -23,7 +26,7 @@ function Audit() {
       cc: "",
       tikT: "",
       reolvedT: true,
-      createT: "2022-04-09T16:30:55.000000Z",
+      createT: "",
       status: "",
       assign: false,
       details: "",
@@ -35,31 +38,21 @@ function Audit() {
   const [page, setPage] = useState(rowIndex + 1);
 
   const { requests } = state.user;
+  const { reqLoading } = state.displayState;
+  const [loading, setLoading] = useState(false)
 
   const dispatch = useDispatch();
-  const { showDetail_, getAllRequests, setReqId } = bindActionCreators(
+  const navigate = useNavigate()
+  const { showDetail_, setReqId, getAllRequests } = bindActionCreators(
     actionCreators,
     dispatch
   );
-  const setRequests = () => {
-    try {
-      const fetchData = async () => {
-        const req = await client.get("/support-requests");
-        getAllRequests(req.data.data);
-      };
-      fetchData();
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   useEffect(() => {
-    setRequests();
-    console.log("requests", requests);
     setList(requests);
     handlePageNumber();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [requests]);
 
   const createData = (
     id,
@@ -92,8 +85,6 @@ function Audit() {
       details,
     };
   };
-  console.log("list", list);
-
   const columns = [
     { id: "name", label: "Name" },
     { id: "tel", label: "Mobile Number" },
@@ -121,6 +112,21 @@ function Audit() {
       "view"
     )
   );
+  const restore = async () => {
+    try {
+      const fetchData = async () => {
+        const req = await client.get("/support-requests");
+        console.log("/support-requests", req);
+        getAllRequests(req.data.data);
+      };
+      fetchData();
+    } catch (err) {
+      const message = err.response.data.message;
+      if (message === "Unauthenticated." || message === "Unauthorized") {
+        navigate("/login");
+      }
+    }
+  };
   const setView = (id) => {
     setReqId(id);
     showDetail_();
@@ -145,6 +151,7 @@ function Audit() {
   };
 
   const handleReducePage = (e) => {
+
     e.preventDefault();
     if (page > 1) {
       setRowIndex(rowIndex - 1);
@@ -153,9 +160,16 @@ function Audit() {
     }
   };
 
-  // const handleAccept = () => {
-
-  // }
+  const handleAccept = (id) => {
+    setLoading(true)
+    client
+      .patch(`/support-requests/${id}/assign`)
+      .then(() => {
+        restore()
+        setLoading(false)
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -188,7 +202,7 @@ function Audit() {
                 fontSize: "0.75rem",
                 fontWeight: "700",
                 textTransform: "capitalize",
-                pr: "1rem",
+                pr: "0.5rem",
               }}
               key={col.id}
             >
@@ -196,258 +210,287 @@ function Audit() {
             </Typography>
           ))}
         </Paper>
-        <Box sx={{ pb: "2rem", minHeight: "400px" }}>
-          {rows.slice(rowIndex * rowsPerPage, total).map((req) => (
-            <Paper
-              key={req.id}
-              elevation={0}
-              sx={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "space-evenly",
-                padding: "0.5rem 1rem",
-                alignItems: "center",
-                marginTop: "0.5rem",
-              }}
-            >
-              <Typography
+        {reqLoading ? (
+          <Box sx={{width: "95%", display: "flex", justifyContent: "center", paddingTop: "1rem"}}>
+            <ClipLoader />
+            </Box>
+        ) : (
+          <Box sx={{ pb: "2rem", minHeight: "400px" }}>
+            {rows.slice(rowIndex * rowsPerPage, total).map((req) => (
+              <Paper
+                key={req.id}
+                elevation={0}
                 sx={{
-                  width: "9%",
-                  fontSize: "0.7rem",
-                  pr: "1rem",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                {req.company.name}
-              </Typography>
-              <Typography
-                sx={{
-                  width: "9%",
-                  fontSize: "0.7rem",
-                  pr: "1rem",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                {req.tel}
-              </Typography>
-              <Typography
-                sx={{
-                  width: "9%",
-                  fontSize: "0.7rem",
-                  pr: "1rem",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                {req.newD}
-              </Typography>
-
-              <Typography
-                sx={{
-                  width: "9%",
-                  fontSize: "0.7rem",
-                  pr: "1rem",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                {req.cc}
-              </Typography>
-              <Typography
-                sx={{
-                  width: "9%",
-                  fontSize: "0.7rem",
-                  pr: "1rem",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                {req.tikT}
-              </Typography>
-
-              <Typography
-                sx={{
-                  width: "9%",
-                  fontSize: "0.7rem",
-                  pr: "1rem",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                {req.newT_}
-              </Typography>
-              <Box
-                sx={{
-                  width: "9%",
+                  width: "100%",
                   display: "flex",
-                  justifyContent: "center",
+                  justifyContent: "space-evenly",
+                  padding: "0.5rem 1rem",
+                  alignItems: "center",
+                  marginTop: "0.5rem",
                 }}
               >
-                <HourglassTopOutlinedIcon />
-              </Box>
+                <Typography
+                  sx={{
+                    width: "9%",
+                    fontSize: "0.7rem",
+                    pr: "1rem",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {req.company.name}
+                </Typography>
+                <Typography
+                  sx={{
+                    width: "9%",
+                    fontSize: "0.7rem",
+                    pr: "1rem",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {req.tel}
+                </Typography>
+                <Typography
+                  sx={{
+                    width: "9%",
+                    fontSize: "0.7rem",
+                    pr: "1rem",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {req.newD}
+                </Typography>
 
-              <Box
-                sx={{
-                  width: "9%",
-                  fontSize: "0.7rem",
-                  pr: "0.5rem",
-                }}
-              >
+                <Typography
+                  sx={{
+                    width: "9%",
+                    fontSize: "0.7rem",
+                    pr: "1rem",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {req.cc}
+                </Typography>
+                <Typography
+                  sx={{
+                    width: "9%",
+                    fontSize: "0.7rem",
+                    pr: "1rem",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {req.tikT}
+                </Typography>
+
+                <Typography
+                  sx={{
+                    width: "9%",
+                    fontSize: "0.7rem",
+                    pr: "1rem",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {req.newT_}
+                </Typography>
                 <Box
                   sx={{
+                    width: "9%",
                     display: "flex",
-                    alignItems: "center",
+                    justifyContent: "center",
                   }}
                 >
-                  {req.status === "pending" ? (
-                    <Box
-                      sx={{
-                        padding: "0.3rem",
-                        borderRadius: "50%",
-                        mr: "1rem",
-                        background: "yellow",
-                      }}
-                    ></Box>
-                  ) : (
-                    ""
-                  )}
-                  {req.status === "resolved" ? (
-                    <Box
-                      sx={{
-                        padding: "0.3rem",
-                        borderRadius: "50%",
-                        mr: "1rem",
-                        background: "green",
-                      }}
-                    ></Box>
-                  ) : (
-                    ""
-                  )}
-                  {req.status === "unresolved" ? (
-                    <Box
-                      sx={{
-                        padding: "0.3rem",
-                        borderRadius: "50%",
-                        mr: "1rem",
-                        background: "#F42C2C",
-                      }}
-                    ></Box>
-                  ) : (
-                    ""
-                  )}
+                  <HourglassTopOutlinedIcon />
+                </Box>
 
-                  <Typography
+                <Box
+                  sx={{
+                    width: "9%",
+                    fontSize: "0.7rem",
+                    pr: "0.5rem",
+                  }}
+                >
+                  <Box
                     sx={{
-                      width: "10.1%",
-                      fontSize: "0.7rem",
-                      pr: "0.5rem",
+                      display: "flex",
+                      alignItems: "center",
                     }}
                   >
-                    {req.status}
-                  </Typography>
+                    {req.status === "pending" ? (
+                      <Box
+                        sx={{
+                          padding: "0.3rem",
+                          borderRadius: "50%",
+                          mr: "1rem",
+                          background: "yellow",
+                        }}
+                      ></Box>
+                    ) : (
+                      ""
+                    )}
+                    {req.status === "resolved" ? (
+                      <Box
+                        sx={{
+                          padding: "0.3rem",
+                          borderRadius: "50%",
+                          mr: "1rem",
+                          background: "green",
+                        }}
+                      ></Box>
+                    ) : (
+                      ""
+                    )}
+                    {req.status === "unresolved" ? (
+                      <Box
+                        sx={{
+                          padding: "0.3rem",
+                          borderRadius: "50%",
+                          mr: "1rem",
+                          background: "#F42C2C",
+                        }}
+                      ></Box>
+                    ) : (
+                      ""
+                    )}
+
+                    <Typography
+                      sx={{
+                        width: "10.1%",
+                        fontSize: "0.7rem",
+                        pr: "0.5rem",
+                      }}
+                    >
+                      {req.status}
+                    </Typography>
+                  </Box>
                 </Box>
-              </Box>
-              <Box
-                sx={{
-                  width: "9%",
-                  fontSize: "0.7rem",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                <Button
+                <Box
                   sx={{
-                    color: "#fff",
+                    width: "9%",
                     fontSize: "0.7rem",
-                    textTransform: "capitalize",
-                    background: req.assign ? "#F42C2C" : "#C4C4C4",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
                   }}
-                  variant="contained"
                 >
-                  accept
-                </Button>
-              </Box>
-              <Box
-                sx={{
-                  width: "9%",
-                  fontSize: "0.7rem",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                <Button
+                  {/* background: ? "#F42C2C" : "#C4C4C4", */}
+                  {!req.assign ? (
+                    <button
+                      style={{
+                        border: "none",
+                        padding: "0.5rem 0.9rem",
+                        background: "green",
+                        color: "#fff",
+                        borderRadius: "0.2rem",
+                        cursor: "pointer",
+                        fontSize: "0.7rem",
+                      }}
+                      onClick={() => handleAccept(req.id)}
+                    >
+                      {loading? <ClipLoader /> :"Accept"}
+                    </button>
+                  ) : (
+                    <Button
+                      sx={{
+                        color: "#fff",
+                        fontSize: "0.7rem",
+                        textTransform: "capitalize",
+                        background: "#C4C4C4",
+                        }}
+                        
+                      disabled
+                    >
+                      accept
+                    </Button>
+                  )}
+                </Box>
+                <Box
                   sx={{
+                    width: "9%",
                     fontSize: "0.7rem",
-                    textTransform: "capitalize",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
                   }}
-                  onClick={() => setView(req.id)}
                 >
-                  View
-                </Button>
-              </Box>
-            </Paper>
-          ))}
-        </Box>
-        <Box
-          sx={{
-            width: "90%",
-            display: "flex",
-            justifyContent: "center",
-            position: "absolute",
-          }}
-        >
+                  <Button
+                    sx={{
+                      fontSize: "0.7rem",
+                      textTransform: "capitalize",
+                    }}
+                    onClick={() => setView(req.id)}
+                  >
+                    View
+                  </Button>
+                </Box>
+              </Paper>
+            ))}
+          </Box>
+        )}
+        {requests.length < 11 ? (
+          ""
+        ) : (
           <Box
             sx={{
+              width: "90%",
               display: "flex",
               justifyContent: "center",
-              pb: "2rem",
+              position: "absolute",
             }}
           >
-            <SkipPreviousOutlinedIcon
-              className="icon"
-              onClick={(e) => handleReducePage(e)}
-              style={{
-                color: "#0257E6",
-                cursor: "pointer",
-              }}
-            />
-            <Typography
+            <Box
               sx={{
-                p: " 0.2rem 0.7rem",
-                background: page !== 1 ? "#0257E6" : "#C4C4C4",
-                color: "#fff",
-                borderRadius: "0.3rem",
-                m: "0 1rem",
-                fontSize: "0.8rem",
+                display: "flex",
+                justifyContent: "center",
+                pb: "2rem",
               }}
             >
-              {page}
-            </Typography>
-            <Typography>of</Typography>
-            <Typography
-              sx={{
-                p: " 0.2rem 0.7rem",
-                background: page !== allowedPages ? "#0257E6" : "#C4C4C4",
-                color: "#fff",
-                borderRadius: "0.3rem",
-                m: "0 1rem",
-                fontSize: "0.8rem",
-              }}
-            >
-              {allowedPages}
-            </Typography>
-            <SkipNextOutlinedIcon
-              className="icon"
-              onClick={(e) => handleAddPage(e)}
-              style={{
-                color: "#0257E6",
-                cursor: "pointer",
-              }}
-            />
+              <SkipPreviousOutlinedIcon
+                className="icon"
+                onClick={(e) => handleReducePage(e)}
+                style={{
+                  color: "#0257E6",
+                  cursor: "pointer",
+                }}
+              />
+              <Typography
+                sx={{
+                  p: " 0.2rem 0.7rem",
+                  background: page !== 1 ? "#0257E6" : "#C4C4C4",
+                  color: "#fff",
+                  borderRadius: "0.3rem",
+                  m: "0 1rem",
+                  fontSize: "0.8rem",
+                }}
+              >
+                {page}
+              </Typography>
+              <Typography>of</Typography>
+              <Typography
+                sx={{
+                  p: " 0.2rem 0.7rem",
+                  background: page !== allowedPages ? "#0257E6" : "#C4C4C4",
+                  color: "#fff",
+                  borderRadius: "0.3rem",
+                  m: "0 1rem",
+                  fontSize: "0.8rem",
+                }}
+              >
+                {allowedPages}
+              </Typography>
+              <SkipNextOutlinedIcon
+                className="icon"
+                onClick={(e) => handleAddPage(e)}
+                style={{
+                  color: "#0257E6",
+                  cursor: "pointer",
+                }}
+              />
+            </Box>
           </Box>
-        </Box>
+        )}
       </Box>
     </Box>
   );

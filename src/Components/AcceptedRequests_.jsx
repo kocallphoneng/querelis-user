@@ -23,25 +23,25 @@ function Accepted() {
       reolvedT: "",
       status: "",
       details: "",
+      assigned_to: {
+        id: 0,
+      },
     },
   ]);
   const [rowIndex, setRowIndex] = useState(0);
   const [allowedPages, setAllowedPages] = useState(2);
   const [total, setTotal] = useState(10);
   const [page, setPage] = useState(rowIndex + 1);
-
   const { requests } = state.user;
 
   useEffect(() => {
     setList(requests);
-    console.log("from audit", requests);
     handlePageNumber();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const dispatch = useDispatch();
   const { showDetail_ } = bindActionCreators(actionCreators, dispatch);
-
   const createData = (
     id,
     company,
@@ -65,7 +65,6 @@ function Accepted() {
       details,
     };
   };
-  console.log("list", list);
 
   const columns = [
     { id: "name", label: "Name" },
@@ -77,7 +76,13 @@ function Accepted() {
     { id: "ci", label: "Details" },
   ];
 
-  const rows = list.map((details) =>
+  const filter = list.filter((list_) => {
+    return (
+      list_.assigned_to !== null &&
+      list_.assigned_to.id.toString() === localStorage.id_.toString()
+    );
+  });
+  const rows = filter.map((details) =>
     createData(
       details.id,
       details.company,
@@ -89,13 +94,11 @@ function Accepted() {
       "view"
     )
   );
-
   const handlePageNumber = () => {
     const remainder = rows.length % 10;
     if (remainder === 0) {
       setAllowedPages(parseInt(rows.length / 10));
     } else {
-      console.log(rows / 10 + 1);
       setAllowedPages(parseInt(rows.length / 10) + 1);
     }
   };
@@ -108,9 +111,6 @@ function Accepted() {
       setTotal(total + rowsPerPage);
     }
   };
-  console.log(total);
-  console.log("total", total);
-  console.log("rowIndex", rowIndex);
 
   const handleReducePage = (e) => {
     e.preventDefault();
@@ -136,7 +136,7 @@ function Accepted() {
       <Box>
         <Paper
           sx={{
-            width: "100",
+            width: "100%",
             display: "flex",
             justifyContent: "space-between",
             padding: "0.7rem 1rem",
@@ -147,7 +147,7 @@ function Accepted() {
           {columns.map((col) => (
             <Typography
               sx={{
-                width: "calc(100% / 7)",
+                width: "14.3%",
                 fontSize: "0.7rem",
                 pr: "1rem",
                 overflow: "hidden",
@@ -175,7 +175,7 @@ function Accepted() {
             >
               <Typography
                 sx={{
-                  width: "calc(100% / 7)",
+                  width: "14.3%",
                   fontSize: "0.7rem",
                   pr: "1rem",
                   overflow: "hidden",
@@ -186,7 +186,7 @@ function Accepted() {
               </Typography>
               <Typography
                 sx={{
-                  width: "calc(100% / 7)",
+                  width: "14.3%",
                   fontSize: "0.7rem",
                   pr: "1rem",
                   overflow: "hidden",
@@ -197,7 +197,7 @@ function Accepted() {
               </Typography>
               <Typography
                 sx={{
-                  width: "calc(100% / 7)",
+                  width: "14.3%",
                   fontSize: "0.7rem",
                   pr: "1rem",
                   overflow: "hidden",
@@ -209,7 +209,7 @@ function Accepted() {
 
               <Typography
                 sx={{
-                  width: "calc(100% / 7)",
+                  width: "14.3%",
                   fontSize: "0.7rem",
                   pr: "1rem",
                   overflow: "hidden",
@@ -221,7 +221,7 @@ function Accepted() {
 
               <Box
                 sx={{
-                  width: "calc(100% / 7)",
+                  width: "14.3%",
                   display: "flex",
                 }}
               >
@@ -230,7 +230,7 @@ function Accepted() {
 
               <Box
                 sx={{
-                  width: "calc(100% / 7)",
+                  width: "14.3%",
                   fontSize: "0.7rem",
                   pr: "0.5rem",
                 }}
@@ -280,7 +280,6 @@ function Accepted() {
 
                   <Typography
                     sx={{
-                      width: "calc(100% / 7)",
                       fontSize: "0.7rem",
                       pr: "0.5rem",
                     }}
@@ -292,7 +291,7 @@ function Accepted() {
 
               <Box
                 sx={{
-                  width: "9%",
+                  width: "14.3%",
                   fontSize: "0.7rem",
                   overflow: "hidden",
                   textOverflow: "ellipsis",

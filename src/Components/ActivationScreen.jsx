@@ -8,36 +8,107 @@ import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import client from "../helpers/axiosInstance";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import ClipLoader from "./Spinners/ClipSpinner";
 
 function ActivationScreen() {
   const state = useSelector((state) => state);
   const { staffId, active } = state.user;
-
+  const { loading } = state.displayState;
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const {
+    hideActivationScreen,
+    showLoading,
+    hideLoading,
+    showLoading4,
+    hideLoading4,
+    getAllRequests,
+    getAllStaffs,
+  } = bindActionCreators(actionCreators, dispatch);
+  const restore = () => {
 
-  const { hideActivationScreen } = bindActionCreators(actionCreators, dispatch);
-  console.log("active", active);
-  console.log("id", staffId);
+    if (!localStorage.token || localStorage.user !== "company") {
+      navigate("/login");
+    }
+    showLoading4()
+    const token = localStorage.getItem("token");
+    client.interceptors.request.use(
+      (config) => {
+        config.headers.authorization = `Bearer ${token}`;
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
+      }
+    );
+    try {
+      const fetchData = async () => {
+        const staffRes = await client.get("/support-staff");
+        const supReq = await client.get("/support-requests");
+        getAllStaffs(staffRes.data.data);
+        getAllRequests(supReq.data.data);
+        hideLoading4();
+      };
+      fetchData();
+    } catch (err) {
+      hideLoading4();
+      const message = err.response.data.message;
+      if (message === "Unauthenticated" || message === "Unauthorized") {
+        navigate("/login");
+      } else {
+        toast.error("Couldn't load data, please refresh !", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+        });
+      }
+    }
+  };
   const cancel = () => {
     hideActivationScreen();
   };
+
   const proceed = () => {
+    showLoading();
     if (active === 0) {
       client
         .patch(`/support-staff/${staffId}/activate`)
         .then((res) => {
-          console.log(res);
+          hideLoading();
+          restore();
           hideActivationScreen();
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          toast.error("Failed to activate !", {
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+          });
+          hideLoading();
+        });
     } else if (active === 1) {
       client
         .patch(`/support-staff/${staffId}/deactivate`)
-        .then((res) => {
-          console.log(res);
+        .then(() => {
+          hideLoading();
+          restore();
           hideActivationScreen();
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          toast.error("Failed to deactivate !", {
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+          });
+          hideLoading();
+        });
     }
   };
 
@@ -68,7 +139,9 @@ function ActivationScreen() {
         }}
       >
         <HelpOutlineOutlinedIcon sx={{ fontSize: "20rem", color: "#0257E6" }} />
-        <Typography>{`Do you want ${active === 1? "deactivate":"activate"}?`}</Typography>
+        <Typography>{`Do you want ${
+          active === 1 ? "deactivate" : "activate"
+        }?`}</Typography>
         <Box
           sx={{
             display: "flex",
@@ -81,8 +154,9 @@ function ActivationScreen() {
             variant="contained"
             onClick={() => proceed()}
             sx={{ background: "#0257E6", color: "white" }}
+            disabled={loading}
           >
-            Yes
+            {loading ? <ClipLoader /> : "Yes"}
           </Button>
           <Button
             onClick={() => cancel()}

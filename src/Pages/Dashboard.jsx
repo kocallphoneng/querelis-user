@@ -13,6 +13,8 @@ import Success from "../Components/Success";
 import EditCompany from "../Components/EditCompany";
 import CompanyRequests from "../Components/CompanyRequests";
 import DeleteScreen from "../Components/DeleteScreen";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -29,21 +31,24 @@ function Dashboard() {
     viewPasswordSuccess,
     viewSummary,
   } = state.displayState;
-  const { auth } = state.user;
-  const { getAllStaffs, setIsLoading, getAllRequests } = bindActionCreators(
-    actionCreators,
-    dispatch
-  );
+  // const { auth } = state.user;
+  const {
+    getAllStaffs,
+    setIsLoading,
+    getAllRequests,
+    setNotLoading,
+    hideLoading1,
+    showLoading1,
+  } = bindActionCreators(actionCreators, dispatch);
 
   useEffect(() => {
-    setIsLoading();
-    console.log("from auth", auth.access_token)
-
+    
     if (!localStorage.token || localStorage.user !== "company") {
       navigate("/login");
     }
-    const token = localStorage.getItem("token")
-    console.log("token test", token);
+    setIsLoading();
+    showLoading1();
+    const token = localStorage.getItem("token");
 
     client.interceptors.request.use(
       (config) => {
@@ -57,41 +62,30 @@ function Dashboard() {
     try {
       const fetchData = async () => {
         const staffRes = await client.get("/support-staff");
-        const supReq = await client.get("/support-requests")
-        console.log("/support-staff", staffRes);
-        console.log("/support-requests", supReq);
+        const supReq = await client.get("/support-requests");
         getAllStaffs(staffRes.data.data);
         getAllRequests(supReq.data.data);
+        setNotLoading();
+        hideLoading1();
       };
       fetchData();
     } catch (err) {
-      console.log(err);
+      setNotLoading();
+      hideLoading1();
       const message = err.response.data.message;
-      if (message === "Unauthenticated.") {
+      if (message === "Unauthenticated" || message === "Unauthorized") {
         navigate("/login");
+      } else {
+        toast.error("Couldn't load data, please refresh !", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+        });
       }
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  // useEffect(() => {
-  //   try {
-  //     const fetchData = async () => {
-  //       const auditRes = await client.get("/audit-trail");
-  //       console.log(auditRes);
-  //       getAuditTrail(auditRes.data.data);
-  //       setNotLoading();
-  //     };
-  //     fetchData();
-  //   } catch (err) {
-  //     console.log(err);
-  //     const message = err.response.data.message;
-  //     if (message === "Unauthenticated.") {
-  //       navigate("/login");
-  //     }
-  //   }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
 
   return (
     <Box

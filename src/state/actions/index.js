@@ -1,3 +1,7 @@
+import { toast } from "react-toastify";
+
+toast.configure();
+
 export const login = (userData) => {
   return (dispatch) => {
     dispatch({
@@ -23,6 +27,11 @@ export const getAllStaffs = (data) => {
 export const getAllRequests = (data) => {
   return (dispatch) => {
     dispatch({ type: "GETREQUESTS", payload: data });
+  };
+};
+export const getAcceptedRequests = (data) => {
+  return (dispatch) => {
+    dispatch({ type: "GETACCEPTEDREQUESTS", payload: data });
   };
 };
 
@@ -155,4 +164,40 @@ export const showAdd_ = (option) => {
 };
 export const hideAdd_ = () => {
   return (dispatch) => dispatch({ type: "HIDEADDSCREEN" });
+};
+export const showLoading1 = () => {
+  return (dispatch) => dispatch({ type: "LOADINGSUP" });
+};
+export const hideLoading1 = () => {
+  return (dispatch) => dispatch({ type: "NOTLOADINGSUP" });
+};
+export const showLoading2 = () => {
+  return (dispatch) => dispatch({ type: "LOADINGREQ" });
+};
+export const hideLoading2 = () => {
+  return (dispatch) => dispatch({ type: "NOTLOADINGREQ" });
+};
+export const showLoading3 = () => {
+  return (dispatch) => dispatch({ type: "LOADINGDEL" });
+};
+export const hideLoading3 = () => {
+  return (dispatch) => dispatch({ type: "NOTLOADINGDEL" });
+};
+export const showLoading = () => {
+  return (dispatch) => dispatch({ type: "LOADING_" });
+};
+export const hideLoading = () => {
+  return (dispatch) => dispatch({ type: "NOTLOADING_" });
+};
+export const showLoading4 = () => {
+  return (dispatch) => dispatch({ type: "ACTIVELOADING" });
+};
+export const hideLoading4 = () => {
+  return (dispatch) => dispatch({ type: "NOTACTIVELOADING" });
+};
+export const showLoading5 = () => {
+  return (dispatch) => dispatch({ type: "LOADING5" });
+};
+export const hideLoading5 = () => {
+  return (dispatch) => dispatch({ type: "NOTLOADING5" });
 };

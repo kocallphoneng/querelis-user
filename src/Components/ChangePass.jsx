@@ -5,13 +5,20 @@ import Button from "@mui/material/Button";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import client from "../helpers/axiosInstance";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
+import { toast } from "react-toastify";
+import { ClipLoader } from "react-spinners";
 
 function ChangePass() {
   const dispatch = useDispatch();
-  const { showPasswordSuccess } = bindActionCreators(actionCreators, dispatch);
+  const state = useSelector((state) => state);
+  const { loading } = state.displayState;
+  const { showPasswordSuccess, showLoading, hideLoading } = bindActionCreators(
+    actionCreators,
+    dispatch
+  );
   const formValidation = yup.object().shape({
     email: yup.string().email("Invalid Email Addresss").required("*Required"),
     password: yup.string().required("*Required"),
@@ -21,18 +28,46 @@ function ChangePass() {
       .required("*Required"),
   });
   const handleSubmit = (values) => {
+    showLoading();
     client
       .post("/change-password", {
         email: values.email,
         password: values.password,
         password_confirmation: values.cfPassword,
       })
-      .then((res) => {
-        console.log(res);
+      .then(() => {
+        hideLoading();
+        toast.success("Successful !", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+        });
         showPasswordSuccess();
       })
       .catch((err) => {
-        console.log(err);
+        hideLoading();
+        if (
+          err.response.data.message ===
+          "Your password must be different from the previous password"
+        ) {
+          toast.error(
+            "Your password must be different from the previous password !",
+            {
+              position: toast.POSITION.TOP_RIGHT,
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+            }
+          );
+        } else {
+          toast.error("Failed to change password !", {
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+          });
+        }
       });
   };
   return (
@@ -167,8 +202,9 @@ function ChangePass() {
               }}
               type="submit"
               variant="contained"
+              disabled={loading}
             >
-              SAVE
+              {loading ? <ClipLoader /> : "SAVE"}
             </Button>
           </Form>
         )}

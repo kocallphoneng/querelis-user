@@ -8,25 +8,85 @@ import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 import client from "../helpers/axiosInstance";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { ClipLoader } from "react-spinners";
 
 function DeleteScreen() {
   const state = useSelector((state) => state);
   const { staffId } = state.user;
+  const { loading } = state.displayState;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const {
+    hideDeleteScreen,
+    hideLoading,
+    showLoading3,
+    hideLoading3,
+    getAllRequests,
+    getAllStaffs,
+    showLoading,
+  } = bindActionCreators(actionCreators, dispatch);
 
-  const { hideDeleteScreen } = bindActionCreators(actionCreators, dispatch);
-
+  const restore = () => {
+    if (!localStorage.token || localStorage.user !== "company") {
+      navigate("/login");
+    }
+    const token = localStorage.getItem("token");
+    client.interceptors.request.use(
+      (config) => {
+        config.headers.authorization = `Bearer ${token}`;
+        return config;
+      },
+      (error) => {
+        return Promise.reject(error);
+      }
+    );
+    try {
+      const fetchData = async () => {
+        const staffRes = await client.get("/support-staff");
+        const supReq = await client.get("/support-requests");
+        getAllStaffs(staffRes.data.data);
+        getAllRequests(supReq.data.data);
+        hideLoading3();
+      };
+      fetchData();
+    } catch (err) {
+      hideLoading3();
+      const message = err.response.data.message;
+      if (message === "Unauthenticated" || message === "Unauthorized") {
+        navigate("/login");
+      } else {
+        toast.error("Couldn't load data, please refresh !", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+        });
+      }
+    }
+  };
   const cancel = () => {
     hideDeleteScreen();
   };
   const proceed = () => {
+    showLoading();
     client
       .delete(`/support-staff/${staffId}`)
-      .then((res) => {
-        console.log(res);
+      .then(() => {
+        hideLoading();
+        showLoading3();
+        restore();
         hideDeleteScreen();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        toast.error("Failed to delete!", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+        });
+      });
   };
 
   return (
@@ -69,8 +129,9 @@ function DeleteScreen() {
             variant="contained"
             onClick={() => proceed()}
             sx={{ background: "#0257E6", color: "white" }}
+            disabled={loading}
           >
-            Yes
+            {loading ? <ClipLoader /> : "Yes"}
           </Button>
           <Button
             onClick={() => cancel()}
