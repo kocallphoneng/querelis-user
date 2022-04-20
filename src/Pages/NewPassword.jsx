@@ -8,7 +8,7 @@ import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
@@ -19,7 +19,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 function NewPassword() {
   const state = useSelector((state) => state);
-  const { userEmail, otp, firstEmail, firstTimeUser} = state.user;
+  const { userEmail, otp, firstEmail, firstTimeUser } = state.user;
   const [loading, setLoading] = React.useState(false);
 
   const [values, setValues] = React.useState({
@@ -28,59 +28,66 @@ function NewPassword() {
   });
 
   const navigate = useNavigate();
-  
+
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
   const handleSubmit = (values) => {
-    setLoading(true)
+    setLoading(true);
     if (firstTimeUser) {
-      client.post("/change-password", {
-        email: firstEmail,
-        password: values.password,
-        password_confirmation: values.cfPassword
-      }).then(res => {
-        setLoading(false);
-        navigate("/login")
-
-      }).catch(err => {
-        console.log(err)
-        setLoading(false);
-      })
-    }
-    client
-      .post("/reset-password", {
-        email: userEmail,
-        password: values.password,
-        password_confirmation: values.cfPassword,
-        token: otp,
-      })
-      .then(() => {
-        setLoading(false);
-        toast.success("Successful !", {
-          position: toast.POSITION.TOP_Right,
+      client
+        .post("/change-password", {
+          email: firstEmail,
+          password: values.password,
+          password_confirmation: values.cfPassword,
+        })
+        .then((res) => {
+          setLoading(false);
+          navigate("/login");
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
         });
-        navigate("/login");
-      })
-      .catch((err) => {
-        err.response.data.message === "Your password must be different from the previous password"
-          ? toast.error("Your password must be different from the previous password !", {
-              position: toast.POSITION.TOP_RIGHT,
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-            })
-          : toast.error("Please try again later", {
-              position: toast.POSITION.TOP_RIGHT,
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              delay: 500,
-            });
-        setLoading(false);
-      });
+    } else {
+      client
+        .post("/reset-password", {
+          email: userEmail,
+          password: values.password,
+          password_confirmation: values.cfPassword,
+          token: otp,
+        })
+        .then(() => {
+          setLoading(false);
+          toast.success("Successful !", {
+            position: toast.POSITION.TOP_Right,
+          });
+          navigate("/login");
+        })
+        .catch((err) => {
+          err.response.data.message ===
+          "Your password must be different from the previous password"
+            ? toast.error(
+                "Your password must be different from the previous password !",
+                {
+                  position: toast.POSITION.TOP_RIGHT,
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                }
+              )
+            : toast.error("Please try again later", {
+                position: toast.POSITION.TOP_RIGHT,
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                delay: 500,
+              });
+          setLoading(false);
+        });
+    }
   };
-  
+
   const formValidation = yup.object().shape({
     password: yup
       .string()

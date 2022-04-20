@@ -201,3 +201,9 @@ export const showLoading5 = () => {
 export const hideLoading5 = () => {
   return (dispatch) => dispatch({ type: "NOTLOADING5" });
 };
+export const setUserId = (id) => {
+  return (dispatch) => dispatch({ type: "SETUSERID", payload: id  });
+};
+export const setReqStat = (stat) => {
+  return (dispatch) => dispatch({ type: "SETREQSTAT", payload: stat });
+};

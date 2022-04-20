@@ -26,16 +26,24 @@ function Detail() {
     mnc: "",
     lac: "",
     createdT: "",
+    details: "",
   });
   const dispatch = useDispatch();
-  const { hideDetail_, showHelper_, showAdd_, showLoading5, hideLoading5 } =
-    bindActionCreators(actionCreators, dispatch);
-
+  const {
+    hideDetail_,
+    showHelper_,
+    showAdd_,
+    setUserId,
+    setReqStat,
+    showLoading5,
+    hideLoading5,
+  } = bindActionCreators(actionCreators, dispatch);
   const display = () => {
     showLoading5();
     client
       .get(`/support-requests/${reqId}`)
       .then((res) => {
+        console.log(res);
         setRequest({
           name: res.data.data.company.name,
           number: res.data.data.phone_number,
@@ -54,7 +62,10 @@ function Detail() {
         res.data.data.created_at.indexOf("T") + 1,
         res.data.data.created_at.indexOf(".")
       )}`,
+          details: res.data.data.details,
         });
+        setReqStat(res.data.data.status);
+        setUserId(res.data.data.assigned_to.id);
         hideLoading5();
       })
       .catch((err) => {
@@ -64,7 +75,7 @@ function Detail() {
           hideProgressBar: false,
           closeOnClick: true,
         });
-        hideLoading5()
+        hideLoading5();
       });
   };
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -362,6 +373,28 @@ function Detail() {
               {loading5 ? <ClipLoader /> : request.createdT}
             </Typography>
           </Box>
+          {request.details !== null ||
+          request.details !== undefined ||
+          request.details !== "" ? (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "start",
+                justifyContent: "space-between",
+                width: "100%",
+                pb: "0.8rem",
+              }}
+            >
+              <Typography sx={{ fontWeight: "600", fontSize: "0.8rem" }}>
+                Added Info
+              </Typography>
+              <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
+                {loading5 ? <ClipLoader /> : request.details}
+              </Typography>
+            </Box>
+          ) : (
+            ""
+          )}
           <Box
             sx={{
               width: "100%",

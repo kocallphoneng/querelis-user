@@ -41,7 +41,7 @@ function Accepted() {
   }, []);
 
   const dispatch = useDispatch();
-  const { showDetail_ } = bindActionCreators(actionCreators, dispatch);
+  const { showDetail_, setReqId } = bindActionCreators(actionCreators, dispatch);
   const createData = (
     id,
     company,
@@ -302,7 +302,10 @@ function Accepted() {
                     fontSize: "0.7rem",
                     textTransform: "capitalize",
                   }}
-                  onClick={() => showDetail_()}
+                  onClick={() => {
+                    showDetail_()
+                    setReqId(req.id)
+                  }}
                 >
                   View
                 </Button>
