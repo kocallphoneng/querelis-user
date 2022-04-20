@@ -16,6 +16,8 @@ const initialState = {
   summaryDate: "",
   userEmail: "",
   otp: 0,
+  userId: 0,
+  reqStatus: "",
 };
 
 const userReducer = (state = initialState, action) => {
@@ -62,6 +64,10 @@ const userReducer = (state = initialState, action) => {
       return (state = { ...state, userEmail: action.payload });
     case "SETUSEROTP":
       return (state = { ...state, otp: action.payload });
+    case "SETUSERID":
+      return (state = { ...state, userId: action.payload });
+    case "SETREQSTAT":
+      return (state = { ...state, reqStatus: action.payload });
 
     default:
       return state;

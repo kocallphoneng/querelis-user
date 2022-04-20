@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 function HelperScreen() {
   const state = useSelector((state) => state);
   const { helperOption_ } = state.displayState;
-  const { reqId } = state.user;
+  const { reqId, userId } = state.user;
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -27,7 +27,6 @@ function HelperScreen() {
     try {
       const fetchData = async () => {
         const req = await client.get("/support-requests");
-        console.log("/support-requests", req);
         getAllRequests(req.data.data);
       };
       fetchData();
@@ -64,7 +63,27 @@ function HelperScreen() {
           hideHelper_();
         });
     } else if (helperOption_ === "complete") {
-      console.log(helperOption_);
+      client
+        .patch(`/support-requests/${reqId}`, {
+          status: "resolved",
+          assigned_to: userId
+        })
+        .then(() => {
+          restore();
+          setLoading(false);
+          hideHelper_();
+        })
+        .catch(() => {
+          setLoading(false);
+          toast.err("Failed to complete request !", {
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+          });
+          setLoading(false);
+          hideHelper_();
+        });
     }
   };
 

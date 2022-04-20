@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 
 function Audit() {
   const state = useSelector((state) => state);
+  const [id, setId] = useState(0)
   const rowsPerPage = 10;
   // eslint-disable-next-line no-unused-vars
   const [list, setList] = useState([
@@ -116,7 +117,6 @@ function Audit() {
     try {
       const fetchData = async () => {
         const req = await client.get("/support-requests");
-        console.log("/support-requests", req);
         getAllRequests(req.data.data);
       };
       fetchData();
@@ -161,6 +161,7 @@ function Audit() {
   };
 
   const handleAccept = (id) => {
+    setId(id)
     setLoading(true)
     client
       .patch(`/support-requests/${id}/assign`)
@@ -390,7 +391,7 @@ function Audit() {
                       }}
                       onClick={() => handleAccept(req.id)}
                     >
-                      {loading? <ClipLoader /> :"Accept"}
+                      {loading && id === req.id? <ClipLoader /> :"Accept"}
                     </button>
                   ) : (
                     <Button

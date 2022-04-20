@@ -25,7 +25,7 @@ function SupportList() {
   const { setStaffId, setActive, showActivationScreen, showDeleteScreen,  } =
     bindActionCreators(actionCreators, dispatch);
 
-  const { staffs } = state.user;
+  const { staffs, staffId } = state.user;
   const { supLoading, delLoading, activeLoading } = state.displayState;
  
   useEffect(() => {
@@ -305,7 +305,7 @@ function SupportList() {
                           handleActivation(e, staff.id, staff.active)
                         }
                       >
-                        {activeLoading ? (
+                        {activeLoading && staffId === staff.id ? (
                           <ClipLoader />
                         ) : (
                           <>{staff.active === 0 ? "Activate" : "Deactivate"}</>

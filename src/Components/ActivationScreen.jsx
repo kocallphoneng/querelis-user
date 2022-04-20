@@ -29,11 +29,9 @@ function ActivationScreen() {
   } = bindActionCreators(actionCreators, dispatch);
   const restore = () => {
 
-    if (!localStorage.token || localStorage.user !== "company") {
-      navigate("/login");
-    }
+    
     showLoading4()
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("accesstoken");
     client.interceptors.request.use(
       (config) => {
         config.headers.authorization = `Bearer ${token}`;

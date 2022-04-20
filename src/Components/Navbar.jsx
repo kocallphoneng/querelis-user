@@ -11,13 +11,11 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 function Navbar() {
   const state = useSelector((state) => state);
   const { welcome, accepted } = state.displayState;
-  const { auth } = state.user;
   const dispatch = useDispatch();
   const { showNotification } = bindActionCreators(actionCreators, dispatch);
 
   const handleNotification = (e) => {
     e.preventDefault();
-    console.log(auth);
     showNotification();
   };
   return (

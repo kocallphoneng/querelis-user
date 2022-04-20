@@ -10,9 +10,9 @@ const client = axios.create({
   headers,
 });
 const setToken = () => {
-  if (localStorage.token) {
-    const token = localStorage.getItem("token");
-    console.log(token)
+  if (localStorage.accesstoken) {
+    const token = localStorage.getItem("accesstoken");
+    console.log(token);
     client.interceptors.request.use(
       (config) => {
         config.headers.authorization = `Bearer ${token}`;
@@ -23,6 +23,6 @@ const setToken = () => {
       }
     );
   }
-}
-setToken()
-export default client
+};
+setToken();
+export default client;

@@ -49,7 +49,7 @@ function Login() {
     try {
       const res = await client.post("/login", user);
       const token = res.data.access_token;
-      localStorage.setItem("token", token);
+      localStorage.setItem("accesstoken", token);
       localStorage.setItem("user", res.data.user.user_type);
       localStorage.setItem("name", res.data.user.name);
       localStorage.setItem("id_", res.data.user.id);

@@ -42,14 +42,12 @@ function Dashboard() {
   } = bindActionCreators(actionCreators, dispatch);
 
   useEffect(() => {
-    
-    if (!localStorage.token || localStorage.user !== "company") {
+    if (!localStorage.accesstoken || localStorage.user !== "company") {
       navigate("/login");
     }
     setIsLoading();
     showLoading1();
-    const token = localStorage.getItem("token");
-
+    const token = localStorage.getItem("accesstoken");
     client.interceptors.request.use(
       (config) => {
         config.headers.authorization = `Bearer ${token}`;
@@ -70,19 +68,21 @@ function Dashboard() {
       };
       fetchData();
     } catch (err) {
-      setNotLoading();
-      hideLoading1();
       const message = err.response.data.message;
+      console.log(message);
       if (message === "Unauthenticated" || message === "Unauthorized") {
-        navigate("/login");
+        // navigate("/login");
+        console.log(message);
       } else {
-        toast.error("Couldn't load data, please refresh !", {
+        toast.error("Oops!!, something went wrong", {
           position: toast.POSITION.TOP_RIGHT,
           autoClose: 5000,
           hideProgressBar: false,
           closeOnClick: true,
         });
       }
+      setNotLoading();
+      hideLoading1();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
