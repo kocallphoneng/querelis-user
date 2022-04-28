@@ -39,7 +39,6 @@ function Accepted() {
     handlePageNumber();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   const dispatch = useDispatch();
   const { showDetail_, setReqId, setUssd } = bindActionCreators(
     actionCreators,
@@ -212,7 +211,6 @@ function Accepted() {
               >
                 {req.date}
               </Typography>
-
               <Typography
                 sx={{
                   width: "14.3%",
@@ -224,7 +222,6 @@ function Accepted() {
               >
                 {req.cc}
               </Typography>
-
               <Box
                 sx={{
                   width: "14.3%",
