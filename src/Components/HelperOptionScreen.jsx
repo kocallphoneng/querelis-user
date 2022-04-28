@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 function HelperScreen() {
   const state = useSelector((state) => state);
   const { helperOption_ } = state.displayState;
-  const { reqId, userId } = state.user;
+  const { reqId, userId, staffId_ } = state.user;
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -42,18 +42,19 @@ function HelperScreen() {
   };
   const proceed = () => {
     setLoading(true);
-    if (helperOption_ === "reject") {
-      console.log(helperOption_);
+    if (helperOption_ === "reassign") {
       client
-        .patch(`/support-requests/${reqId}/unassign`)
-        .then(() => {
+        .patch(`/support-requests/${reqId}/reassign`, {
+          staff_id: staffId_,
+        })
+        .then((res) => {
           restore();
           setLoading(false);
           hideHelper_();
         })
         .catch(() => {
           setLoading(false);
-          toast.err("Failed to reject request !", {
+          toast.error("Failed to reject request !", {
             position: toast.POSITION.TOP_RIGHT,
             autoClose: 5000,
             hideProgressBar: false,
@@ -75,7 +76,7 @@ function HelperScreen() {
         })
         .catch(() => {
           setLoading(false);
-          toast.err("Failed to complete request !", {
+          toast.error("Failed to complete request !", {
             position: toast.POSITION.TOP_RIGHT,
             autoClose: 5000,
             hideProgressBar: false,
@@ -116,7 +117,7 @@ function HelperScreen() {
         <HelpOutlineOutlinedIcon
           sx={{ fontSize: "20rem", color: "#0257E6", textAlign: "center" }}
         />
-        <Typography>
+        <Typography sx={{textAlign: "center"}}>
           Are you sure you want to {helperOption_} this request?
         </Typography>
         <Box

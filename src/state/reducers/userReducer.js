@@ -18,6 +18,8 @@ const initialState = {
   otp: 0,
   userId: 0,
   reqStatus: "",
+  staffId_: 0,
+  ussd: [],
 };
 
 const userReducer = (state = initialState, action) => {
@@ -68,7 +70,11 @@ const userReducer = (state = initialState, action) => {
       return (state = { ...state, userId: action.payload });
     case "SETREQSTAT":
       return (state = { ...state, reqStatus: action.payload });
-
+    case "SETSTAFFID_":
+      return (state = { ...state, staffId_: action.payload });
+    case "SETUSSD":
+      return (state = { ...state, ussd: action.payload });
+    // ;
     default:
       return state;
   }

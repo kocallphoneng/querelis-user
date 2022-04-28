@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
 import HourglassTopOutlinedIcon from "@mui/icons-material/HourglassTopOutlined";
+import Moment from "react-moment";
 
 function Accepted() {
   const state = useSelector((state) => state);
@@ -33,15 +34,16 @@ function Accepted() {
   const [total, setTotal] = useState(10);
   const [page, setPage] = useState(rowIndex + 1);
   const { requests } = state.user;
-
   useEffect(() => {
     setList(requests);
     handlePageNumber();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   const dispatch = useDispatch();
-  const { showDetail_, setReqId } = bindActionCreators(actionCreators, dispatch);
+  const { showDetail_, setReqId, setUssd } = bindActionCreators(
+    actionCreators,
+    dispatch
+  );
   const createData = (
     id,
     company,
@@ -50,7 +52,8 @@ function Accepted() {
     cc,
     reolvedT,
     status,
-    details
+    details,
+    ussd
   ) => {
     const newName = company.name;
 
@@ -63,6 +66,7 @@ function Accepted() {
       reolvedT,
       status,
       details,
+      ussd,
     };
   };
 
@@ -89,9 +93,10 @@ function Accepted() {
       details.phone_number,
       details.date,
       details.cc_ticket_id,
-      true,
+      details.updated_at,
       details.status,
-      "view"
+      "view",
+      details.ussd_details
     )
   );
   const handlePageNumber = () => {
@@ -206,7 +211,6 @@ function Accepted() {
               >
                 {req.date}
               </Typography>
-
               <Typography
                 sx={{
                   width: "14.3%",
@@ -218,14 +222,22 @@ function Accepted() {
               >
                 {req.cc}
               </Typography>
-
               <Box
                 sx={{
                   width: "14.3%",
                   display: "flex",
                 }}
               >
-                <HourglassTopOutlinedIcon />
+                {req.status === "pending" ? (
+                  <HourglassTopOutlinedIcon />
+                ) : (
+                  <>
+                    <Moment diff={req.reolvedT} unit="days">
+                      {req.createT}
+                    </Moment>{" "}
+                    days
+                  </>
+                )}
               </Box>
 
               <Box
@@ -303,8 +315,9 @@ function Accepted() {
                     textTransform: "capitalize",
                   }}
                   onClick={() => {
-                    showDetail_()
-                    setReqId(req.id)
+                    showDetail_();
+                    setUssd(req.ussd);
+                    setReqId(req.id);
                   }}
                 >
                   View

@@ -46,11 +46,11 @@ function Cards() {
     support();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  
   return (
     <Box
       sx={{
         display: "flex",
-        justifyContent: "space-between",
         alignItems: "center",
       }}
     >
@@ -59,7 +59,6 @@ function Cards() {
           width: "100%",
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
         }}
       >
         <Paper
@@ -69,6 +68,7 @@ function Cards() {
             height: "143px",
             width: "100%",
             padding: "1.5rem",
+            marginRight: "2rem",
           }}
           elevation={0}
         >
@@ -90,6 +90,7 @@ function Cards() {
             height: "143px",
             width: "100%",
             padding: "1.5rem",
+            marginRight: "2rem",
           }}
           elevation={0}
         >
@@ -104,7 +105,7 @@ function Cards() {
             {loading ? <ClipLoader /> : details.answered}
           </Typography>
         </Paper>
-        <Paper
+        {/* <Paper
           sx={{
             borderRadius: "0.5rem",
             maxWidth: "196px",
@@ -119,7 +120,7 @@ function Cards() {
           elevation={0}
         >
           <Typography sx={{ color: "#fff" }}>Offline</Typography>
-        </Paper>
+        </Paper> */}
         <Paper
           sx={{
             borderRadius: "0.5rem",
@@ -127,6 +128,7 @@ function Cards() {
             height: "143px",
             width: "100%",
             padding: "1.5rem",
+            marginRight: "2rem",
           }}
           elevation={0}
         >

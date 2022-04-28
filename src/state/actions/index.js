@@ -207,3 +207,10 @@ export const setUserId = (id) => {
 export const setReqStat = (stat) => {
   return (dispatch) => dispatch({ type: "SETREQSTAT", payload: stat });
 };
+export const setStaffId_ = (id) => {
+  return (dispatch) => dispatch({ type: "SETSTAFFID_", payload: id });
+};
+export const setUssd = (ussd) => {
+  return (dispatch) => dispatch({ type: "SETUSSD", payload: ussd });
+};
+// setUssd;

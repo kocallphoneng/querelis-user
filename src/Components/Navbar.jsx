@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
@@ -10,14 +10,28 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 
 function Navbar() {
   const state = useSelector((state) => state);
+  const { requests } = state.user;
   const { welcome, accepted } = state.displayState;
   const dispatch = useDispatch();
-  const { showNotification } = bindActionCreators(actionCreators, dispatch);
-
+  const { showNotification, showDetail_, setReqId } = bindActionCreators(
+    actionCreators,
+    dispatch
+  );
+  const [text, setText] = useState("")
   const handleNotification = (e) => {
     e.preventDefault();
     showNotification();
   };
+  const search = () => {
+    requests.forEach(request => {
+      
+      if (text === request.cc_ticket_id) {
+        console.log("match")
+        setReqId(request.id);
+        showDetail_();
+      }
+    })
+  }
   return (
     <Box
       sx={{
@@ -72,7 +86,7 @@ function Navbar() {
             <SearchOutlinedIcon sx={{ width: "5%", color: "#fff" }} />
             <input
               className="search"
-              placeholder="Request ID or Phone Number"
+              placeholder="Ticket ID "
               style={{
                 border: "none",
                 outline: "none",
@@ -81,6 +95,8 @@ function Navbar() {
                 background: "transparent",
                 padding: "0 1rem"
               }}
+              value = {text}
+              onChange={e=> setText(e.target.value)}
             />
             <button
               style={{
@@ -93,6 +109,7 @@ function Navbar() {
                 borderRadius: "1rem",
                 cursor: "pointer"
               }}
+              onClick={()=> search()}
             >
               Search
             </button>
