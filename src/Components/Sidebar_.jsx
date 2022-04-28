@@ -112,7 +112,7 @@ function Sidebar() {
       >
         <DomainAddOutlinedIcon sx={accepted ? selectIcon : unSelectIcon} />
         <Typography sx={accepted ? selectText : unSelectText}>
-          Accept Reaquest
+          Accepted Requests
         </Typography>
       </Box>
 

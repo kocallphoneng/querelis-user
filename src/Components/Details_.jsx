@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 
 function Detail() {
   const state = useSelector((state) => state);
-  const { reqId } = state.user;
+  const { reqId, staffId_, ussd } = state.user;
   const { accepted, loading5 } = state.displayState;
   const [request, setRequest] = useState({
     name: "",
@@ -28,6 +28,7 @@ function Detail() {
     createdT: "",
     details: "",
   });
+  const [staffs, setStaffs] = useState([]);
   const dispatch = useDispatch();
   const {
     hideDetail_,
@@ -37,6 +38,7 @@ function Detail() {
     setReqStat,
     showLoading5,
     hideLoading5,
+    setStaffId_
   } = bindActionCreators(actionCreators, dispatch);
   const display = () => {
     showLoading5();
@@ -78,12 +80,26 @@ function Detail() {
         hideLoading5();
       });
   };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => display(), []);
+  const getSupportStaffs = () => {
+    client
+      .get(`/support-staff`)
+      .then((res) => {
+        console.log(`/support-staff`, res);
+        setStaffs(res.data.data);
+      })
+      .catch((err) => console.log(err));
+  };
+  useEffect(() => {
+    display();
+    getSupportStaffs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const [viewOptions, setViewOptions] = useState(false);
   const [add, setAdd] = useState(true);
+  const [reassign, setReassign] = useState(false);
   const [reject, setReject] = useState(false);
   const [complete, setComplete] = useState(false);
+  const [staff, setStaff] = useState(false);
 
   const handleOption = (e, select) => {
     e.preventDefault();
@@ -91,19 +107,27 @@ function Detail() {
       setAdd(true);
       setReject(false);
       setComplete(false);
+      setStaff(false);
       showAdd_();
     } else if (select === "reject") {
       setAdd(false);
       setReject(true);
       setComplete(false);
-      showHelper_("reject");
+      setStaff(true);
     } else if (select === "complete") {
       setAdd(false);
       setReject(false);
       setComplete(true);
+      setStaff(false);
       showHelper_("complete");
     }
   };
+  const handleReassign = (id) => {
+    setReassign(true)
+    setStaffId_(id)
+    console.log(id)
+    showHelper_("reassign");
+  }
   return (
     <Box
       sx={{
@@ -148,7 +172,7 @@ function Detail() {
           {accepted ? (
             <MoreVertOutlinedIcon
               onClick={() => setViewOptions(!viewOptions)}
-              sx={{ cursor: "pointer" }}
+              sx={{ cursor: "pointer", transitionDuration: "500ms" }}
             />
           ) : (
             ""
@@ -166,6 +190,7 @@ function Detail() {
               background: "#fff",
               padding: "0.3rem ",
               border: "1px solid #C4C4C4",
+              transitionDuration: "500ms",
             }}
           >
             <Typography
@@ -176,6 +201,7 @@ function Detail() {
                 fontSize: "0.8rem",
                 cursor: "pointer",
                 background: add ? "rgba(2, 87, 230, 0.4)" : "transparent",
+                transitionDuration: "500ms",
               }}
               onClick={(e) => handleOption(e, "add")}
             >
@@ -189,11 +215,13 @@ function Detail() {
                 fontSize: "0.8rem",
                 cursor: "pointer",
                 background: reject ? "rgba(2, 87, 230, 0.4)" : "transparent",
+                transitionDuration: "500ms",
               }}
               onClick={(e) => handleOption(e, "reject")}
             >
-              Reject
+              Reassign
             </Typography>
+
             <Typography
               sx={{
                 padding: "0.5rem 2.5rem 0.5rem 1rem",
@@ -202,11 +230,53 @@ function Detail() {
                 fontSize: "0.8rem",
                 cursor: "pointer",
                 background: complete ? "rgba(2, 87, 230, 0.4)" : "transparent",
+                transitionDuration: "500ms",
               }}
               onClick={(e) => handleOption(e, "complete")}
             >
               Complete
             </Typography>
+          </Box>
+        ) : (
+          ""
+        )}
+        {staff && viewOptions ? (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              position: "absolute",
+              right: "-9rem",
+              top: "6rem",
+              borderRadius: "0.5rem",
+              background: "#fff",
+              padding: "0.3rem ",
+              border: "1px solid #C4C4C4",
+              transitionDuration: "500ms",
+            }}
+          >
+            {staffs.length > 0
+              ? staffs.map((staff_) => (
+                  <Typography
+                    key={staff_.id}
+                    sx={{
+                      padding: "0.5rem 2.5rem 0.5rem 1rem",
+                      color: add ? "#0257E6" : "#C4C4C4",
+                      borderRadius: "0.5rem",
+                      fontSize: "0.8rem",
+                      cursor: "pointer",
+                      background:
+                        reassign && staffId_ === staff_.id
+                          ? "rgba(2, 87, 230, 0.4)"
+                          : "transparent",
+                      transitionDuration: "500ms",
+                    }}
+                    onClick={() => handleReassign(staff_.id)}
+                  >
+                    {staff_.name}
+                  </Typography>
+                ))
+              : ""}
           </Box>
         ) : (
           ""
@@ -224,8 +294,14 @@ function Detail() {
             <Typography sx={{ fontWeight: "600", fontSize: "0.8rem" }}>
               Name
             </Typography>
-            <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
-              {loading5 ? <ClipLoader /> : request.name}
+            <Typography sx={{ width: "250px", fontSize: "0.8rem" }}>
+              {loading5 ? (
+                <Box sx={{ width: "15px" }}>
+                  <ClipLoader />
+                </Box>
+              ) : (
+                request.name
+              )}
             </Typography>
           </Box>
           <Box
@@ -240,7 +316,7 @@ function Detail() {
             <Typography sx={{ fontWeight: "600", fontSize: "0.8rem" }}>
               phone number
             </Typography>
-            <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
+            <Typography sx={{ width: "250px", fontSize: "0.8rem" }}>
               {loading5 ? <ClipLoader /> : request.number}
             </Typography>
           </Box>
@@ -257,7 +333,7 @@ function Detail() {
             <Typography sx={{ fontWeight: "600", fontSize: "0.8rem" }}>
               Date
             </Typography>
-            <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
+            <Typography sx={{ width: "250px", fontSize: "0.8rem" }}>
               {loading5 ? <ClipLoader /> : request.date}
             </Typography>
           </Box>
@@ -273,8 +349,14 @@ function Detail() {
             <Typography sx={{ fontWeight: "600", fontSize: "0.8rem" }}>
               CC Ticket ID
             </Typography>
-            <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
-              {loading5 ? <ClipLoader /> : request.cc}
+            <Typography sx={{ width: "250px", fontSize: "0.8rem" }}>
+              {loading5 ? (
+                <Box sx={{ width: "15px" }}>
+                  <ClipLoader />
+                </Box>
+              ) : (
+                request.cc
+              )}
             </Typography>
           </Box>
           <Box
@@ -289,7 +371,7 @@ function Detail() {
             <Typography sx={{ fontWeight: "600", fontSize: "0.8rem" }}>
               Category
             </Typography>
-            <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
+            <Typography sx={{ width: "250px", fontSize: "0.8rem" }}>
               {loading5 ? <ClipLoader /> : request.cat}
             </Typography>
           </Box>
@@ -305,7 +387,7 @@ function Detail() {
             <Typography sx={{ fontWeight: "600", fontSize: "0.8rem" }}>
               Complaint
             </Typography>
-            <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
+            <Typography sx={{ width: "250px", fontSize: "0.8rem" }}>
               {loading5 ? <ClipLoader /> : request.complaints}
             </Typography>
           </Box>
@@ -321,7 +403,7 @@ function Detail() {
             <Typography sx={{ fontWeight: "600", fontSize: "0.8rem" }}>
               MCC
             </Typography>
-            <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
+            <Typography sx={{ width: "250px", fontSize: "0.8rem" }}>
               {loading5 ? <ClipLoader /> : request.mcc}
             </Typography>
           </Box>
@@ -337,7 +419,7 @@ function Detail() {
             <Typography sx={{ fontWeight: "600", fontSize: "0.8rem" }}>
               MNC
             </Typography>
-            <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
+            <Typography sx={{ width: "250px", fontSize: "0.8rem" }}>
               {loading5 ? <ClipLoader /> : request.mnc}
             </Typography>
           </Box>
@@ -353,7 +435,7 @@ function Detail() {
             <Typography sx={{ fontWeight: "600", fontSize: "0.8rem" }}>
               LAC
             </Typography>
-            <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
+            <Typography sx={{ width: "250px", fontSize: "0.8rem" }}>
               {loading5 ? <ClipLoader /> : request.lac}
             </Typography>
           </Box>
@@ -369,13 +451,35 @@ function Detail() {
             <Typography sx={{ fontWeight: "600", fontSize: "0.8rem" }}>
               Created Time
             </Typography>
-            <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
+            <Typography sx={{ width: "250px", fontSize: "0.8rem" }}>
               {loading5 ? <ClipLoader /> : request.createdT}
             </Typography>
           </Box>
-          {request.details !== null ||
-          request.details !== undefined ||
-          request.details !== "" ? (
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "start",
+              justifyContent: "space-between",
+              width: "100%",
+              pb: "0.8rem",
+            }}
+          >
+            <Typography sx={{ fontWeight: "600", fontSize: "0.8rem" }}>
+              Description
+            </Typography>
+            <Box sx={{ width: "250px", fontSize: "0.8rem" , display: "flex", flexWrap: "wrap"}}>
+              {loading5 ? (
+                <ClipLoader />
+              ) : (
+                ussd?.log_array?.map((arr) => (
+                  <Typography sx={{ fontWeight: "600", fontSize: "0.8rem" }}>
+                    {`${arr} / ${ " "} `}
+                  </Typography>
+                ))
+              )}
+            </Box>
+          </Box>
+          {request.details !== null ? (
             <Box
               sx={{
                 display: "flex",
@@ -388,9 +492,9 @@ function Detail() {
               <Typography sx={{ fontWeight: "600", fontSize: "0.8rem" }}>
                 Added Info
               </Typography>
-              <Typography sx={{ width: "130px", fontSize: "0.8rem" }}>
+              <Box sx={{ width: "250px", fontSize: "0.8rem" }}>
                 {loading5 ? <ClipLoader /> : request.details}
-              </Typography>
+              </Box>
             </Box>
           ) : (
             ""

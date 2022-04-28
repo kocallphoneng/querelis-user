@@ -91,7 +91,6 @@ function Sidebar() {
         left: "0",
         bottom: "0",
         background: "#0257E6",
-
         cursor: "pointer",
         zIndex: "999",
       }}

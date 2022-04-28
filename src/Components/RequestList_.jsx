@@ -12,6 +12,7 @@ import client from "../helpers/axiosInstance";
 import HourglassTopOutlinedIcon from "@mui/icons-material/HourglassTopOutlined";
 import { ClipLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
+import Moment from 'react-moment';
 
 function Audit() {
   const state = useSelector((state) => state);
@@ -41,13 +42,15 @@ function Audit() {
   const { requests } = state.user;
   const { reqLoading } = state.displayState;
   const [loading, setLoading] = useState(false)
-
+  console.log(requests);
   const dispatch = useDispatch();
   const navigate = useNavigate()
-  const { showDetail_, setReqId, getAllRequests } = bindActionCreators(
+  const { showDetail_, setReqId, getAllRequests, setUssd } = bindActionCreators(
     actionCreators,
     dispatch
   );
+  const date_ = new Date()
+  console.log("date_.getMonth()", date_.getDate());
 
   useEffect(() => {
     setList(requests);
@@ -66,12 +69,14 @@ function Audit() {
     createT,
     status,
     assign,
-    details
+    details,
+    ussd
   ) => {
     const newT = createT.split("T")[1];
     const newT_ = newT.split(".")[0];
     const newD = `${date.slice(0, date.indexOf("T"))}\n
       ${date.slice(date.indexOf("T") + 1, date.indexOf("."))}`;
+    
     return {
       id,
       company,
@@ -84,6 +89,7 @@ function Audit() {
       status,
       assign,
       details,
+      ussd,
     };
   };
   const columns = [
@@ -106,11 +112,12 @@ function Audit() {
       req.created_at,
       req.cc_ticket_id,
       "details.tikT",
-      true,
+      req.updated_at,
       req.created_at,
       req.status,
       req.assigned_to,
-      "view"
+      "view",
+      req.ussd_details
     )
   );
   const restore = async () => {
@@ -151,7 +158,6 @@ function Audit() {
   };
 
   const handleReducePage = (e) => {
-
     e.preventDefault();
     if (page > 1) {
       setRowIndex(rowIndex - 1);
@@ -212,9 +218,16 @@ function Audit() {
           ))}
         </Paper>
         {reqLoading ? (
-          <Box sx={{width: "95%", display: "flex", justifyContent: "center", paddingTop: "1rem"}}>
+          <Box
+            sx={{
+              width: "95%",
+              display: "flex",
+              justifyContent: "center",
+              paddingTop: "1rem",
+            }}
+          >
             <ClipLoader />
-            </Box>
+          </Box>
         ) : (
           <Box sx={{ pb: "2rem", minHeight: "400px" }}>
             {rows.slice(rowIndex * rowsPerPage, total).map((req) => (
@@ -302,10 +315,18 @@ function Audit() {
                   sx={{
                     width: "9%",
                     display: "flex",
-                    justifyContent: "center",
+                    fontSize: "0.8rem",
                   }}
                 >
-                  <HourglassTopOutlinedIcon />
+                  {req.status === "pending" ? (
+                    <HourglassTopOutlinedIcon />
+                  ) : (
+                    <>
+                      <Moment diff={req.reolvedT} unit="days">
+                        {req.createT}
+                      </Moment> days
+                    </>
+                  )}
                 </Box>
 
                 <Box
@@ -391,7 +412,7 @@ function Audit() {
                       }}
                       onClick={() => handleAccept(req.id)}
                     >
-                      {loading && id === req.id? <ClipLoader /> :"Accept"}
+                      {loading && id === req.id ? <ClipLoader /> : "Accept"}
                     </button>
                   ) : (
                     <Button
@@ -400,8 +421,7 @@ function Audit() {
                         fontSize: "0.7rem",
                         textTransform: "capitalize",
                         background: "#C4C4C4",
-                        }}
-                        
+                      }}
                       disabled
                     >
                       accept
@@ -421,7 +441,10 @@ function Audit() {
                       fontSize: "0.7rem",
                       textTransform: "capitalize",
                     }}
-                    onClick={() => setView(req.id)}
+                    onClick={() => {
+                      setView(req.id);
+                      setUssd(req.ussd);
+                    }}
                   >
                     View
                   </Button>
