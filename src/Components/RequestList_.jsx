@@ -12,11 +12,11 @@ import client from "../helpers/axiosInstance";
 import HourglassTopOutlinedIcon from "@mui/icons-material/HourglassTopOutlined";
 import { ClipLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
-import Moment from 'react-moment';
+import Moment from "react-moment";
 
 function Audit() {
   const state = useSelector((state) => state);
-  const [id, setId] = useState(0)
+  const [id, setId] = useState(0);
   const rowsPerPage = 10;
   // eslint-disable-next-line no-unused-vars
   const [list, setList] = useState([
@@ -41,17 +41,15 @@ function Audit() {
 
   const { requests } = state.user;
   const { reqLoading } = state.displayState;
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   console.log(requests);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { showDetail_, setReqId, getAllRequests, setUssd } = bindActionCreators(
     actionCreators,
     dispatch
   );
-  const date_ = new Date()
-  console.log("date_.getMonth()", date_.getDate());
-
+  
   useEffect(() => {
     setList(requests);
     handlePageNumber();
@@ -71,12 +69,13 @@ function Audit() {
     assign,
     details,
     ussd
+    
   ) => {
     const newT = createT.split("T")[1];
     const newT_ = newT.split(".")[0];
     const newD = `${date.slice(0, date.indexOf("T"))}\n
       ${date.slice(date.indexOf("T") + 1, date.indexOf("."))}`;
-    
+    const dateString = createT;
     return {
       id,
       company,
@@ -90,6 +89,7 @@ function Audit() {
       assign,
       details,
       ussd,
+      dateString,
     };
   };
   const columns = [
@@ -167,13 +167,13 @@ function Audit() {
   };
 
   const handleAccept = (id) => {
-    setId(id)
-    setLoading(true)
+    setId(id);
+    setLoading(true);
     client
       .patch(`/support-requests/${id}/assign`)
       .then(() => {
-        restore()
-        setLoading(false)
+        restore();
+        setLoading(false);
       })
       .catch((err) => console.log(err));
   };
@@ -318,13 +318,11 @@ function Audit() {
                     fontSize: "0.8rem",
                   }}
                 >
-                  {req.status === "pending" ? (
+                  {req.status === "resolved" ? (
                     <HourglassTopOutlinedIcon />
                   ) : (
                     <>
-                      <Moment diff={req.reolvedT} unit="days">
-                        {req.createT}
-                      </Moment> days
+                      <Moment fromNow>{req.dateString}</Moment>
                     </>
                   )}
                 </Box>

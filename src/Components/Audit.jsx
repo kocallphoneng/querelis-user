@@ -7,16 +7,15 @@ import SkipPreviousOutlinedIcon from "@mui/icons-material/SkipPreviousOutlined";
 import { useSelector } from "react-redux";
 import empty from "../images/void.svg";
 import HourglassTopOutlinedIcon from "@mui/icons-material/HourglassTopOutlined";
-
-// import HourglassBottomOutlinedIcon from "@mui/icons-material/HourglassBottomOutlined";
+import Moment from "react-moment";
 
 function AllRequestList() {
   const [rowIndex, setRowIndex] = useState(0);
   const [allowedPages, setAllowedPages] = useState(2);
-  const [total, setTotal] = useState(5);
+  const [total, setTotal] = useState(10);
   const [page, setPage] = useState(rowIndex + 1);
   const state = useSelector((state) => state);
-  const rowsPerPage = 5;
+  const rowsPerPage = 10;
   const [list, setList] = useState([
     {
       id: 0,
@@ -35,9 +34,8 @@ function AllRequestList() {
   ]);
 
   const { requests } = state.user;
-  
+
   useEffect(() => {
-    console.log("requests", );
     setList(requests);
     handlePageNumber();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -55,7 +53,8 @@ function AllRequestList() {
     mnc,
     lac,
     ci,
-    status
+    status,
+    createT
   ) => {
     return {
       id,
@@ -70,6 +69,7 @@ function AllRequestList() {
       lac,
       ci,
       status,
+      createT,
     };
   };
 
@@ -87,7 +87,7 @@ function AllRequestList() {
     { id: "status", label: "Status" },
   ];
 
-  const rows = list.map((req) =>
+  const rows = requests.map((req) =>
     createData(
       req.id,
       req.company.name,
@@ -100,36 +100,35 @@ function AllRequestList() {
       req.mnc,
       req.lac,
       req.ci,
-      req.status
+      req.status,
+      req.created_at
     )
   );
 
-  const handlePageNumber = () => {
-    const remainder = list.length % 5;
-    if (remainder === 0) {
-      setAllowedPages(parseInt(list.length / 5));
-    } else {
-      setAllowedPages(parseInt(list.length / 5) + 1);
-    }
-  };
-  console.log(list);
-
-  const handleAddPage = (e) => {
-    e.preventDefault();
-    if (page < allowedPages) {
-      setRowIndex(rowIndex + 1);
-      setPage(page + 1);
-      setTotal(total + rowsPerPage);
-    }
-  };
-  const handleReducePage = (e) => {
-    e.preventDefault();
-    if (page > 1) {
-      setRowIndex(rowIndex - 1);
-      setPage(page - 1);
-      setTotal(total - rowsPerPage);
-    }
-  };
+ const handlePageNumber = () => {
+   const remainder = list.length % 10;
+   if (remainder === 0) {
+     setAllowedPages(parseInt(list.length / 10));
+   } else {
+     setAllowedPages(parseInt(list.length / 10) + 1);
+   }
+ };
+ const handleAddPage = (e) => {
+   e.preventDefault();
+   if (page < allowedPages) {
+     setRowIndex(rowIndex + 1);
+     setPage(page + 1);
+     setTotal(total + rowsPerPage);
+   }
+ };
+ const handleReducePage = (e) => {
+   e.preventDefault();
+   if (page > 1) {
+     setRowIndex(rowIndex - 1);
+     setPage(page - 1);
+     setTotal(total - rowsPerPage);
+   }
+ };
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -143,7 +142,6 @@ function AllRequestList() {
       >
         Requests
       </Typography>
-
       <Box>
         <Paper
           sx={{
@@ -276,12 +274,18 @@ function AllRequestList() {
 
                 <Box
                   sx={{
-                    width: "calc(100% / 11)",
+                    width: "9%",
                     display: "flex",
-                    justifyContent: "center",
+                    fontSize: "0.8rem",
                   }}
                 >
-                  <HourglassTopOutlinedIcon />
+                  {request.status === "resolved" ? (
+                    <HourglassTopOutlinedIcon />
+                  ) : (
+                    <>
+                      <Moment fromNow>{request.createT}</Moment>
+                    </>
+                  )}
                 </Box>
                 <Typography
                   sx={{

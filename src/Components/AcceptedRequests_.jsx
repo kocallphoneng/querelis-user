@@ -53,10 +53,10 @@ function Accepted() {
     reolvedT,
     status,
     details,
-    ussd
+    ussd,
+  createT,
   ) => {
     const newName = company.name;
-
     return {
       id,
       newName,
@@ -67,6 +67,7 @@ function Accepted() {
       status,
       details,
       ussd,
+      createT,
     };
   };
 
@@ -96,7 +97,8 @@ function Accepted() {
       details.updated_at,
       details.status,
       "view",
-      details.ussd_details
+      details.ussd_details,
+      details.created_at
     )
   );
   const handlePageNumber = () => {
@@ -228,14 +230,12 @@ function Accepted() {
                   display: "flex",
                 }}
               >
-                {req.status === "pending" ? (
+                {req.status === "resolved" ? (
                   <HourglassTopOutlinedIcon />
                 ) : (
                   <>
-                    <Moment diff={req.reolvedT} unit="days">
-                      {req.createT}
-                    </Moment>{" "}
-                    days
+                    {/* {console.log(req.createT)} */}
+                    <Moment fromNow>{req.createT}</Moment>
                   </>
                 )}
               </Box>
