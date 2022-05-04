@@ -14,6 +14,7 @@ import Moment from "react-moment";
 function Accepted() {
   const state = useSelector((state) => state);
   const rowsPerPage = 10;
+  // eslint-disable-next-line no-unused-vars
   const [list, setList] = useState([
     {
       id: 0,
@@ -54,7 +55,7 @@ function Accepted() {
     status,
     details,
     ussd,
-  createT,
+    createT
   ) => {
     const newName = company.name;
     return {
@@ -81,7 +82,7 @@ function Accepted() {
     { id: "ci", label: "Details" },
   ];
 
-  const filter = list.filter((list_) => {
+  const filter = requests.filter((list_) => {
     return (
       list_.assigned_to !== null &&
       list_.assigned_to.id.toString() === localStorage.id_.toString()
@@ -101,11 +102,13 @@ function Accepted() {
       details.created_at
     )
   );
+
   const handlePageNumber = () => {
     const remainder = rows.length % 10;
     if (remainder === 0) {
       setAllowedPages(parseInt(rows.length / 10));
     } else {
+      console.log(rows / 10 + 1);
       setAllowedPages(parseInt(rows.length / 10) + 1);
     }
   };
@@ -127,7 +130,7 @@ function Accepted() {
       setTotal(total - rowsPerPage);
     }
   };
-
+  const today = new Date()
   return (
     <Box sx={{ width: "100%" }}>
       <Typography
@@ -233,10 +236,17 @@ function Accepted() {
                 {req.status === "resolved" ? (
                   <HourglassTopOutlinedIcon />
                 ) : (
-                  <>
-                    {/* {console.log(req.createT)} */}
-                    <Moment fromNow>{req.createT}</Moment>
-                  </>
+                  <Box
+                    sx={{
+                      display: "flex",
+                    }}
+                  >
+                    <Moment diff={req.createT} unit="hours">
+                      {today}
+                    </Moment>
+                    {"  "}
+                    <p style={{ paddingLeft: "0.5rem" }}>hours</p>
+                  </Box>
                 )}
               </Box>
 
@@ -373,6 +383,7 @@ function Accepted() {
                   fontSize: "0.8rem",
                 }}
               >
+                {console.log("pages", page)}
                 {allowedPages}
               </Typography>
               <SkipNextOutlinedIcon

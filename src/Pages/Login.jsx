@@ -53,6 +53,15 @@ function Login() {
       localStorage.setItem("user", res.data.user.user_type);
       localStorage.setItem("name", res.data.user.name);
       localStorage.setItem("id_", res.data.user.id);
+      client.interceptors.request.use(
+        (config) => {
+          config.headers.authorization = `Bearer ${res.data.access_token}`;
+          return config;
+        },
+        (error) => {
+          return Promise.reject(error);
+        }
+      );
       login(res.data);
       setLoading(false);
       if (res.data.user.user_type === "support_staff") {
@@ -128,7 +137,7 @@ function Login() {
             fontWeight: "600",
           }}
         >
-          Admin Login
+          Login
         </Typography>
         <Formik
           initialValues={{

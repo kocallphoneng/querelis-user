@@ -13,6 +13,7 @@ import HourglassTopOutlinedIcon from "@mui/icons-material/HourglassTopOutlined";
 import { ClipLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
 import Moment from "react-moment";
+import { toast } from "react-toastify";
 
 function Audit() {
   const state = useSelector((state) => state);
@@ -49,7 +50,7 @@ function Audit() {
     actionCreators,
     dispatch
   );
-  
+
   useEffect(() => {
     setList(requests);
     handlePageNumber();
@@ -69,13 +70,13 @@ function Audit() {
     assign,
     details,
     ussd
-    
   ) => {
     const newT = createT.split("T")[1];
     const newT_ = newT.split(".")[0];
     const newD = `${date.slice(0, date.indexOf("T"))}\n
       ${date.slice(date.indexOf("T") + 1, date.indexOf("."))}`;
     const dateString = createT;
+
     return {
       id,
       company,
@@ -96,7 +97,7 @@ function Audit() {
     { id: "name", label: "Name" },
     { id: "tel", label: "Mobile Number" },
     { id: "date", label: "Date" },
-    { id: "cc", label: "CC Tickect ID" },
+    { id: "cc", label: "CC Ticket ID" },
     { id: "cat", label: "Ticket Time" },
     { id: "reolveT", label: "Created Time" },
     { id: "mcc", label: "Resolved Time" },
@@ -111,7 +112,7 @@ function Audit() {
       req.phone_number,
       req.created_at,
       req.cc_ticket_id,
-      "details.tikT",
+      req.ussd_details.created_at,
       req.updated_at,
       req.created_at,
       req.status,
@@ -173,11 +174,27 @@ function Audit() {
       .patch(`/support-requests/${id}/assign`)
       .then(() => {
         restore();
+        toast.success("Request Accepted", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          delay: 500,
+        });
         setLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setLoading(false);
+        toast.error("Something went wrong", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          delay: 500,
+        });
+      });
   };
-
+  const today = new Date();
   return (
     <Box sx={{ width: "100%" }}>
       <Typography
@@ -321,9 +338,17 @@ function Audit() {
                   {req.status === "resolved" ? (
                     <HourglassTopOutlinedIcon />
                   ) : (
-                    <>
-                      <Moment fromNow>{req.dateString}</Moment>
-                    </>
+                    <Box
+                      sx={{
+                        display: "flex",
+                      }}
+                    >
+                      <Moment diff={req.dateString} unit="hours">
+                        {today}
+                      </Moment>
+                      {"  "}
+                      <p style={{ paddingLeft: "0.5rem" }}>hours</p>
+                    </Box>
                   )}
                 </Box>
 

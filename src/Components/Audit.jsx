@@ -16,6 +16,7 @@ function AllRequestList() {
   const [page, setPage] = useState(rowIndex + 1);
   const state = useSelector((state) => state);
   const rowsPerPage = 10;
+  // eslint-disable-next-line no-unused-vars
   const [list, setList] = useState([
     {
       id: 0,
@@ -86,7 +87,7 @@ function AllRequestList() {
     { id: "ci", label: "CI" },
     { id: "status", label: "Status" },
   ];
-
+  console.log(requests);
   const rows = requests.map((req) =>
     createData(
       req.id,
@@ -105,31 +106,31 @@ function AllRequestList() {
     )
   );
 
- const handlePageNumber = () => {
-   const remainder = list.length % 10;
-   if (remainder === 0) {
-     setAllowedPages(parseInt(list.length / 10));
-   } else {
-     setAllowedPages(parseInt(list.length / 10) + 1);
-   }
- };
- const handleAddPage = (e) => {
-   e.preventDefault();
-   if (page < allowedPages) {
-     setRowIndex(rowIndex + 1);
-     setPage(page + 1);
-     setTotal(total + rowsPerPage);
-   }
- };
- const handleReducePage = (e) => {
-   e.preventDefault();
-   if (page > 1) {
-     setRowIndex(rowIndex - 1);
-     setPage(page - 1);
-     setTotal(total - rowsPerPage);
-   }
- };
-
+  const handlePageNumber = () => {
+    const remainder = requests.length % 10;
+    if (remainder === 0) {
+      setAllowedPages(parseInt(requests.length / 10));
+    } else {
+      setAllowedPages(parseInt(requests.length / 10) + 1);
+    }
+  };
+  const handleAddPage = (e) => {
+    e.preventDefault();
+    if (page < allowedPages) {
+      setRowIndex(rowIndex + 1);
+      setPage(page + 1);
+      setTotal(total + rowsPerPage);
+    }
+  };
+  const handleReducePage = (e) => {
+    e.preventDefault();
+    if (page > 1) {
+      setRowIndex(rowIndex - 1);
+      setPage(page - 1);
+      setTotal(total - rowsPerPage);
+    }
+  };
+  const today = new Date();
   return (
     <Box sx={{ width: "100%" }}>
       <Typography
@@ -282,9 +283,17 @@ function AllRequestList() {
                   {request.status === "resolved" ? (
                     <HourglassTopOutlinedIcon />
                   ) : (
-                    <>
-                      <Moment fromNow>{request.createT}</Moment>
-                    </>
+                    <Box
+                      sx={{
+                        display: "flex",
+                      }}
+                    >
+                      <Moment diff={request.createT} unit="hours">
+                        {today}
+                      </Moment>
+                      {"  "}
+                      <p style={{ paddingLeft: "0.5rem" }}>hours</p>
+                    </Box>
                   )}
                 </Box>
                 <Typography

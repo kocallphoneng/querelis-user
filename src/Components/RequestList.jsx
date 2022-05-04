@@ -18,6 +18,7 @@ function RequestList() {
 
   const state = useSelector((state) => state);
   const rowsPerPage = 10;
+  // eslint-disable-next-line no-unused-vars
   const [list, setList] = useState([
     {
       id: 0,
@@ -80,7 +81,7 @@ function RequestList() {
     { id: "name", label: "Name" },
     { id: "tel", label: "Mobile Number" },
     { id: "date", label: "Date" },
-    { id: "cc", label: "CC Tickect ID" },
+    { id: "cc", label: "CC Ticket ID" },
     { id: "cat", label: "Category" },
     { id: "complaint", label: "Resolved Time" },
     { id: "mcc", label: "MCC" },
@@ -109,11 +110,11 @@ function RequestList() {
   );
 
   const handlePageNumber = () => {
-    const remainder = list.length % 10;
+    const remainder = requests.length % 10;
     if (remainder === 0) {
-      setAllowedPages(parseInt(list.length / 10));
+      setAllowedPages(parseInt(requests.length / 10));
     } else {
-      setAllowedPages(parseInt(list.length / 10) + 1);
+      setAllowedPages(parseInt(requests.length / 10) + 1);
     }
   };
   const handleAddPage = (e) => {
@@ -132,7 +133,7 @@ function RequestList() {
       setTotal(total - rowsPerPage);
     }
   };
-
+  const today = new Date();
   return (
     <Box sx={{ width: "100%" }}>
       <Typography
@@ -294,15 +295,23 @@ function RequestList() {
                       sx={{
                         width: "9%",
                         display: "flex",
-                        fontSize: "0.8rem",
+                        fontSize: "0.7rem",
                       }}
                     >
                       {request.status === "resolved" ? (
                         <HourglassTopOutlinedIcon />
                       ) : (
-                        <>
-                          <Moment fromNow>{request.createT}</Moment>
-                        </>
+                        <Box
+                          sx={{
+                            display: "flex",
+                          }}
+                        >
+                          <Moment diff={request.createT} unit="hours">
+                            {today}
+                          </Moment>
+                          {"  "}
+                          <p style={{paddingLeft: "0.5rem"}}>hours</p>
+                        </Box>
                       )}
                     </Box>
                     <Typography

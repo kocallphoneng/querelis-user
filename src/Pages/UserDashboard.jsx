@@ -35,21 +35,21 @@ function Dashboard() {
     viewHelperScreen_,
     viewAddScreen_,
   } = state.displayState;
-  const { auth } = state.user;
+  // const { auth } = state.user;
   const { getAllRequests, hideLoading2, showLoading2 } = bindActionCreators(
     actionCreators,
     dispatch
   );
 
   useEffect(() => {
-    console.log(localStorage.accesstoken);
+    console.log("localStorage.accesstoken", localStorage.accesstoken);
     showLoading2();
     if (!localStorage.accesstoken) {
       navigate("/login");
     }
     client.interceptors.request.use(
       (config) => {
-        config.headers.authorization = `Bearer ${auth.access_token}`;
+        config.headers.authorization = `Bearer ${localStorage.accesstoken}`;
         return config;
       },
       (error) => {
