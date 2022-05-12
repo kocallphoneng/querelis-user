@@ -35,38 +35,30 @@ function Dashboard() {
     viewHelperScreen_,
     viewAddScreen_,
   } = state.displayState;
-  const { auth } = state.user;
+  
   const { getAllRequests, hideLoading2, showLoading2 } = bindActionCreators(
     actionCreators,
     dispatch
   );
-
   useEffect(() => {
-    console.log(localStorage.accesstoken);
+    const token = localStorage.getItem("accesstoken");
     showLoading2();
-    if (!localStorage.accesstoken) {
+
+    if (!token) {
       navigate("/login");
+    } else {
+      client
+        .get("/support-requests")
+        .then((res) => {
+          getAllRequests(res.data.data);
+          hideLoading2();
+        })
+        .catch((err) => {
+          if (err.response.data.message === "Unauthenticated.") {
+            navigate("/login");
+          }
+        });
     }
-    client.interceptors.request.use(
-      (config) => {
-        config.headers.authorization = `Bearer ${auth.access_token}`;
-        return config;
-      },
-      (error) => {
-        return Promise.reject(error);
-      }
-    );
-    client
-      .get("/support-requests")
-      .then((res) => {
-        getAllRequests(res.data.data);
-        hideLoading2();
-      })
-      .catch((err) => {
-        if (err.response.data.message === "Unauthenticated.") {
-          navigate("/login")
-        }
-      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -47,16 +47,7 @@ function Dashboard() {
     }
     setIsLoading();
     showLoading1();
-    const token = localStorage.getItem("accesstoken");
-    client.interceptors.request.use(
-      (config) => {
-        config.headers.authorization = `Bearer ${token}`;
-        return config;
-      },
-      (error) => {
-        return Promise.reject(error);
-      }
-    );
+    
     try {
       const fetchData = async () => {
         const staffRes = await client.get("/support-staff");

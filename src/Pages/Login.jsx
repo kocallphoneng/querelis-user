@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -10,7 +10,7 @@ import MailOutlineOutlinedIcon from "@mui/icons-material/MailOutlineOutlined";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
 import { useNavigate } from "react-router-dom";
@@ -24,16 +24,12 @@ import "react-toastify/dist/ReactToastify.css";
 function Login() {
   const [showPassword, setShowPassword] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
-
   const handleClickShowPassword = () => setShowPassword(!showPassword);
-
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const state = useSelector((state) => state);
-  const { auth } = state.user;
 
   const { login, firstTimeEmail } = bindActionCreators(
     actionCreators,
@@ -41,6 +37,7 @@ function Login() {
   );
 
   const handleSubmit = async (values) => {
+    localStorage.clear();
     setLoading(true);
     const user = {
       email: values.email,
@@ -49,17 +46,20 @@ function Login() {
     try {
       const res = await client.post("/login", user);
       const token = res.data.access_token;
+
       localStorage.setItem("accesstoken", token);
       localStorage.setItem("user", res.data.user.user_type);
       localStorage.setItem("name", res.data.user.name);
       localStorage.setItem("id_", res.data.user.id);
+    
+      console.log(res.data);
       login(res.data);
-      setLoading(false);
       if (res.data.user.user_type === "support_staff") {
         navigate("/userdashboard");
       } else if (res.data.user.user_type === "company") {
         navigate("/dashboard");
       }
+      setLoading(false);
     } catch (err) {
       setLoading(false);
       if (err.response.data.code === "FIRST_LOGIN") {
@@ -87,7 +87,6 @@ function Login() {
       }
     }
   };
-  useEffect(() => console.log("auth", auth), [auth]);
   const formValidation = yup.object().shape({
     email: yup.string().email("Invalid Email Addresss").required("*Required"),
     password: yup.string().required("*Required"),
@@ -128,7 +127,7 @@ function Login() {
             fontWeight: "600",
           }}
         >
-          Admin Login
+          Login
         </Typography>
         <Formik
           initialValues={{

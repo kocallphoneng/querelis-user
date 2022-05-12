@@ -1,28 +1,13 @@
 import axios from "axios";
 
-let headers = {
-  Accept: "application/json",
-  "Content-Type": "application/json",
-};
-
 const client = axios.create({
-  baseURL: "http://159.89.52.5/api",
-  headers,
+  baseURL: "http://159.89.52.5/api"
 });
-const setToken = () => {
-  if (localStorage.accesstoken) {
-    const token = localStorage.getItem("accesstoken");
-    console.log(token);
-    client.interceptors.request.use(
-      (config) => {
-        config.headers.authorization = `Bearer ${token}`;
-        return config;
-      },
-      (error) => {
-        return Promise.reject(error);
-      }
-    );
-  }
-};
-setToken();
+
+client.interceptors.request.use(function (config) {
+  config.headers["Authorization"] =
+    "Bearer " + localStorage.getItem("accesstoken");
+  return config;
+});
+
 export default client;

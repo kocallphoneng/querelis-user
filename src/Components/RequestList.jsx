@@ -8,17 +8,17 @@ import { useSelector } from "react-redux";
 import ClipLoader from "../Components/Spinners/ClipSpinner";
 import empty from "../images/void.svg";
 import HourglassTopOutlinedIcon from "@mui/icons-material/HourglassTopOutlined";
-
-// import HourglassBottomOutlinedIcon from "@mui/icons-material/HourglassBottomOutlined";
+import Moment from "react-moment";
 
 function RequestList() {
   const [rowIndex, setRowIndex] = useState(0);
   const [allowedPages, setAllowedPages] = useState(2);
-  const [total, setTotal] = useState(5);
+  const [total, setTotal] = useState(10);
   const [page, setPage] = useState(rowIndex + 1);
 
   const state = useSelector((state) => state);
-  const rowsPerPage = 5;
+  const rowsPerPage = 10;
+  // eslint-disable-next-line no-unused-vars
   const [list, setList] = useState([
     {
       id: 0,
@@ -37,10 +37,8 @@ function RequestList() {
   ]);
 
   const { requests, loading } = state.user;
-  
 
   useEffect(() => {
-    console.log("requests", requests);
     setList(requests);
 
     handlePageNumber();
@@ -54,12 +52,13 @@ function RequestList() {
     date,
     cc,
     cat,
-    reoslvedT,
+    resolvedT,
     mcc,
     mnc,
     lac,
     ci,
-    status
+    status,
+    createT
   ) => {
     return {
       id,
@@ -68,12 +67,13 @@ function RequestList() {
       date,
       cc,
       cat,
-      reoslvedT,
+      resolvedT,
       mcc,
       mnc,
       lac,
       ci,
       status,
+      createT,
     };
   };
 
@@ -81,7 +81,7 @@ function RequestList() {
     { id: "name", label: "Name" },
     { id: "tel", label: "Mobile Number" },
     { id: "date", label: "Date" },
-    { id: "cc", label: "CC Tickect ID" },
+    { id: "cc", label: "CC Ticket ID" },
     { id: "cat", label: "Category" },
     { id: "complaint", label: "Resolved Time" },
     { id: "mcc", label: "MCC" },
@@ -90,8 +90,8 @@ function RequestList() {
     { id: "ci", label: "CI" },
     { id: "status", label: "Status" },
   ];
-
-  const rows = list.map((req) =>
+  // console.log(list);
+  const rows = requests.map((req) =>
     createData(
       req.id,
       req.company.name,
@@ -104,20 +104,19 @@ function RequestList() {
       req.mnc,
       req.lac,
       req.ci,
-      req.status
+      req.status,
+      req.created_at
     )
   );
 
   const handlePageNumber = () => {
-    const remainder = list.length % 5;
+    const remainder = requests.length % 10;
     if (remainder === 0) {
-      setAllowedPages(parseInt(list.length / 5));
+      setAllowedPages(parseInt(requests.length / 10));
     } else {
-      setAllowedPages(parseInt(list.length / 5) + 1);
+      setAllowedPages(parseInt(requests.length / 10) + 1);
     }
   };
-  console.log(list);
-
   const handleAddPage = (e) => {
     e.preventDefault();
     if (page < allowedPages) {
@@ -134,7 +133,7 @@ function RequestList() {
       setTotal(total - rowsPerPage);
     }
   };
-
+  // const today = new Date();
   return (
     <Box sx={{ width: "100%" }}>
       <Typography
@@ -294,12 +293,26 @@ function RequestList() {
 
                     <Box
                       sx={{
-                        width: "calc(100% / 11)",
+                        width: "9%",
                         display: "flex",
-                        justifyContent: "center",
+                        fontSize: "0.7rem",
                       }}
                     >
-                      <HourglassTopOutlinedIcon />
+                      {request.status !== "resolved" ? (
+                        <HourglassTopOutlinedIcon />
+                      ) : (
+                        <Box
+                          sx={{
+                            display: "flex",
+                          }}
+                        >
+                          <Moment diff={request.createT} unit="hours">
+                            {request.resolvedT}
+                          </Moment>
+                          {"  "}
+                          <p style={{ paddingLeft: "0.5rem" }}>hours</p>
+                        </Box>
+                      )}
                     </Box>
                     <Typography
                       sx={{
@@ -412,7 +425,7 @@ function RequestList() {
             )}
           </>
         )}
-        {rows.length > 5 ? (
+        {rows.length > 10 ? (
           <Box
             sx={{
               width: "90%",

@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import client from "../helpers/axiosInstance";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import SkipNextOutlinedIcon from "@mui/icons-material/SkipNextOutlined";
 import SkipPreviousOutlinedIcon from "@mui/icons-material/SkipPreviousOutlined";
 import ClipLoader from "../Components/Spinners/ClipSpinner";
@@ -20,19 +20,11 @@ function Cards() {
   });
   const [loading, setLoading] = useState(false);
   const [scroll, setScroll] = useState(false);
-  const state = useSelector((state) => state);
-  const { auth } = state.user;
+  // const state = useSelector((state) => state);
+  // const { auth } = state.user;
   const support = () => {
     setLoading(true);
-    client.interceptors.request.use(
-      (config) => {
-        config.headers.authorization = `Bearer ${auth.access_token}`;
-        return config;
-      },
-      (error) => {
-        return Promise.reject(error);
-      }
-    );
+   
     client
       .get("/company-statistics")
       .then((res) => {

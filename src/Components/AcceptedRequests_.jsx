@@ -14,6 +14,7 @@ import Moment from "react-moment";
 function Accepted() {
   const state = useSelector((state) => state);
   const rowsPerPage = 10;
+  // eslint-disable-next-line no-unused-vars
   const [list, setList] = useState([
     {
       id: 0,
@@ -50,23 +51,24 @@ function Accepted() {
     tel,
     date,
     cc,
-    reolvedT,
+    resolvedT,
     status,
     details,
-    ussd
+    ussd,
+    createT
   ) => {
     const newName = company.name;
-
     return {
       id,
       newName,
       tel,
       date,
       cc,
-      reolvedT,
+      resolvedT,
       status,
       details,
       ussd,
+      createT,
     };
   };
 
@@ -80,7 +82,7 @@ function Accepted() {
     { id: "ci", label: "Details" },
   ];
 
-  const filter = list.filter((list_) => {
+  const filter = requests.filter((list_) => {
     return (
       list_.assigned_to !== null &&
       list_.assigned_to.id.toString() === localStorage.id_.toString()
@@ -93,17 +95,20 @@ function Accepted() {
       details.phone_number,
       details.date,
       details.cc_ticket_id,
-      details.updated_at,
+      details.resolved_time,
       details.status,
       "view",
-      details.ussd_details
+      details.ussd_details,
+      details.created_at
     )
   );
+
   const handlePageNumber = () => {
     const remainder = rows.length % 10;
     if (remainder === 0) {
       setAllowedPages(parseInt(rows.length / 10));
     } else {
+      console.log(rows / 10 + 1);
       setAllowedPages(parseInt(rows.length / 10) + 1);
     }
   };
@@ -125,7 +130,7 @@ function Accepted() {
       setTotal(total - rowsPerPage);
     }
   };
-
+  // const today = new Date()
   return (
     <Box sx={{ width: "100%" }}>
       <Typography
@@ -228,15 +233,20 @@ function Accepted() {
                   display: "flex",
                 }}
               >
-                {req.status === "pending" ? (
+                {req.status !== "resolved" ? (
                   <HourglassTopOutlinedIcon />
                 ) : (
-                  <>
-                    <Moment diff={req.reolvedT} unit="days">
-                      {req.createT}
-                    </Moment>{" "}
-                    days
-                  </>
+                  <Box
+                    sx={{
+                      display: "flex",
+                    }}
+                  >
+                    <Moment diff={req.createT} unit="hours">
+                      {req.resolvedT}
+                    </Moment>
+                    {"  "}
+                    <p style={{ paddingLeft: "0.5rem" }}>hours</p>
+                  </Box>
                 )}
               </Box>
 
@@ -373,6 +383,7 @@ function Accepted() {
                   fontSize: "0.8rem",
                 }}
               >
+                {console.log("pages", page)}
                 {allowedPages}
               </Typography>
               <SkipNextOutlinedIcon

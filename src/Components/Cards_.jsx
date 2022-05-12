@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import client from "../helpers/axiosInstance";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import ClipLoader from "../Components/Spinners/ClipSpinner";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -13,21 +13,13 @@ function Cards() {
     answered: 0,
     unansweredReq: 0,
   });
-  const state = useSelector((state) => state);
-  const { auth } = state.user;
+  // const state = useSelector((state) => state);
+  // const { auth } = state.user;
   const [loading, setLoading] = useState(false);
 
   const support = () => {
     setLoading(true);
-    client.interceptors.request.use(
-      (config) => {
-        config.headers.authorization = `Bearer ${auth.access_token}`;
-        return config;
-      },
-      (error) => {
-        return Promise.reject(error);
-      }
-    );
+    
     client
       .get("/support-staff-statistics")
       .then((res) => {

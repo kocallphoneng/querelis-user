@@ -1,3 +1,4 @@
+import React from "react";
 import Box from "@mui/material/Box";
 import ForgotPassword from "./Pages/ForgotPassword";
 import Verification from "./Pages/ResetPassword";
@@ -5,9 +6,13 @@ import Login from "./Pages/Login";
 import CompulsoryPassword from "./Pages/CompulsoryChange";
 import NewPassword from "./Pages/NewPassword";
 import Dashboard from "./Pages/Dashboard";
-import UserDashboard from "./Pages/UserDashboard"
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-
+import UserDashboard from "./Pages/UserDashboard";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 
 function App() {
   return (

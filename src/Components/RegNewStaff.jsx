@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -17,6 +17,7 @@ function RegNewComapany() {
   const navigate = useNavigate();
   const { loading } = state.displayState;
   const dispatch = useDispatch();
+
   const {
     showCreateSuccess,
     showLoading,
@@ -24,6 +25,7 @@ function RegNewComapany() {
     getAllStaffs,
     getAllRequests,
   } = bindActionCreators(actionCreators, dispatch);
+
   const formValidation = yup.object().shape({
     staffName: yup.string().required("*Required"),
     staffId: yup.number().required("*Required"),
@@ -31,20 +33,9 @@ function RegNewComapany() {
     email: yup.string().email("Invalid Email Addresss").required("*Required"),
     password: yup.string().required("*Required"),
   });
+
   const restore = () => {
-    if (!localStorage.token || localStorage.user !== "company") {
-      navigate("/login");
-    }
-    const token = localStorage.getItem("token");
-    client.interceptors.request.use(
-      (config) => {
-        config.headers.authorization = `Bearer ${token}`;
-        return config;
-      },
-      (error) => {
-        return Promise.reject(error);
-      }
-    );
+    
     try {
       const fetchData = async () => {
         const staffRes = await client.get("/support-staff");
@@ -73,23 +64,23 @@ function RegNewComapany() {
       }
     }
   };
-  const handleSubmit = (values) => {
-    console.log(values.photo.files);
-    const formData = new FormData();
-    formData.append("image", values.photo);
+  const formData = new FormData();
 
+  const [image, setImage] = useState(null);
+
+  const handleSubmit = (values) => {
     showLoading();
+
+    formData.append("name", values.staffName);
+    formData.append("staff_id", values.staffId);
+    formData.append(" phone_number", values.contact);
+    formData.append("email", values.email);
+    formData.append("password", values.password);
+    formData.append("image", image);
+
     client
-      .post("/support-staff", {
-        name: values.staffName,
-        staff_id: values.staffId,
-        phone_number: values.contact,
-        email: values.email,
-        password: values.password,
-        image: values.photo,
-      })
+      .post("/support-staff", formData)
       .then((res) => {
-        console.log(res);
         hideLoading();
         restore();
         showCreateSuccess();
@@ -243,34 +234,26 @@ function RegNewComapany() {
             <Box color="red">
               <ErrorMessage name="contact" />
             </Box>
-            <Field name="photo">
-              {({
-                field, // { name, value, onChange, onBlur }
-                form: { touched, errors }, // also values, setXXXX, handleXXXX, dirty, isValid, status, etc.
-              }) => (
-                <input
-                  type="file"
-                  placeholder="Company logo"
-                  className="input"
-                  onChange={(e) =>
-                    props.setFieldValue("photos", e.target.files[0])
-                  }
-                  {...field}
-                  style={{
-                    heignt: "100%",
-                    marginTop: "1rem",
-                    padding: "0.4rem",
-                    marginLeft: "0.1rem",
-                    borderRadius: "0.4rem",
-                    width: "100%",
-                    border: "none",
-                    boxShadow: "0px 0px 0px 2px rgba(0,0,0,0.1)",
-                    WebkitBoxShadow: "0px 0px 0px 1px rgba(0,0,0,0.2)",
-                    MozBoxShadow: "0px 0px 0px 1px rgba(0,0,0,0.2)",
-                  }}
-                />
-              )}
-            </Field>
+
+            <input
+              type="file"
+              required
+              placeholder="Profile image"
+              className="input"
+              style={{
+                heignt: "100%",
+                marginTop: "1rem",
+                padding: "0.4rem",
+                marginLeft: "0.1rem",
+                borderRadius: "0.4rem",
+                width: "100%",
+                border: "none",
+                boxShadow: "0px 0px 0px 2px rgba(0,0,0,0.1)",
+                WebkitBoxShadow: "0px 0px 0px 1px rgba(0,0,0,0.2)",
+                MozBoxShadow: "0px 0px 0px 1px rgba(0,0,0,0.2)",
+              }}
+              onChange={(e) => setImage(e.target.files[0])}
+            />
 
             <Field name="email">
               {({

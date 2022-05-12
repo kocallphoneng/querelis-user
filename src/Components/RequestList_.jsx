@@ -12,11 +12,12 @@ import client from "../helpers/axiosInstance";
 import HourglassTopOutlinedIcon from "@mui/icons-material/HourglassTopOutlined";
 import { ClipLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
-import Moment from 'react-moment';
+import Moment from "react-moment";
+import { toast } from "react-toastify";
 
 function Audit() {
   const state = useSelector((state) => state);
-  const [id, setId] = useState(0)
+  const [id, setId] = useState(0);
   const rowsPerPage = 10;
   // eslint-disable-next-line no-unused-vars
   const [list, setList] = useState([
@@ -41,16 +42,14 @@ function Audit() {
 
   const { requests } = state.user;
   const { reqLoading } = state.displayState;
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   console.log(requests);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { showDetail_, setReqId, getAllRequests, setUssd } = bindActionCreators(
     actionCreators,
     dispatch
   );
-  const date_ = new Date()
-  console.log("date_.getMonth()", date_.getDate());
 
   useEffect(() => {
     setList(requests);
@@ -64,41 +63,35 @@ function Audit() {
     tel,
     date,
     cc,
-    tikT,
-    reolvedT,
-    createT,
+    createdT,
+    resolvedT,
     status,
-    assign,
-    details,
-    ussd
+    assign
   ) => {
-    const newT = createT.split("T")[1];
-    const newT_ = newT.split(".")[0];
-    const newD = `${date.slice(0, date.indexOf("T"))}\n
-      ${date.slice(date.indexOf("T") + 1, date.indexOf("."))}`;
-    
+    // const newT = createT.split("T")[1];
+    // const newT_ = newT.split(".")[0];
+    // const newD = `${date.slice(0, date.indexOf("T"))}\n
+    //   ${date.slice(date.indexOf("T") + 1, date.indexOf("."))}`;
+    // const dateString = createT;
+
     return {
       id,
       company,
       tel,
-      newD,
+      date,
       cc,
-      tikT,
-      reolvedT,
-      newT_,
+      createdT,
+      resolvedT,
       status,
       assign,
-      details,
-      ussd,
     };
   };
   const columns = [
     { id: "name", label: "Name" },
     { id: "tel", label: "Mobile Number" },
     { id: "date", label: "Date" },
-    { id: "cc", label: "CC Tickect ID" },
+    { id: "cc", label: "CC Ticket ID" },
     { id: "cat", label: "Ticket Time" },
-    { id: "reolveT", label: "Created Time" },
     { id: "mcc", label: "Resolved Time" },
     { id: "mnc", label: "Status" },
     { id: "lac", label: "Assign" },
@@ -109,17 +102,15 @@ function Audit() {
       req.id,
       req.company,
       req.phone_number,
-      req.created_at,
+      req.date,
       req.cc_ticket_id,
-      "details.tikT",
-      req.updated_at,
       req.created_at,
+      req.resolved_time,
       req.status,
-      req.assigned_to,
-      "view",
-      req.ussd_details
+      req.assigned_to
     )
   );
+
   const restore = async () => {
     try {
       const fetchData = async () => {
@@ -167,17 +158,33 @@ function Audit() {
   };
 
   const handleAccept = (id) => {
-    setId(id)
-    setLoading(true)
+    setId(id);
+    setLoading(true);
     client
       .patch(`/support-requests/${id}/assign`)
       .then(() => {
-        restore()
-        setLoading(false)
+        restore();
+        toast.success("Request Accepted", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          delay: 500,
+        });
+        setLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setLoading(false);
+        toast.error("Something went wrong", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          delay: 500,
+        });
+      });
   };
-
+  const today = new Date();
   return (
     <Box sx={{ width: "100%" }}>
       <Typography
@@ -272,9 +279,10 @@ function Audit() {
                     pr: "1rem",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
+                    textAlign: "center",
                   }}
                 >
-                  {req.newD}
+                  {req.date}
                 </Typography>
 
                 <Typography
@@ -297,20 +305,23 @@ function Audit() {
                     textOverflow: "ellipsis",
                   }}
                 >
-                  {req.tikT}
+                  {req.status !== "pending" ? (
+                    <>
+                      <Moment diff={req.createdT} unit="hours">
+                        {req.resolvedT}
+                      </Moment>{" "}
+                      hours
+                    </>
+                  ) : (
+                    <>
+                      <Moment diff={req.createdT} unit="hours">
+                        {today}
+                      </Moment>{" "}
+                      hours
+                    </>
+                  )}
                 </Typography>
 
-                <Typography
-                  sx={{
-                    width: "9%",
-                    fontSize: "0.7rem",
-                    pr: "1rem",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  {req.newT_}
-                </Typography>
                 <Box
                   sx={{
                     width: "9%",
@@ -318,14 +329,20 @@ function Audit() {
                     fontSize: "0.8rem",
                   }}
                 >
-                  {req.status === "pending" ? (
+                  {req.status !== "resolved" && !req.resolvedT ? (
                     <HourglassTopOutlinedIcon />
                   ) : (
-                    <>
-                      <Moment diff={req.reolvedT} unit="days">
-                        {req.createT}
-                      </Moment> days
-                    </>
+                    <Box
+                      sx={{
+                        display: "flex",
+                      }}
+                    >
+                      <Moment diff={req.createdT} unit="hours">
+                        {req.resolvedT}
+                      </Moment>
+                      {"  "}
+                      <p style={{ paddingLeft: "0.5rem" }}>hours</p>
+                    </Box>
                   )}
                 </Box>
 
