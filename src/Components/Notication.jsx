@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Avatar from "@mui/material/Avatar";
 import Message from "./Message";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 
 function Notication() {
   const [showMsg, setShowMsg] = useState(false);

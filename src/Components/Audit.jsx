@@ -25,7 +25,7 @@ function AllRequestList() {
       date: "DD/MM/YYYY/T/DD/MM/YYYY/.",
       cc: "",
       cat: "",
-      reoslvedT: "",
+      resolvedT: "",
       mcc: "",
       mnc: "",
       lac: "",
@@ -49,7 +49,7 @@ function AllRequestList() {
     date,
     cc,
     cat,
-    reoslvedT,
+    resolvedT,
     mcc,
     mnc,
     lac,
@@ -64,7 +64,7 @@ function AllRequestList() {
       date,
       cc,
       cat,
-      reoslvedT,
+      resolvedT,
       mcc,
       mnc,
       lac,
@@ -87,7 +87,7 @@ function AllRequestList() {
     { id: "ci", label: "CI" },
     { id: "status", label: "Status" },
   ];
-  console.log(requests);
+
   const rows = requests.map((req) =>
     createData(
       req.id,
@@ -130,7 +130,7 @@ function AllRequestList() {
       setTotal(total - rowsPerPage);
     }
   };
-  const today = new Date();
+  // const today = new Date();
   return (
     <Box sx={{ width: "100%" }}>
       <Typography
@@ -280,7 +280,7 @@ function AllRequestList() {
                     fontSize: "0.8rem",
                   }}
                 >
-                  {request.status === "resolved" ? (
+                  {request.status !== "resolved" ? (
                     <HourglassTopOutlinedIcon />
                   ) : (
                     <Box
@@ -289,7 +289,7 @@ function AllRequestList() {
                       }}
                     >
                       <Moment diff={request.createT} unit="hours">
-                        {today}
+                        {request.resolvedT}
                       </Moment>
                       {"  "}
                       <p style={{ paddingLeft: "0.5rem" }}>hours</p>

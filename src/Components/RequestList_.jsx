@@ -63,34 +63,27 @@ function Audit() {
     tel,
     date,
     cc,
-    tikT,
-    reolvedT,
-    createT,
+    createdT,
+    resolvedT,
     status,
-    assign,
-    details,
-    ussd
+    assign
   ) => {
-    const newT = createT.split("T")[1];
-    const newT_ = newT.split(".")[0];
-    const newD = `${date.slice(0, date.indexOf("T"))}\n
-      ${date.slice(date.indexOf("T") + 1, date.indexOf("."))}`;
-    const dateString = createT;
+    // const newT = createT.split("T")[1];
+    // const newT_ = newT.split(".")[0];
+    // const newD = `${date.slice(0, date.indexOf("T"))}\n
+    //   ${date.slice(date.indexOf("T") + 1, date.indexOf("."))}`;
+    // const dateString = createT;
 
     return {
       id,
       company,
       tel,
-      newD,
+      date,
       cc,
-      tikT,
-      reolvedT,
-      newT_,
+      createdT,
+      resolvedT,
       status,
       assign,
-      details,
-      ussd,
-      dateString,
     };
   };
   const columns = [
@@ -99,7 +92,6 @@ function Audit() {
     { id: "date", label: "Date" },
     { id: "cc", label: "CC Ticket ID" },
     { id: "cat", label: "Ticket Time" },
-    { id: "reolveT", label: "Created Time" },
     { id: "mcc", label: "Resolved Time" },
     { id: "mnc", label: "Status" },
     { id: "lac", label: "Assign" },
@@ -110,17 +102,15 @@ function Audit() {
       req.id,
       req.company,
       req.phone_number,
-      req.created_at,
+      req.date,
       req.cc_ticket_id,
-      req.ussd_details.created_at,
-      req.updated_at,
       req.created_at,
+      req.resolved_time,
       req.status,
-      req.assigned_to,
-      "view",
-      req.ussd_details
+      req.assigned_to
     )
   );
+
   const restore = async () => {
     try {
       const fetchData = async () => {
@@ -289,9 +279,10 @@ function Audit() {
                     pr: "1rem",
                     overflow: "hidden",
                     textOverflow: "ellipsis",
+                    textAlign: "center",
                   }}
                 >
-                  {req.newD}
+                  {req.date}
                 </Typography>
 
                 <Typography
@@ -314,20 +305,23 @@ function Audit() {
                     textOverflow: "ellipsis",
                   }}
                 >
-                  {req.tikT}
+                  {req.status !== "pending" ? (
+                    <>
+                      <Moment diff={req.createdT} unit="hours">
+                        {req.resolvedT}
+                      </Moment>{" "}
+                      hours
+                    </>
+                  ) : (
+                    <>
+                      <Moment diff={req.createdT} unit="hours">
+                        {today}
+                      </Moment>{" "}
+                      hours
+                    </>
+                  )}
                 </Typography>
 
-                <Typography
-                  sx={{
-                    width: "9%",
-                    fontSize: "0.7rem",
-                    pr: "1rem",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
-                >
-                  {req.newT_}
-                </Typography>
                 <Box
                   sx={{
                     width: "9%",
@@ -335,7 +329,7 @@ function Audit() {
                     fontSize: "0.8rem",
                   }}
                 >
-                  {req.status === "resolved" ? (
+                  {req.status !== "resolved" && !req.resolvedT ? (
                     <HourglassTopOutlinedIcon />
                   ) : (
                     <Box
@@ -343,8 +337,8 @@ function Audit() {
                         display: "flex",
                       }}
                     >
-                      <Moment diff={req.dateString} unit="hours">
-                        {today}
+                      <Moment diff={req.createdT} unit="hours">
+                        {req.resolvedT}
                       </Moment>
                       {"  "}
                       <p style={{ paddingLeft: "0.5rem" }}>hours</p>

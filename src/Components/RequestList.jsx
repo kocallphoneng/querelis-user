@@ -52,7 +52,7 @@ function RequestList() {
     date,
     cc,
     cat,
-    reoslvedT,
+    resolvedT,
     mcc,
     mnc,
     lac,
@@ -67,7 +67,7 @@ function RequestList() {
       date,
       cc,
       cat,
-      reoslvedT,
+      resolvedT,
       mcc,
       mnc,
       lac,
@@ -133,7 +133,7 @@ function RequestList() {
       setTotal(total - rowsPerPage);
     }
   };
-  const today = new Date();
+  // const today = new Date();
   return (
     <Box sx={{ width: "100%" }}>
       <Typography
@@ -298,7 +298,7 @@ function RequestList() {
                         fontSize: "0.7rem",
                       }}
                     >
-                      {request.status === "resolved" ? (
+                      {request.status !== "resolved" ? (
                         <HourglassTopOutlinedIcon />
                       ) : (
                         <Box
@@ -307,10 +307,10 @@ function RequestList() {
                           }}
                         >
                           <Moment diff={request.createT} unit="hours">
-                            {today}
+                            {request.resolvedT}
                           </Moment>
                           {"  "}
-                          <p style={{paddingLeft: "0.5rem"}}>hours</p>
+                          <p style={{ paddingLeft: "0.5rem" }}>hours</p>
                         </Box>
                       )}
                     </Box>

@@ -51,7 +51,7 @@ function Accepted() {
     tel,
     date,
     cc,
-    reolvedT,
+    resolvedT,
     status,
     details,
     ussd,
@@ -64,7 +64,7 @@ function Accepted() {
       tel,
       date,
       cc,
-      reolvedT,
+      resolvedT,
       status,
       details,
       ussd,
@@ -95,7 +95,7 @@ function Accepted() {
       details.phone_number,
       details.date,
       details.cc_ticket_id,
-      details.updated_at,
+      details.resolved_time,
       details.status,
       "view",
       details.ussd_details,
@@ -130,7 +130,7 @@ function Accepted() {
       setTotal(total - rowsPerPage);
     }
   };
-  const today = new Date()
+  // const today = new Date()
   return (
     <Box sx={{ width: "100%" }}>
       <Typography
@@ -233,7 +233,7 @@ function Accepted() {
                   display: "flex",
                 }}
               >
-                {req.status === "resolved" ? (
+                {req.status !== "resolved" ? (
                   <HourglassTopOutlinedIcon />
                 ) : (
                   <Box
@@ -242,7 +242,7 @@ function Accepted() {
                     }}
                   >
                     <Moment diff={req.createT} unit="hours">
-                      {today}
+                      {req.resolvedT}
                     </Moment>
                     {"  "}
                     <p style={{ paddingLeft: "0.5rem" }}>hours</p>
