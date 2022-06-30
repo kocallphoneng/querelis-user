@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
-import MailOutlineSharpIcon from "@mui/icons-material/MailOutlineSharp";
+// import MailOutlineSharpIcon from "@mui/icons-material/MailOutlineSharp";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
@@ -13,15 +13,15 @@ function Navbar() {
   const { requests } = state.user;
   const { welcome, accepted } = state.displayState;
   const dispatch = useDispatch();
-  const { showNotification, showDetail_, setReqId } = bindActionCreators(
+  const {  showDetail_, setReqId } = bindActionCreators(
     actionCreators,
     dispatch
   );
   const [text, setText] = useState("")
-  const handleNotification = (e) => {
-    e.preventDefault();
-    showNotification();
-  };
+  // const handleNotification = (e) => {
+  //   e.preventDefault();
+  //   showNotification();
+  // };
   const search = () => {
     requests.forEach(request => {
       
@@ -124,7 +124,7 @@ function Navbar() {
           alignItems: "center",
         }}
       >
-        {localStorage.user === "support_staff" ? (
+        {/* {localStorage.user === "support_staff" ? (
           <MailOutlineSharpIcon
             onClick={(e) => handleNotification(e)}
             sx={{
@@ -136,7 +136,7 @@ function Navbar() {
           />
         ) : (
           ""
-        )}
+        )} */}
 
         <Avatar
           alt="user avatar"

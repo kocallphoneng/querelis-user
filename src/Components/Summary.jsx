@@ -1,50 +1,56 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import DatePicker from "@mui/lab/DatePicker";
 import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import Button from "@mui/material/Button";
-import { Formik, Form,  ErrorMessage } from "formik";
-import * as yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
+import client from "../helpers/axiosInstance";
+import { ClipLoader } from "react-spinners";
 
 function Summary() {
   const state = useSelector((state) => state);
   const { staffs } = state.user;
   const dispatch = useDispatch();
-  const { showSummaryReport, setSummaryDate, setStaffId } =
+  const { showSummaryReport, setSummaryDate,  setSummaryReport } =
     bindActionCreators(actionCreators, dispatch);
 
-  const handleSubmit = (values) => {
-    const end = values.end.toString();
-    const start = values.start.toString();
-    const name = values.name;
-    let startMonth = start.slice(4, 8);
-    let startDay = start.slice(8, 11);
-    let startYear = start.slice(11, 15);
-    let endMonth = end.slice(4, 8);
-    let endDay = end.slice(8, 11);
-    let endYear = end.slice(11, 15);
-
-    const date = `${startDay}-${startMonth}-${startYear} - ${endDay}-${endMonth}-${endYear}`;
-    setSummaryDate(date);
-    setStaffId(name);
-    console.log("cuhcijiciiciijojijivvjvvik")
-    showSummaryReport();
-  };
-
-  const formValidation = yup.object().shape({
-    start: yup.string().required("*Required"),
-    end: yup.string().required("*Required"),
-    name: yup.string().required("*Required"),
+  const [param, setParam] = useState({
+    start: "",
+    end: "",
+    id: "",
   });
+  const [loading, setLoading] = useState(false);
+
+  const formData = new FormData();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const date = `${param.start} - ${param.end}`;
+    setSummaryDate(date);
+    formData.append("start_date", param.start);
+    formData.append("end_date", param.end);
+    formData.append("staff_id", param.id);
+
+    try {
+      const res = await client.post("/staff-statistics-for-company", formData);
+      console.log(res);
+      setSummaryReport({
+        comleted: res.data.no_of_completed_request,
+        assigned: res.data.no_of_request_assigned,
+        uncompleted: res.data.no_of_uncompleted_request,
+        status: res.data.staff_status,
+      });
+
+      setLoading(false);
+      showSummaryReport();
+    } catch (err) {
+      setLoading(false);
+    }
+  };
 
   return (
     <Box
@@ -74,126 +80,109 @@ function Summary() {
       >
         Staff Summary
       </Typography>
-      <Formik
-        initialValues={{
-          start: null,
-          end: null,
-          name: 0,
-        }}
-        validationSchema={formValidation}
-        onSubmit={(values) => handleSubmit(values)}
+      <form
+        onSubmit={(e) => handleSubmit(e)}
+        style={{ background: "white", padding: "0 2rem 1rem 2rem" }}
       >
-        {(props) => (
-          <Form style={{ background: "white", padding: "0 2rem 1rem 2rem" }}>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                width: "100%",
-                padding: "0 2rem",
-                pt: "1rem",
-              }}
-            >
-              <Typography
-                variant="subtitle1"
-                sx={{
-                  fontWeight: "300",
-                  fontSize: "1rem",
-                  width: "30%",
-                }}
-                gutterBottom
-                component="div"
-              >
-                Start date
-              </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            width: "100%",
+            padding: "0 2rem",
+            pt: "1rem",
+          }}
+        >
+          <Typography
+            variant="subtitle1"
+            sx={{
+              fontWeight: "300",
+              fontSize: "1rem",
+              width: "30%",
+              pt: "0.2rem",
+            }}
+          >
+            Start date
+          </Typography>
 
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  label="DD/MM/YYYY"
-                  inputFormat="dd/MM/yyyy"
-                  value={props.values.start}
-                  onChange={(e) => props.setFieldValue("start", e)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      style={{
-                        width: "70%",
-                      }}
-                      name="start"
-                      size="small"
-                    />
-                  )}
-                />
-                <ErrorMessage name="start" />
-              </LocalizationProvider>
-            </Box>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                width: "100%",
-                padding: "0 2rem",
-                pt: "1rem",
-              }}
-            >
-              <Typography
-                variant="subtitle1"
-                sx={{
-                  fontWeight: "300",
-                  fontSize: "1rem",
-                  width: "30%",
-                }}
-                gutterBottom
-                component="div"
-              >
-                End date
-              </Typography>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  label="DD/MM/YYYY"
-                  inputFormat="dd/MM/yyyy"
-                  value={props.values.end}
-                  onChange={(e) => props.setFieldValue("end", e)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      name="end"
-                      style={{
-                        width: "70%",
-                      }}
-                      size="small"
-                    />
-                  )}
-                />
-                <ErrorMessage name="end" />
-              </LocalizationProvider>
-            </Box>
-            <FormControl sx={{ width: "100%", padding: "1rem 2rem" }}>
-              <Select
-                value={props.values.name}
-                onChange={(e) => props.setFieldValue("name", e.target.value)}
-                displayEmpty
-                size="small"
-              >
-                <MenuItem value="">
-                  <em>Select Staff</em>
-                </MenuItem>
-                {staffs.map((company) => (
-                  <MenuItem key={company.id} value={company.id}>
-                    {company.name}
-                  </MenuItem>
-                ))}
-              </Select>
-              <ErrorMessage name="name" />
-            </FormControl>
-            <Box sx={{ p: "0 2rem", width: "100%" }}>
-              <Button type="submit" sx={{ width: "100%" }} variant="contained">
-                SUBMIT
-              </Button>
-            </Box>
-          </Form>
-        )}
-      </Formik>
+          <input
+            value={param.start}
+            onChange={(e) => setParam({ ...param, start: e.target.value })}
+            name={"start"}
+            type="date"
+            required
+            style={{
+              width: "100%",
+              padding: "0.5rem",
+              border: "1px solid lightgray",
+              outline: "none",
+              borderRadius: "0.1rem",
+            }}
+          />
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            width: "100%",
+            padding: "0 2rem",
+            pt: "1rem",
+          }}
+        >
+          <Typography
+            variant="subtitle1"
+            sx={{
+              fontWeight: "300",
+              fontSize: "1rem",
+              width: "30%",
+            }}
+          >
+            End date
+          </Typography>
+          <input
+            value={param.end}
+            onChange={(e) => setParam({ ...param, end: e.target.value })}
+            name={"end"}
+            type="date"
+            required
+            style={{
+              width: "100%",
+              padding: "0.5rem",
+              border: "1px solid lightgray",
+              outline: "none",
+              borderRadius: "0.1rem",
+            }}
+          />
+        </Box>
+        <Box
+          sx={{
+            px: "2rem",
+            my: "1rem",
+          }}
+        >
+          <Select
+            value={param.name}
+            onChange={(e) => setParam({ ...param, id: e.target.value })}
+            displayEmpty
+            size="small"
+            sx={{ width: "100%" }}
+          >
+            <MenuItem value="">
+              <em>Select Staff</em>
+            </MenuItem>
+            {staffs.map((company) => (
+              <MenuItem key={company.id} value={company.id}>
+                {company.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </Box>
+        <Box sx={{ p: "0 2rem", width: "100%" }}>
+          <Button type="submit" sx={{ width: "100%" }} variant="contained">
+            {loading ? <ClipLoader /> : "SUBMIT"}
+          </Button>
+        </Box>
+      </form>
     </Box>
     // <CompanySummary />
   );

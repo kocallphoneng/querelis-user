@@ -11,7 +11,7 @@ import client from "../helpers/axiosInstance";
 import ActivationScreen from "../Components/ActivationScreen";
 import Success from "../Components/Success";
 import EditCompany from "../Components/EditCompany";
-import CompanyRequests from "../Components/CompanyRequests";
+import CompanyRequests from "../Components/SummaryReport";
 import DeleteScreen from "../Components/DeleteScreen";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

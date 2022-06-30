@@ -12,7 +12,7 @@ import logo from "../images/logo.png";
 import NoteAddOutlinedIcon from "@mui/icons-material/NoteAddOutlined";
 import ListAltOutlinedIcon from "@mui/icons-material/ListAltOutlined";
 import ContactPageOutlinedIcon from "@mui/icons-material/ContactPageOutlined";
-import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
+// import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 
 function Sidebar() {
   const navigate = useNavigate();
@@ -69,7 +69,7 @@ function Sidebar() {
   useEffect(() => {
     setDisplay(state.displayState);
   }, [state]);
-  const { audit, staff, dashboard, password, summary, notify } = display;
+  const { audit, staff, dashboard, password, summary } = display;
 
   const {
     setAudit,
@@ -77,7 +77,7 @@ function Sidebar() {
     setDashboard,
     setPassword,
     setSummary,
-    showNotification,
+    // showNotification,
   } = bindActionCreators(actionCreators, dispatch);
 
   return (
@@ -158,7 +158,7 @@ function Sidebar() {
           Change Password
         </Typography>
       </Box>
-      <Box
+      {/* <Box
         onClick={(e) => {
           e.preventDefault();
           showNotification();
@@ -169,7 +169,7 @@ function Sidebar() {
         <Typography sx={notify ? selectText : unSelectText}>
           Notification
         </Typography>
-      </Box>
+      </Box> */}
       <Box
         sx={display.logout ? select : unSelect}
         onClick={() => {

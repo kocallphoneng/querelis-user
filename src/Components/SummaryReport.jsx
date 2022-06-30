@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
@@ -9,28 +9,12 @@ import { actionCreators } from "../state/index";
 
 function CompanyRequests() {
   const state = useSelector((state) => state);
-  const { staffs, staffId, summaryDate } = state.user;
-  const [staff, setStaff] = useState({
-    total: 0,
-    completed: 0,
-    uncompleted: 0,
-    status: "offline",
-  });
+  const { summaryDate, summaryReport } = state.user;
+  
   const dispatch = useDispatch();
-
+console.log(summaryReport)
   const { hideSummaryReport } = bindActionCreators(actionCreators, dispatch);
 
-  const display = () => {
-    staffs.forEach((select) => {
-      if (select.id === staffId) {
-        setStaff({
-          ...staff,
-        });
-      }
-    });
-  };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => display(), []);
   return (
     <Box
       sx={{
@@ -88,8 +72,10 @@ function CompanyRequests() {
               pb: "1rem",
             }}
           >
-            <Typography sx={{ fontWeight: "600" }}>Total Request:</Typography>
-            <Typography>{staff.total}</Typography>
+            <Typography sx={{ fontWeight: "600" }}>
+              Number of completed requests:
+            </Typography>
+            <Typography>{summaryReport.comleted}</Typography>
           </Box>
 
           <Box
@@ -102,9 +88,9 @@ function CompanyRequests() {
             }}
           >
             <Typography sx={{ fontWeight: "600" }}>
-              Number of Answered Request:
+              Number of uncompleted requests:
             </Typography>
-            <Typography>{staff.completed}</Typography>
+            <Typography>{summaryReport.uncompleted}</Typography>
           </Box>
           <Box
             sx={{
@@ -116,9 +102,9 @@ function CompanyRequests() {
             }}
           >
             <Typography sx={{ fontWeight: "600" }}>
-              Number of Unanswered Request:
+              Number of assigned request:
             </Typography>
-            <Typography>{staff.uncompleted}</Typography>
+            <Typography>{summaryReport.assigned}</Typography>
           </Box>
           <Box
             sx={{
@@ -129,10 +115,8 @@ function CompanyRequests() {
               pb: "1rem",
             }}
           >
-            <Typography sx={{ fontWeight: "600" }}>
-              Number of Support Staff:
-            </Typography>
-            <Typography>{staff.status}</Typography>
+            <Typography sx={{ fontWeight: "600" }}>Staff status:</Typography>
+            <Typography>{summaryReport.status}</Typography>
           </Box>
 
           <Box

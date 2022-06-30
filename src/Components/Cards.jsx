@@ -20,8 +20,6 @@ function Cards() {
   });
   const [loading, setLoading] = useState(false);
   const [scroll, setScroll] = useState(false);
-  // const state = useSelector((state) => state);
-  // const { auth } = state.user;
   const support = () => {
     setLoading(true);
    
@@ -48,7 +46,6 @@ function Cards() {
         setLoading(false);
       });
   };
-  console.log(scroll);
   useEffect(() => {
     support();
     // eslint-disable-next-line react-hooks/exhaustive-deps
