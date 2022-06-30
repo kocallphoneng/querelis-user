@@ -213,4 +213,6 @@ export const setStaffId_ = (id) => {
 export const setUssd = (ussd) => {
   return (dispatch) => dispatch({ type: "SETUSSD", payload: ussd });
 };
-// setUssd;
+export const setSummaryReport = (obj) => {
+  return (dispatch) => dispatch({ type: "SETSUMMARYREPORT", payload: obj });
+};

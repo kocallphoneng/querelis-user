@@ -28,10 +28,11 @@ function Login() {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+  console.log(process.env.REACT_APP_API_URL)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { login, firstTimeEmail } = bindActionCreators(
+  const { login, firstTimeEmail, setDashboard } = bindActionCreators(
     actionCreators,
     dispatch
   );
@@ -46,19 +47,13 @@ function Login() {
     try {
       const res = await client.post("/login", user);
       const token = res.data.access_token;
-
       localStorage.setItem("accesstoken", token);
       localStorage.setItem("user", res.data.user.user_type);
       localStorage.setItem("name", res.data.user.name);
       localStorage.setItem("id_", res.data.user.id);
-    
-      console.log(res.data);
+      setDashboard()
       login(res.data);
-      if (res.data.user.user_type === "support_staff") {
-        navigate("/userdashboard");
-      } else if (res.data.user.user_type === "company") {
-        navigate("/dashboard");
-      }
+      navigate("/dashboard");
       setLoading(false);
     } catch (err) {
       setLoading(false);

@@ -5,7 +5,7 @@ import Verification from "./Pages/ResetPassword";
 import Login from "./Pages/Login";
 import CompulsoryPassword from "./Pages/CompulsoryChange";
 import NewPassword from "./Pages/NewPassword";
-import Dashboard from "./Pages/Dashboard";
+import DashboardCtrl from "./Pages/DashboardCtrl";
 import UserDashboard from "./Pages/UserDashboard";
 import {
   BrowserRouter as Router,
@@ -25,7 +25,7 @@ function App() {
       <Router>
         <Routes>
           <Route path={"/"} element={<Navigate to="/login" />} />
-          <Route path={"/dashboard"} element={<Dashboard />} />
+          <Route path={"/dashboard"} element={<DashboardCtrl />} />
           <Route path={"/userdashboard"} element={<UserDashboard />} />
           <Route path={"/login"} element={<Login />} />
           <Route path={"/resetPassword"} element={<Verification />} />
@@ -37,25 +37,6 @@ function App() {
           />
         </Routes>
       </Router>
-      {/* {loading ? (
-        <Box
-          sx={{
-            display: "flex",
-            width: "100%",
-            height: "100%",
-            alignItems: "center",
-            justifyContent: "center",
-            position: "absolute",
-            zIndex: "111",
-            top: "0",
-            background: "rgba(0, 0, 0, 0.274)",
-          }}
-        >
-          <BeatSpinner />
-        </Box>
-      ) : (
-        ""
-      )} */}
     </Box>
   );
 }

@@ -54,7 +54,6 @@ function SupportList() {
     { id: 5, name: "" },
     { id: 6, name: "" },
   ];
-  console.log(list)
   const rows = list.map((staff) =>
     createData(
       staff.id,

@@ -51,111 +51,113 @@ function Notication() {
               All
             </Typography>
           </Paper>
-          
-            <Paper
+
+          <Paper
+            sx={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              cursor: "pointer",
+              textOverflow: "ellipsis",
+              overflow: "hidden",
+              mb: "0.5rem",
+              transition: "all",
+              transitionDuration: "1000",
+            }}
+            onClick={() => setShowMsg(true)}
+            elevation={0}
+          >
+            <Box
               sx={{
                 width: "100%",
-                display: "flex",
-                flexDirection: "column",
-                cursor: "pointer",
+                height: "100%",
+                backround: "transparent",
+                padding: "0.5rem",
                 textOverflow: "ellipsis",
-                overflow: "hidden",
-                mb: "0.5rem",
               }}
-              onClick={()=> setShowMsg(true)}
-              elevation={0}
+              onClick={(e) => {
+                e.preventDefault();
+                //   setShowMsg(true)
+                // setInfo(company);
+              }}
             >
               <Box
                 sx={{
                   width: "100%",
-                  height: "100%",
-                  backround: "transparent",
-                  padding: "0.5rem",
+                  display: "flex",
+                  alignItems: "center",
                   textOverflow: "ellipsis",
-                }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  //   setShowMsg(true)
-                  // setInfo(company);
+                  pr: "1rem",
                 }}
               >
+                <Avatar
+                  alt="Remy Sharp"
+                  src="/user.jpg"
+                  sx={{ boxShadow: "0px 4px 7px 3px #0000000A" }}
+                />
                 <Box
                   sx={{
+                    overflow: "hidden",
                     width: "100%",
-                    display: "flex",
-                    alignItems: "center",
                     textOverflow: "ellipsis",
-                    pr: "1rem",
+                    ml: "1rem",
+                    pr: "0.7rem",
                   }}
                 >
-                  <Avatar
-                    alt="Remy Sharp"
-                    src="/user.jpg"
-                    sx={{ boxShadow: "0px 4px 7px 3px #0000000A" }}
-                  />
+                  <Typography
+                    sx={{
+                      color: "#110C0C",
+                      fontSize: "0.8rem",
+                      fontWeight: "700",
+                      width: "100%",
+                      textTransform: "capitalize",
+                    }}
+                  >
+                    Tester
+                  </Typography>
                   <Box
                     sx={{
-                      overflow: "hidden",
-                      width: "100%",
                       textOverflow: "ellipsis",
-                      ml: "1rem",
-                      pr: "0.7rem",
                     }}
                   >
                     <Typography
                       sx={{
                         color: "#110C0C",
                         fontSize: "0.8rem",
-                        fontWeight: "700",
-                        width: "100%",
-                        textTransform: "capitalize",
-                      }}
-                    >
-                      Tester
-                    </Typography>
-                    <Box
-                      sx={{
+                        fontWeight: "100",
                         textOverflow: "ellipsis",
+                        width: "4000px",
+                        height: "1.5rem",
                       }}
                     >
-                      <Typography
-                        sx={{
-                          color: "#110C0C",
-                          fontSize: "0.8rem",
-                          fontWeight: "100",
-                          textOverflow: "ellipsis",
-                          width: "4000px",
-                          height: "1.5rem",
-                        }}
-                      >
-                        {
-                          "Yo Badman Badman..Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lacus elementum duis ut amet, ac eget metus quis nulla. Est tempus pellentesque diam eget duis mauris, integer. Et ut lacus, dignissim ullamcorper ultrices malesuada ullamcorper pretium. Nullam lobortis vel etiam et lorem sit id purus aliquet.. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lacus elementum duis ut amet, ac eget metus quis nulla. Est tempus pellentesque diam eget duis mauris, integer. Et ut lacus, dignissim ullamcorper ultrices malesuada "
-                        }
-                      </Typography>
-                    </Box>
+                      {
+                        "Yo Badman Badman..Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lacus elementum duis ut amet, ac eget metus quis nulla. Est tempus pellentesque diam eget duis mauris, integer. Et ut lacus, dignissim ullamcorper ultrices malesuada ullamcorper pretium. Nullam lobortis vel etiam et lorem sit id purus aliquet.. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lacus elementum duis ut amet, ac eget metus quis nulla. Est tempus pellentesque diam eget duis mauris, integer. Et ut lacus, dignissim ullamcorper ultrices malesuada "
+                      }
+                    </Typography>
                   </Box>
                 </Box>
-                <Box
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  width: "100%",
+                }}
+              >
+                <Typography
                   sx={{
-                    display: "flex",
-                    justifyContent: "flex-end",
+                    color: "#0257E6",
+                    fontSize: "0.6rem",
+                    fontWeight: "600",
                     width: "100%",
+                    textAlign: "end",
                   }}
                 >
-                  <Typography
-                    sx={{
-                      color: "#0257E6",
-                      fontSize: "0.6rem",
-                      fontWeight: "600",
-                      width: "100%",
-                      textAlign: "end",
-                    }}
-                  >
-                    DD-MM-YYYY / 11:30AM
-                  </Typography>
-                </Box>
+                  DD-MM-YYYY / 11:30AM
+                </Typography>
               </Box>
-            </Paper>
+            </Box>
+          </Paper>
         </Box>
         {showMsg ? (
           <Box
@@ -163,6 +165,8 @@ function Notication() {
               width: "50%",
               postion: "relative",
               ml: "0.5rem",
+              transition: "all",
+              transitionDuration: "500",
             }}
           >
             <Box

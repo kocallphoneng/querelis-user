@@ -20,6 +20,12 @@ const initialState = {
   reqStatus: "",
   staffId_: 0,
   ussd: [],
+  summaryReport: {
+    completed: 0,
+    assigned: 0,
+    uncompleted: 0,
+    status: 0,
+  }
 };
 
 const userReducer = (state = initialState, action) => {
@@ -74,6 +80,8 @@ const userReducer = (state = initialState, action) => {
       return (state = { ...state, staffId_: action.payload });
     case "SETUSSD":
       return (state = { ...state, ussd: action.payload });
+      case "SETSUMMARYREPORT":
+        return (state = { ...state, summaryReport: action.payload });
     // ;
     default:
       return state;
