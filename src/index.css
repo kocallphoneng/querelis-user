@@ -1,13 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: "Quicksand", sans-serif;
+  font-family: "Quicksand", sans-serif !important;
 }
 body {
   background: #e5e5e5;
-  width: 100vw;
-  overflow-x: hidden;
+  width: 100%;
 }
 .test {
   background: #110c0c75;
