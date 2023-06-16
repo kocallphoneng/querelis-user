@@ -16,7 +16,7 @@ import { actionCreators } from "../state/index";
 import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
-import client from "../helpers/axiosInstance";
+import client from "../Constants/helpers/axiosInstance";
 import ClipLoader from "../Components/Spinners/ClipSpinner";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -28,7 +28,7 @@ function Login() {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-  console.log(process.env.REACT_APP_API_URL)
+  console.log(process.env.REACT_APP_API_URL);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -51,7 +51,7 @@ function Login() {
       localStorage.setItem("user", res.data.user.user_type);
       localStorage.setItem("name", res.data.user.name);
       localStorage.setItem("id_", res.data.user.id);
-      setDashboard()
+      setDashboard();
       login(res.data);
       navigate("/dashboard");
       setLoading(false);

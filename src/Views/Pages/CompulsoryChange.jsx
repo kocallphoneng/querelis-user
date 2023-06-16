@@ -8,97 +8,76 @@ import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
-import client from "../helpers/axiosInstance";
+import client from "../Constants/helpers/axiosInstance";
+import { useSelector } from "react-redux";
 import ClipLoader from "../Components/Spinners/ClipSpinner";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-function NewPassword() {
+function CompulsoryPassword() {
   const state = useSelector((state) => state);
-  const { userEmail, otp, firstEmail, firstTimeUser } = state.user;
+  const { firstEmail } = state.user;
   const [loading, setLoading] = React.useState(false);
-
-  const [values, setValues] = React.useState({
+  const [display, setDisplay] = React.useState({
     view1: false,
     view2: false,
+    view3: false,
   });
-
   const navigate = useNavigate();
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-  const handleSubmit = (values) => {
-    setLoading(true);
-    if (firstTimeUser) {
-      client
-        .post("/change-password", {
-          email: firstEmail,
-          password: values.password,
-          password_confirmation: values.cfPassword,
-        })
-        .then((res) => {
-          setLoading(false);
-          navigate("/login");
-        })
-        .catch((err) => {
-          console.log(err);
-          setLoading(false);
-        });
-    } else {
-      client
-        .post("/reset-password", {
-          email: userEmail,
-          password: values.password,
-          password_confirmation: values.cfPassword,
-          token: otp,
-        })
-        .then(() => {
-          setLoading(false);
-          toast.success("Successful !", {
-            position: toast.POSITION.TOP_Right,
-          });
-          navigate("/login");
-        })
-        .catch((err) => {
-          err.response.data.message ===
-          "Your password must be different from the previous password"
-            ? toast.error(
-                "Your password must be different from the previous password !",
-                {
-                  position: toast.POSITION.TOP_RIGHT,
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                }
-              )
-            : toast.error("Please try again later", {
-                position: toast.POSITION.TOP_RIGHT,
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                delay: 500,
-              });
-          setLoading(false);
-        });
-    }
-  };
+  const handleClickShowPassword1 = () =>
+    setDisplay({ ...display, view1: !display.view1 });
+  const handleClickShowPassword2 = () =>
+    setDisplay({ ...display, view2: !display.view2 });
+  const handleClickShowPassword3 = () =>
+    setDisplay({ ...display, view3: !display.view3 });
 
+  const handleSubmit = (values) => {
+    console.log(values);
+    client
+      .post("/change-password", {
+        email: firstEmail,
+        password: values.password2,
+        password_confirmation: values.password3,
+      })
+      .then((res) => {
+        toast.success("Successful !", {
+          position: toast.POSITION.TOP_Right,
+        });
+        navigate("/login");
+      })
+      .catch((err) => {
+        err.response.data.message === "Invalid credentials"
+          ? toast.error("Invalid credentials !", {
+              position: toast.POSITION.TOP_RIGHT,
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+            })
+          : toast.error("Please try again later", {
+              position: toast.POSITION.TOP_RIGHT,
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              delay: 500,
+            });
+        setLoading(false);
+      });
+  };
   const formValidation = yup.object().shape({
-    password: yup
+    password1: yup.string().required("*Required"),
+    password2: yup.string().required("*Required"),
+    password3: yup
       .string()
-      .min(8, "*Password should be a minimum of 8 characters")
-      .required("*Required"),
-    cfPassword: yup
-      .string()
-      .oneOf([yup.ref("password")], "Password does not match")
+      .oneOf([yup.ref("password2")], "Password does not match")
       .required("*Required"),
   });
-
   return (
     <Box
       sx={{
@@ -112,8 +91,8 @@ function NewPassword() {
     >
       <Box
         sx={{
-          width: "100%",
           maxWidth: "600px",
+          width: "100%",
           display: "flex",
           flexDirection: "column",
           background: "#FFFFFF",
@@ -121,7 +100,8 @@ function NewPassword() {
           borderRadius: "16px",
           justifyContent: "center",
           alignItems: "center",
-          padding: "2rem",
+          padding: "2rem 3.5rem",
+          position: "relative",
         }}
       >
         <Typography
@@ -129,16 +109,12 @@ function NewPassword() {
             textAlign: "center",
             color: "#110C0C",
             fontSize: "1.2rem",
+            pb: "1rem",
             fontWeight: "600",
-            width: "100%",
           }}
-          variant="h6"
-          gutterBottom
-          component="div"
         >
-          Create New Password
+          Compulsory Password Change After 60 Days
         </Typography>
-
         <Typography
           sx={{
             width: "100%",
@@ -151,15 +127,16 @@ function NewPassword() {
           gutterBottom
           component="div"
         >
-          Your new password must be different from the previous password
+          Your password has expired. Please enter a new password before login.
         </Typography>
         <Formik
           initialValues={{
-            password: "",
-            cfPassword: "",
+            password1: "",
+            password2: "",
+            password3: "",
           }}
           validationSchema={formValidation}
-          onSubmit={handleSubmit}
+          onSubmit={(values) => handleSubmit(values)}
         >
           {(props) => (
             <Form
@@ -180,22 +157,19 @@ function NewPassword() {
                 <Field
                   as={OutlinedInput}
                   id="outlined-adornment-weight"
-                  name="password"
+                  name="password1"
                   style={{ padding: "0.2rem" }}
-                  type={values.view1 ? "text" : "password"}
-                  placeholder="Password"
+                  type={display.view1 ? "text" : "password"}
+                  placeholder="Old Password"
                   endAdornment={
                     <InputAdornment sx={{ mr: "1.2rem" }} position="end">
                       <IconButton
                         aria-label="toggle password visibility"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setValues({ ...values, view1: !values.view1 });
-                        }}
+                        onClick={handleClickShowPassword1}
                         onMouseDown={handleMouseDownPassword}
                         edge="end"
                       >
-                        {values.view1 ? (
+                        {display.view1 ? (
                           <VisibilityOff />
                         ) : (
                           <Visibility sx={{ color: "#0257E6" }} />
@@ -208,8 +182,8 @@ function NewPassword() {
                     "aria-label": "Password",
                   }}
                 />
-                <Box color="red">
-                  <ErrorMessage name="password" />
+                <Box color={"red"}>
+                  <ErrorMessage name="password1" />
                 </Box>
               </FormControl>
               <FormControl
@@ -220,22 +194,19 @@ function NewPassword() {
                 <Field
                   as={OutlinedInput}
                   id="outlined-adornment-weight"
-                  name="cfPassword"
+                  name="password2"
                   style={{ padding: "0.2rem" }}
-                  type={values.view2 ? "text" : "password"}
-                  placeholder="Confirm Password"
+                  type={display.view2 ? "text" : "password"}
+                  placeholder="New Password"
                   endAdornment={
                     <InputAdornment sx={{ mr: "1.2rem" }} position="end">
                       <IconButton
                         aria-label="toggle password visibility"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setValues({ ...values, view2: !values.view2 });
-                        }}
+                        onClick={handleClickShowPassword2}
                         onMouseDown={handleMouseDownPassword}
                         edge="end"
                       >
-                        {values.view2 ? (
+                        {display.view2 ? (
                           <VisibilityOff />
                         ) : (
                           <Visibility sx={{ color: "#0257E6" }} />
@@ -248,13 +219,49 @@ function NewPassword() {
                     "aria-label": "Password",
                   }}
                 />
-                <Box color="red">
-                  <ErrorMessage name="cfPassword" />
+                <Box color={"red"}>
+                  <ErrorMessage name="password2" />
                 </Box>
               </FormControl>
-
+              <FormControl
+                size="small"
+                sx={{ mb: "1rem", width: "100%" }}
+                variant="outlined"
+              >
+                <Field
+                  as={OutlinedInput}
+                  id="outlined-adornment-weight"
+                  name="password3"
+                  style={{ padding: "0.2rem" }}
+                  type={display.view3 ? "text" : "password"}
+                  placeholder="Confirm New Password"
+                  endAdornment={
+                    <InputAdornment sx={{ mr: "1.2rem" }} position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword3}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {display.view3 ? (
+                          <VisibilityOff />
+                        ) : (
+                          <Visibility sx={{ color: "#0257E6" }} />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  aria-describedby="outlined-weight-helper-text"
+                  inputProps={{
+                    "aria-label": "Password",
+                  }}
+                />
+                <Box color={"red"}>
+                  <ErrorMessage name="password3" />
+                </Box>
+              </FormControl>
               <Button
-                sx={{ width: "100%", padding: "0.5rem", m: "0.5rem 0" }}
+                sx={{ width: "100%", padding: "1rem", mt: "1rem" }}
                 variant="contained"
                 type="submit"
                 disabled={loading}
@@ -269,4 +276,4 @@ function NewPassword() {
   );
 }
 
-export default NewPassword;
+export default CompulsoryPassword;

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import client from "../helpers/axiosInstance";
+import client from "../Constants/helpers/axiosInstance";
 // import { useSelector } from "react-redux";
 import ClipLoader from "../Components/Spinners/ClipSpinner";
 import "react-toastify/dist/ReactToastify.css";
@@ -19,7 +19,7 @@ function Cards() {
 
   const support = () => {
     setLoading(true);
-    
+
     client
       .get("/support-staff-statistics")
       .then((res) => {
@@ -38,7 +38,7 @@ function Cards() {
     support();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  
+
   return (
     <Box
       sx={{

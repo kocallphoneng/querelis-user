@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
-import client from "../helpers/axiosInstance";
+import client from "../Constants/helpers/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
@@ -35,7 +35,6 @@ function RegNewComapany() {
   });
 
   const restore = () => {
-    
     try {
       const fetchData = async () => {
         const staffRes = await client.get("/support-staff");

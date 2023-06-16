@@ -7,7 +7,7 @@ import ChangePass from "./ChangePass";
 import Summary from "./Summary";
 import Notification from "./Notication";
 import { useSelector } from "react-redux";
-import client from "../helpers/axiosInstance";
+import client from "../Constants/helpers/axiosInstance";
 
 function Body() {
   const state = useSelector((state) => state);

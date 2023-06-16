@@ -6,7 +6,7 @@ import TextField from "@mui/material/TextField";
 import { useSelector, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
-import client from "../helpers/axiosInstance";
+import client from "../Constants/helpers/axiosInstance";
 
 function AddInfo() {
   const state = useSelector((state) => state);

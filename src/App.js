@@ -16,28 +16,21 @@ import {
 
 function App() {
   return (
-    <Box
-      sx={{
-        width: "100vw",
-        height: "100%",
-      }}
-    >
-      <Router>
-        <Routes>
-          <Route path={"/"} element={<Navigate to="/login" />} />
-          <Route path={"/dashboard"} element={<DashboardCtrl />} />
-          <Route path={"/userdashboard"} element={<UserDashboard />} />
-          <Route path={"/login"} element={<Login />} />
-          <Route path={"/resetPassword"} element={<Verification />} />
-          <Route path={"/createnewpassword"} element={<NewPassword />} />
-          <Route path={"/forgotPassword"} element={<ForgotPassword />} />
-          <Route
-            path={"/compulsorypasswordreset"}
-            element={<CompulsoryPassword />}
-          />
-        </Routes>
-      </Router>
-    </Box>
+    <Router>
+      <Routes>
+        <Route path={"/"} element={<Navigate to="/login" />} />
+        <Route path={"/dashboard"} element={<DashboardCtrl />} />
+        <Route path={"/userdashboard"} element={<UserDashboard />} />
+        <Route path={"/login"} element={<Login />} />
+        <Route path={"/resetPassword"} element={<Verification />} />
+        <Route path={"/createnewpassword"} element={<NewPassword />} />
+        <Route path={"/forgotPassword"} element={<ForgotPassword />} />
+        <Route
+          path={"/compulsorypasswordreset"}
+          element={<CompulsoryPassword />}
+        />
+      </Routes>
+    </Router>
   );
 }
 

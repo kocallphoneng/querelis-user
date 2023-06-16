@@ -7,14 +7,14 @@ import Button from "@mui/material/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
-import client from "../helpers/axiosInstance";
+import client from "../Constants/helpers/axiosInstance";
 import { ClipLoader } from "react-spinners";
 
 function Summary() {
   const state = useSelector((state) => state);
   const { staffs } = state.user;
   const dispatch = useDispatch();
-  const { showSummaryReport, setSummaryDate,  setSummaryReport } =
+  const { showSummaryReport, setSummaryDate, setSummaryReport } =
     bindActionCreators(actionCreators, dispatch);
 
   const [param, setParam] = useState({

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import client from "../helpers/axiosInstance";
+import client from "../Constants/helpers/axiosInstance";
 // import { useSelector } from "react-redux";
 import SkipNextOutlinedIcon from "@mui/icons-material/SkipNextOutlined";
 import SkipPreviousOutlinedIcon from "@mui/icons-material/SkipPreviousOutlined";
@@ -22,7 +22,7 @@ function Cards() {
   const [scroll, setScroll] = useState(false);
   const support = () => {
     setLoading(true);
-   
+
     client
       .get("/company-statistics")
       .then((res) => {

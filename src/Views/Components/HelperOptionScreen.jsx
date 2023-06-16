@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
@@ -7,96 +7,83 @@ import { useSelector, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
 import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
-import client from "../helpers/axiosInstance";
+import client from "../Constants/helpers/axiosInstance";
+import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import ClipLoader from "./Spinners/ClipSpinner";
 
-function ActivationScreen() {
+function HelperScreen() {
   const state = useSelector((state) => state);
-  const { staffId, active } = state.user;
-  const { loading } = state.displayState;
-  const navigate = useNavigate();
+  const { helperOption_ } = state.displayState;
+  const { reqId, userId, staffId_ } = state.user;
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const {
-    hideActivationScreen,
-    showLoading,
-    hideLoading,
-    showLoading4,
-    hideLoading4,
-    getAllRequests,
-    getAllStaffs,
-  } = bindActionCreators(actionCreators, dispatch);
-  const restore = () => {
-
-    
-    showLoading4()
-   
+  const navigate = useNavigate();
+  const { hideHelper_, getAllRequests } = bindActionCreators(
+    actionCreators,
+    dispatch
+  );
+  const restore = async () => {
     try {
       const fetchData = async () => {
-        const staffRes = await client.get("/support-staff");
-        const supReq = await client.get("/support-requests");
-        getAllStaffs(staffRes.data.data);
-        getAllRequests(supReq.data.data);
-        hideLoading4();
+        const req = await client.get("/support-requests");
+        getAllRequests(req.data.data);
       };
       fetchData();
     } catch (err) {
-      hideLoading4();
       const message = err.response.data.message;
-      if (message === "Unauthenticated" || message === "Unauthorized") {
+      if (message === "Unauthenticated." || message === "Unauthorized") {
         navigate("/login");
-      } else {
-        toast.error("Couldn't load data, please refresh !", {
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-        });
       }
     }
   };
   const cancel = () => {
-    hideActivationScreen();
+    hideHelper_();
   };
-
   const proceed = () => {
-    showLoading();
-    if (active === 0) {
+    setLoading(true);
+    if (helperOption_ === "reassign") {
       client
-        .patch(`/support-staff/${staffId}/activate`)
+        .patch(`/support-requests/${reqId}/reassign`, {
+          staff_id: staffId_,
+        })
         .then((res) => {
-          hideLoading();
           restore();
-          hideActivationScreen();
+          setLoading(false);
+          hideHelper_();
         })
-        .catch((err) => {
-          console.log(err);
-          toast.error("Failed to activate !", {
+        .catch(() => {
+          setLoading(false);
+          toast.error("Failed to reject request !", {
             position: toast.POSITION.TOP_RIGHT,
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
           });
-          hideLoading();
+          setLoading(false);
+          hideHelper_();
         });
-    } else if (active === 1) {
+    } else if (helperOption_ === "complete") {
       client
-        .patch(`/support-staff/${staffId}/deactivate`)
-        .then(() => {
-          hideLoading();
-          restore();
-          hideActivationScreen();
+        .patch(`/support-requests/${reqId}`, {
+          status: "resolved",
+          assigned_to: userId,
         })
-        .catch((err) => {
-          console.log(err);
-          toast.error("Failed to deactivate !", {
+        .then(() => {
+          restore();
+          setLoading(false);
+          hideHelper_();
+        })
+        .catch(() => {
+          setLoading(false);
+          toast.error("Failed to complete request !", {
             position: toast.POSITION.TOP_RIGHT,
             autoClose: 5000,
             hideProgressBar: false,
             closeOnClick: true,
           });
-          hideLoading();
+          setLoading(false);
+          hideHelper_();
         });
     }
   };
@@ -118,7 +105,7 @@ function ActivationScreen() {
     >
       <Paper
         sx={{
-          maxWidth: "500px",
+          maxWidth: "400px",
           width: "100%",
           borderRadius: "1.5rem",
           display: "flex",
@@ -127,23 +114,24 @@ function ActivationScreen() {
           padding: "2rem",
         }}
       >
-        <HelpOutlineOutlinedIcon sx={{ fontSize: "20rem", color: "#0257E6" }} />
-        <Typography>{`Do you want ${
-          active === 1 ? "deactivate" : "activate"
-        }?`}</Typography>
+        <HelpOutlineOutlinedIcon
+          sx={{ fontSize: "20rem", color: "#0257E6", textAlign: "center" }}
+        />
+        <Typography sx={{ textAlign: "center" }}>
+          Are you sure you want to {helperOption_} this request?
+        </Typography>
         <Box
           sx={{
             display: "flex",
-            width: "30%",
+            width: "50%",
             justifyContent: "space-between",
             pt: "1rem",
           }}
         >
           <Button
-            variant="contained"
             onClick={() => proceed()}
             sx={{ background: "#0257E6", color: "white" }}
-            disabled={loading}
+            variant="contained"
           >
             {loading ? <ClipLoader /> : "Yes"}
           </Button>
@@ -160,4 +148,4 @@ function ActivationScreen() {
   );
 }
 
-export default ActivationScreen;
+export default HelperScreen;

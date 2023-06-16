@@ -8,7 +8,7 @@ import SkipPreviousOutlinedIcon from "@mui/icons-material/SkipPreviousOutlined";
 import { useSelector, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
-import client from "../helpers/axiosInstance";
+import client from "../Constants/helpers/axiosInstance";
 import HourglassTopOutlinedIcon from "@mui/icons-material/HourglassTopOutlined";
 import { ClipLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";

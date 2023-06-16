@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { actionCreators } from "../state/index";
 import { bindActionCreators } from "redux";
-import client from "../helpers/axiosInstance";
+import client from "../Constants/helpers/axiosInstance";
 import ActivationScreen from "../Components/ActivationScreen";
 import Success from "../Components/Success";
 import EditCompany from "../Components/EditCompany";
@@ -47,7 +47,7 @@ function Dashboard() {
     }
     setIsLoading();
     showLoading1();
-    
+
     try {
       const fetchData = async () => {
         const staffRes = await client.get("/support-staff");

@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
-import client from "../helpers/axiosInstance";
+import client from "../Constants/helpers/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";

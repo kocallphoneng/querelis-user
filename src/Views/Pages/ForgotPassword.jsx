@@ -12,7 +12,7 @@ import { actionCreators } from "../state/index";
 import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
-import client from "../helpers/axiosInstance";
+import client from "../Constants/helpers/axiosInstance";
 import ClipLoader from "../Components/Spinners/ClipSpinner";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -22,33 +22,35 @@ function ForgotPassword() {
   const navigate = useNavigate();
   const [loading, setLoading] = React.useState(false);
   const { setUserEmail } = bindActionCreators(actionCreators, dispatch);
-  
+
   const handleSubmit = (values) => {
-    setLoading(true)
-    client.post("/get-otp", {
-      email: values.email
-    }).then(res => {
-      setLoading(false);
-      setUserEmail(values.email);
-      navigate("/resetPassword");
-    }).catch(err => {
-      setLoading(false);
-      err.response.data.message === "The selected email is invalid."
-        ? toast.error("Email not found !", {
-            position: toast.POSITION.TOP_RIGHT,
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-          })
-        : toast.error("Please try again later", {
-            position: toast.POSITION.TOP_RIGHT,
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            delay: 500,
-          });
-       
-    })
+    setLoading(true);
+    client
+      .post("/get-otp", {
+        email: values.email,
+      })
+      .then((res) => {
+        setLoading(false);
+        setUserEmail(values.email);
+        navigate("/resetPassword");
+      })
+      .catch((err) => {
+        setLoading(false);
+        err.response.data.message === "The selected email is invalid."
+          ? toast.error("Email not found !", {
+              position: toast.POSITION.TOP_RIGHT,
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+            })
+          : toast.error("Please try again later", {
+              position: toast.POSITION.TOP_RIGHT,
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              delay: 500,
+            });
+      });
   };
   const formValidation = yup.object().shape({
     email: yup.string().email("Invalid Email Addresss").required("*Required"),

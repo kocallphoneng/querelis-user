@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actionCreators } from "../state/index";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
-import client from "../helpers/axiosInstance";
+import client from "../Constants/helpers/axiosInstance";
 import { ClipLoader } from "react-spinners";
 import { toast } from "react-toastify";
 
@@ -38,7 +38,7 @@ function Detail() {
     setReqStat,
     showLoading5,
     hideLoading5,
-    setStaffId_
+    setStaffId_,
   } = bindActionCreators(actionCreators, dispatch);
   const display = () => {
     showLoading5();
@@ -123,11 +123,11 @@ function Detail() {
     }
   };
   const handleReassign = (id) => {
-    setReassign(true)
-    setStaffId_(id)
-    console.log(id)
+    setReassign(true);
+    setStaffId_(id);
+    console.log(id);
     showHelper_("reassign");
-  }
+  };
   return (
     <Box
       sx={{
@@ -467,13 +467,20 @@ function Detail() {
             <Typography sx={{ fontWeight: "600", fontSize: "0.8rem" }}>
               Description
             </Typography>
-            <Box sx={{ width: "250px", fontSize: "0.8rem" , display: "flex", flexWrap: "wrap"}}>
+            <Box
+              sx={{
+                width: "250px",
+                fontSize: "0.8rem",
+                display: "flex",
+                flexWrap: "wrap",
+              }}
+            >
               {loading5 ? (
                 <ClipLoader />
               ) : (
                 ussd?.log_array?.map((arr) => (
                   <Typography sx={{ fontWeight: "600", fontSize: "0.8rem" }}>
-                    {`${arr} / ${ " "} `}
+                    {`${arr} / ${" "} `}
                   </Typography>
                 ))
               )}
