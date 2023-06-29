@@ -17,7 +17,9 @@ function App() {
       <Route path={"/forgot-password"} element={<ForgotPassword />} />
       <Route path={"/reset-password"} element={<ResetPassword />} />
       <Route path={"/create-new-password"} element={<NewPassword />} />
-      <Route path={"/dashboard"} element={<Dashboard />} />
+      <Route path={"/dashboard"} element={<Dashboard />} >
+        
+      </Route>
       
       {/* <Route
         path={"/compulsorypasswordreset"}
