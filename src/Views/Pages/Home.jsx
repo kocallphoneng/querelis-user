@@ -2,6 +2,7 @@ import React from "react";
 import StatCard from "../Components/Home/StatCard";
 import Table from "../UI/Table/Table";
 import DepartmentTable from "../UI/Table/DepartmentTable";
+import RequestTable from "../UI/Table/RequestTable";
 
 const Home = () => {
   return (
@@ -23,7 +24,7 @@ const Home = () => {
       <div className="flex flex-col gap-3">
         <span className="text-[24px] leading-[30px] font-[600] ">Requests</span>
         <div className="flex flex-col">
-          <DepartmentTable num_of_rows={3} />
+          <RequestTable num_of_rows={3} />
         </div>
       </div>
     </div>
