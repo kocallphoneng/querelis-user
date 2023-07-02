@@ -6,6 +6,7 @@
   margin: 0;
   box-sizing: border-box;
   font-family: "Quicksand", sans-serif !important;
+  /* color: #110c0c; */
 }
 body {
   background: #e5e5e5;
@@ -22,7 +23,7 @@ body {
   color: "red";
   padding-bottom: 0.5rem;
 }
-.search::placeholder{
+.search::placeholder {
   color: white;
 }
 .input:focus {

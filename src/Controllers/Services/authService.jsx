@@ -1,5 +1,5 @@
 // import { toast } from "react-hot-toast";
-import client from "../../Constants/Helpers/axiosInstance";
+import client from "../../Constants/helpers/axiosInstance";
 
 export const authService = () => {
   const resetConfig = localStorage["reset-config"]

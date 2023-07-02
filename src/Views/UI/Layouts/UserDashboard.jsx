@@ -1,11 +1,12 @@
 import React from 'react'
+import { Outlet } from 'react-router-dom'
 
 const UserDashboard = () => {
   return (
     <div className="grid grid-cols-12">
-      <Sidebar />
+      {/* <Sidebar /> */}
       <div className="">
-        <Navbar />
+        {/* <Navbar /> */}
         <Outlet />
       </div>
     </div>

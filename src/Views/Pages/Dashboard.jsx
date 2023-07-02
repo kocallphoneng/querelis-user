@@ -5,7 +5,13 @@ import UserDashboard from "../UI/Layouts/UserDashboard";
 const Dashboard = () => {
   return (
     <div className="">
-      {localStorage.isCompany ? <CompanyDashboard /> : <UserDashboard />}
+      <CompanyDashboard />
+      {/* {localStorage.isCompany ? <CompanyDashboard /> : <UserDashboard />} */}
+      {/* {localStorage.user === "support_staff" ? (
+        <UserDashboard />
+      ) : (
+        <Dashboard />
+      )} */}
     </div>
   );
 };

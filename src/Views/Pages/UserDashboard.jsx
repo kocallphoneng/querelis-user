@@ -7,15 +7,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { actionCreators } from "../state/index";
 import { bindActionCreators } from "redux";
-import client from "../Constants/helpers/axiosInstance";
-import ActivationScreen from "../Components/ActivationScreen";
-import Success from "../Components/Success";
-import EditCompany from "../Components/EditCompany";
-import CompanyRequests from "../Components/SummaryReport";
-import DeleteScreen from "../Components/DeleteScreen";
-import Details from "../Components/Details_";
-import HelperScreen from "../Components/HelperOptionScreen";
-import AddInfo from "../Components/AddInfo";
+// import client from "../Constants/helpers/axiosInstance";
+// import ActivationScreen from "../Components/ActivationScreen";
+// import Success from "../Components/Success";
+// import EditCompany from "../Components/EditCompany";
+// import CompanyRequests from "../Components/SummaryReport";
+// import DeleteScreen from "../Components/DeleteScreen";
+// import Details from "../Components/Details_";
+// import HelperScreen from "../Components/HelperOptionScreen";
+// import AddInfo from "../Components/AddInfo";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -91,7 +91,7 @@ function Dashboard() {
         <Navbar />
         <Body />
       </Box>
-      {viewActivationScreen ? <ActivationScreen /> : ""}
+      {/* {viewActivationScreen ? <ActivationScreen /> : ""}
       {viewDeleteScreen ? <DeleteScreen /> : ""}
       {viewCreateSuccess ? (
         <Success
@@ -116,7 +116,7 @@ function Dashboard() {
       {viewSummary ? <CompanyRequests /> : ""}
       {viewDetails_ ? <Details /> : ""}
       {viewHelperScreen_ ? <HelperScreen /> : ""}
-      {viewAddScreen_ ? <AddInfo /> : ""}
+      {viewAddScreen_ ? <AddInfo /> : ""} */}
     </Box>
   );
 }
