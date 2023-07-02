@@ -29,13 +29,7 @@ const RequestTable = ({ num_of_rows }) => {
         <div
           key={n}
           className="grid grid-cols-12 text-[14px] font-[400] w-full items-center p-2 h-[50px] bg-[#fff] "
-        >
-          {/* <span className="col-span-3">{row.name}</span>
-          <span className="col-span-2">{row.tel}</span>
-          <span className="col-span-2">{row.completed_requests}</span>
-          <span className="col-span-2">{row.pending_requests}</span>
-      */}
-        </div>
+        ></div>
       ))}
     </div>
   );
