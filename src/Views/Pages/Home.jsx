@@ -1,5 +1,7 @@
 import React from "react";
 import StatCard from "../Components/Home/StatCard";
+import Table from "../UI/Table/Table";
+import DepartmentTable from "../UI/Table/DepartmentTable";
 
 const Home = () => {
   return (
@@ -10,8 +12,19 @@ const Home = () => {
         <StatCard text={"No of Active Support Staff"} number={"58"} />
         <StatCard text={"No of Allowed Support Staff"} number={"58"} />
       </div>
-      <div className="flex flex-col">
-        <span className="text-[24px] leading-[30px] ">Supports</span>
+      <div className="flex flex-col gap-3">
+        <span className="text-[24px] leading-[30px] font-[600] ">
+          Departments
+        </span>
+        <div className="flex flex-col">
+          <DepartmentTable num_of_rows={3} />
+        </div>
+      </div>
+      <div className="flex flex-col gap-3">
+        <span className="text-[24px] leading-[30px] font-[600] ">Requests</span>
+        <div className="flex flex-col">
+          <DepartmentTable num_of_rows={3} />
+        </div>
       </div>
     </div>
   );
