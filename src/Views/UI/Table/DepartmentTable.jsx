@@ -1,5 +1,6 @@
 import React from "react";
 import { RiDeleteBinLine, RiPencilFill } from "react-icons/ri";
+import { dapartmentData } from "../../../Constants/testData";
 
 const DepartmentTable = ({ num_of_rows }) => {
   const columns = [
@@ -11,44 +12,7 @@ const DepartmentTable = ({ num_of_rows }) => {
     "",
     "Delete",
   ];
-  const rows = [
-    {
-      name: "Department1",
-      staffs: "20",
-      completed_requests: "10",
-      pending_requests: "10",
-    },
-    {
-      name: "Department1",
-      staffs: "20",
-      completed_requests: "10",
-      pending_requests: "10",
-    },
-    {
-      name: "Department1",
-      staffs: "20",
-      completed_requests: "10",
-      pending_requests: "10",
-    },
-    {
-      name: "Department1",
-      staffs: "20",
-      completed_requests: "10",
-      pending_requests: "10",
-    },
-    {
-      name: "Department1",
-      staffs: "20",
-      completed_requests: "10",
-      pending_requests: "10",
-    },
-    {
-      name: "Department1",
-      staffs: "20",
-      completed_requests: "10",
-      pending_requests: "10",
-    },
-  ];
+  const rows = dapartmentData
   return (
     <div className="flex flex-col gap-2">
       <div className="grid grid-cols-12 text-[14px] font-[700] w-full items-center p-2 h-[50px] bg-[#fff] ">
