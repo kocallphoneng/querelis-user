@@ -385,3 +385,50 @@ export const dapartmentData = [
     pending_requests: "10",
   },
 ];
+
+export const staffs = [
+  {
+    name: "Mike Ade",
+    id: "jdjjjdjjd",
+    deparment: ["Customer Service"],
+    total_requests: 30,
+    completed_request: 15,
+    pending_request: 15,
+    image: "",
+    email: "staff@mail.com",
+    phone: "2348182828272"
+  },
+  {
+    name: "Mike Ade",
+    id: "dddddddddd",
+    deparment: ["Customer Service"],
+    total_requests: 30,
+    completed_request: 15,
+    pending_request: 15,
+    image: "",
+    email: "staff@mail.com",
+    phone: "2348182828272"
+  },
+  {
+    name: "Mike Ade",
+    id: "ddddddddd",
+    deparment: ["Customer Service"],
+    total_requests: 30,
+    completed_request: 15,
+    pending_request: 15,
+    image: "",
+    email: "staff@mail.com",
+    phone: "2348182828272"
+  },
+  {
+    name: "Mike Ade",
+    id: "ddddddddd",
+    deparment: ["Customer Service"],
+    total_requests: 30,
+    completed_request: 15,
+    pending_request: 15,
+    image: "",
+    email: "staff@mail.com",
+    phone: "2348182828272"
+  },
+];

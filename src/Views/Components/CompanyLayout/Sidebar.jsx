@@ -25,16 +25,11 @@ const Sidebar = () => {
       />
       <NavCard
         Icon={MdGroups}
-        title={"Departments"}
-        active={path === "/dashboard/departments"}
-        navigate={() => navigate("/dashboard/departments")}
+        title={"Requests"}
+        active={path === "/dashboard/requests"}
+        navigate={() => navigate("/dashboard/requests")}
       />
-      <NavCard
-        Icon={MdGroups}
-        title={"Departments"}
-        active={path === "/dashboard/departments"}
-        navigate={() => navigate("/dashboard/departments")}
-      />
+      
     </div>
   );
 };

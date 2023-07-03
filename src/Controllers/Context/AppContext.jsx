@@ -3,10 +3,11 @@ import React, { useState, createContext, useContext } from "react";
 const reactContext = createContext();
 
 const AppContextProvider = (props) => {
-  const [companies, setCompanies] = useState([]);
-  return (
-    <reactContext.Provider value={{ companies, setCompanies }} {...props} />
-  );
+  const [modal, setModal] = useState({
+    open: false,
+    name: "",
+  });
+  return <reactContext.Provider value={{ modal, setModal }} {...props} />;
 };
 
 const useAppContext = () => {

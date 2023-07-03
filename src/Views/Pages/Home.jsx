@@ -3,6 +3,7 @@ import StatCard from "../Components/Home/StatCard";
 import Table from "../UI/Table/Table";
 import DepartmentTable from "../UI/Table/DepartmentTable";
 import RequestTable from "../UI/Table/RequestTable";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
@@ -17,14 +18,26 @@ const Home = () => {
         <span className="text-[24px] leading-[30px] font-[600] ">
           Departments
         </span>
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-3">
           <DepartmentTable num_of_rows={3} />
+          <Link
+            to={"/dashboard/departments"}
+            className="text-[#0257E6] text-[14px] font-[700] underline flex justify-end cursor-pointer"
+          >
+            See all{">>"}
+          </Link>
         </div>
       </div>
       <div className="flex flex-col gap-3">
         <span className="text-[24px] leading-[30px] font-[600] ">Requests</span>
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-3">
           <RequestTable num_of_rows={3} />
+          <Link
+            to={"/dashboard/requests"}
+            className="text-[#0257E6] text-[14px] font-[700] underline flex justify-end cursor-pointer"
+          >
+            See all{">>"}
+          </Link>
         </div>
       </div>
     </div>
