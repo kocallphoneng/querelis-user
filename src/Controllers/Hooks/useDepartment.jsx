@@ -7,22 +7,29 @@ import * as yup from "yup";
 
 const useDepartment = () => {
   const [form, setForm] = useState({ name: "", staffs: [] });
+  const [staffs, setStaffs] = useState([]);
+  const [select, setSelect] = useState("");
   const [error, setError] = useState({ name: "" });
 
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "name") {
-      setForm({ ...form, [name]: value });
-    } else if (name === "staffs") {
-      setForm({ ...form, [name]: form.staffs.push(value) });
-    }
+    setForm({ ...form, [name]: value });
+
     if (name === "name" && value === "") {
       setError({ ...error, [name]: "Required*" });
     } else {
       setError({ ...error, [name]: "" });
     }
+  };
+  const handleStaff = (e) => {
+    setStaffs([
+      ...staffs,
+      {
+        name: e.label,
+      },
+    ]);
   };
 
   const handleSubmit = () => {};
@@ -31,7 +38,9 @@ const useDepartment = () => {
     form,
     error,
     handleSubmit,
-    handleChange
+    handleChange,
+    staffs,
+    handleStaff,
   };
 };
 

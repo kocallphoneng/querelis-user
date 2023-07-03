@@ -388,8 +388,8 @@ export const dapartmentData = [
 
 export const staffs = [
   {
-    name: "Mike Ade",
-    id: "jdjjjdjjd",
+    label: "Mike Ade",
+    id: "1",
     deparment: ["Customer Service"],
     total_requests: 30,
     completed_request: 15,
@@ -399,7 +399,7 @@ export const staffs = [
     phone: "2348182828272"
   },
   {
-    name: "Mike Ade",
+    label: "Mike Ade",
     id: "dddddddddd",
     deparment: ["Customer Service"],
     total_requests: 30,
@@ -410,8 +410,8 @@ export const staffs = [
     phone: "2348182828272"
   },
   {
-    name: "Mike Ade",
-    id: "ddddddddd",
+    label: "Bolu Jide",
+    id: "2",
     deparment: ["Customer Service"],
     total_requests: 30,
     completed_request: 15,
@@ -421,8 +421,41 @@ export const staffs = [
     phone: "2348182828272"
   },
   {
-    name: "Mike Ade",
-    id: "ddddddddd",
+    label: "Triac Diac",
+    id: "3",
+    deparment: ["Customer Service"],
+    total_requests: 30,
+    completed_request: 15,
+    pending_request: 15,
+    image: "",
+    email: "staff@mail.com",
+    phone: "2348182828272"
+  },
+  {
+    label: "Basc Basc",
+    id: "4",
+    deparment: ["Customer Service"],
+    total_requests: 30,
+    completed_request: 15,
+    pending_request: 15,
+    image: "",
+    email: "staff@mail.com",
+    phone: "2348182828272"
+  },
+  {
+    label: "David Doe",
+    id: "5",
+    deparment: ["Customer Service"],
+    total_requests: 30,
+    completed_request: 15,
+    pending_request: 15,
+    image: "",
+    email: "staff@mail.com",
+    phone: "2348182828272"
+  },
+  {
+    label: "Grace Peter",
+    id: 6,
     deparment: ["Customer Service"],
     total_requests: 30,
     completed_request: 15,

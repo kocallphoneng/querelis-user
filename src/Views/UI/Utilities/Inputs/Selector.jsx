@@ -31,14 +31,14 @@ const Selector = () => {
         >
           <IoChevronDownOutline />
         </span>
-        {/* <div className="absolute z-40 p-2 flex flex-col gap-2 bg-[#fff] overflow-auto rounded-md w-full top-[47px] border border-black min-h-[100px]">
+        <div className="absolute z-40 p-2 flex flex-col gap-2 bg-[#fff] overflow-auto rounded-md w-full top-[47px] border border-black min-h-[100px]">
           {staffs.map((staff, n) => (
             <span key={n} className="flex items-center gap-3">
               <span className="w-[25px] text-[0.7rem] h-[25px] bg-gray-400 rounded-full"></span>{" "}
               {staff.name}
             </span>
           ))}
-        </div> */}
+        </div>
       </div>
     </div>
   );
