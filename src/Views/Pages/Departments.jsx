@@ -2,10 +2,12 @@ import React from "react";
 import DepartmentTable from "../UI/Table/DepartmentTable";
 import { BsPlus, BsSearch } from "react-icons/bs";
 import { useAppContext } from "../../Controllers/Context/AppContext";
+import useDepartment from "../../Controllers/Hooks/useDepartment";
 // import { Link } from "react-router-dom";
 
 const Departments = () => {
   const { setModal } = useAppContext();
+  const { openModalRef } = useDepartment();
   return (
     <div className="flex flex-col gap-3">
       <div className="flex justify-between items-center">
@@ -24,8 +26,9 @@ const Departments = () => {
             </span>
           </span>
           <span
+            ref={openModalRef}
             onClick={() => setModal({ open: true, name: "new_department" })}
-            className="flex items-center h-[40px] cursor-pointer gap-2 transition-all duration-150 bg-[#0257E6] hover:bg-[#0256e6a1] p-2 py-1 font-[700] text-[#fff] rounded-full text-[14px]"
+            className="flex shadow-md items-center h-[40px] cursor-pointer gap-2 transition-all duration-150 bg-[#0257E6] hover:bg-[#0256e6a1] p-2 py-1 font-[700] text-[#fff] rounded-full text-[14px]"
           >
             <BsPlus className="text-[25px]" />
           </span>

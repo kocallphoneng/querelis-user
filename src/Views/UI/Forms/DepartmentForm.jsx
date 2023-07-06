@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 
 const DepartmentForm = ({ children, loading, handleSubmit }) => {
   return (
-    <form className=" flex flex-col gap-3">
+    <form className=" flex flex-col gap-5">
       {children}
       <Button
         onClick={handleSubmit}

@@ -1,17 +1,18 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-// import { authService } from "../Services/auth/Service";
-import { toast } from "react-hot-toast";
-import { useAuthContext } from "../Context/AuthContext";
-import * as yup from "yup";
+import { useRef, useState } from "react";
+import { useAppContext } from "../Context/AppContext";
 
 const useDepartment = () => {
+  const { modal, setModal } = useAppContext();
   const [form, setForm] = useState({ name: "", staffs: [] });
   const [staffs, setStaffs] = useState([]);
-  const [select, setSelect] = useState("");
   const [error, setError] = useState({ name: "" });
+  const [staffValue, setStaffValue] = useState("");
+  const [staffInputValue, setStaffInputValue] = useState("");
 
   const [loading, setLoading] = useState(false);
+
+  const modalRef = useRef();
+  const openModalRef = useRef();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,24 +24,36 @@ const useDepartment = () => {
       setError({ ...error, [name]: "" });
     }
   };
-  const handleStaff = (e) => {
-    setStaffs([
-      ...staffs,
-      {
-        name: e.label,
-      },
-    ]);
+  const handleStaff = (value) => {
+    setStaffValue(value);
+    setStaffs([...staffs, value]);
   };
 
   const handleSubmit = () => {};
+
+  window.addEventListener("click", (e) => {
+    if (
+      modal.open &&
+      !modalRef.current?.contains(e.target) &&
+      !openModalRef.current?.contains(e.target)
+    )
+      setModal({ open: false, name: "" });
+  });
+
   return {
     loading,
     form,
     error,
+    staffValue,
+    setStaffValue,
     handleSubmit,
     handleChange,
     staffs,
+    staffInputValue,
+    setStaffInputValue,
     handleStaff,
+    modalRef,
+    openModalRef,
   };
 };
 
