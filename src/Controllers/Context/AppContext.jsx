@@ -7,7 +7,24 @@ const AppContextProvider = (props) => {
     open: false,
     name: "",
   });
-  return <reactContext.Provider value={{ modal, setModal }} {...props} />;
+  const [showDepartment, setShowDepartment] = useState(false);
+  const [showDataInfo, setShowDataInfo] = useState(false);
+  const [targetDepartment, setTargetDepartment] = useState({});
+  return (
+    <reactContext.Provider
+      value={{
+        modal,
+        setModal,
+        showDepartment,
+        setShowDepartment,
+        targetDepartment,
+        setTargetDepartment,
+        showDataInfo,
+        setShowDataInfo,
+      }}
+      {...props}
+    />
+  );
 };
 
 const useAppContext = () => {

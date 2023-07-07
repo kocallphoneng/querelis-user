@@ -1,13 +1,13 @@
 import React from "react";
 import DepartmentTable from "../UI/Table/DepartmentTable";
-import { BsSearch } from "react-icons/bs";
-import RequestTable from "../UI/Table/RequestTable";
+import { BsPlus, BsSearch } from "react-icons/bs";
+import StaffsTable from "../UI/Table/StaffsTable";
 
-const Requests = () => {
+const Staffs = () => {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex justify-between items-center">
-        <span className="text-[24px] leading-[30px] font-[600] ">Tickets</span>
+        <span className="text-[24px] leading-[30px] font-[600] ">Staffs</span>
         <div className="flex items-center gap-5">
           <span className="border rounded-[10px] overflow-hidden flex justify-between items-center min-w-[300px] bg-[#fff] h-[40px]">
             <input
@@ -19,17 +19,17 @@ const Requests = () => {
               <BsSearch className="text-[#0257E6] text-[20px]" />
             </span>
           </span>
-          {/* <span className="flex items-center h-[40px] cursor-pointer gap-2 transition-all duration-150 bg-[#0257E6] hover:bg-[#0256e6a1] p-2 py-1 font-[700] text-[#fff] rounded-full text-[14px]">
-        <BsPlus className="text-[25px]" />
-      </span> */}
+          <span className="flex items-center h-[40px] cursor-pointer gap-2 transition-all duration-150 bg-[#0257E6] hover:bg-[#0256e6a1] p-2 py-1 font-[700] text-[#fff] rounded-full text-[14px]">
+            <BsPlus className="text-[25px]" />
+          </span>
         </div>
       </div>
 
       <div className="flex flex-col gap-3">
-        <RequestTable num_of_rows={1000} />
+        <StaffsTable />
       </div>
     </div>
   );
 };
 
-export default Requests;
+export default Staffs;

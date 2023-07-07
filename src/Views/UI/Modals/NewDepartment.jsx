@@ -6,7 +6,7 @@ import useDepartment from "../../../Controllers/Hooks/useDepartment";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { staffs as staffs_ } from "../../../Constants/testData";
-import { IoCloseCircleOutline } from "react-icons/io5";
+import { IoCloseCircleOutline, IoClose } from "react-icons/io5";
 
 const NewDepartment = () => {
   const {
@@ -20,11 +20,19 @@ const NewDepartment = () => {
     staffs,
     handleStaff,
     modalRef,
+    closeModal,
+    removeStaff,
   } = useDepartment();
 
   return (
     <div ref={modalRef} className="flex flex-col gap-4">
-      <span className="text-[22px] font-[700]">Create New Department</span>
+      <div className="flex justify-between items-center">
+        <span className="text-[22px] font-[700]">Create New Department</span>
+        <IoClose
+          onClick={closeModal}
+          className="text-[21px] cursor-pointer hover:text-red-500 "
+        />
+      </div>
       <DepartmentForm loading={loading} handleSubmit={handleSubmit}>
         <TextField
           id="outlined-basic"
@@ -44,7 +52,10 @@ const NewDepartment = () => {
                   className="border text-[14px] px-1 flex items-center gap-1"
                 >
                   {staff.label}
-                  <IoCloseCircleOutline className="text-[20px] text-red-500 cursor-pointer" />
+                  <IoCloseCircleOutline
+                    onClick={() => removeStaff(staff)}
+                    className="text-[20px] text-red-500 cursor-pointer"
+                  />
                 </span>
               ))}
             </div>

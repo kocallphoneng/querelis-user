@@ -12,7 +12,7 @@ const CompanyDashboard = () => {
       </div>
       <div className="col-span-9 flex flex-col ">
         <Navbar />
-        <div className="p-10 w-full h-fit min-h-[calc(100vh-77px)] overflow-auto">
+        <div className="w-full h-fit min-h-[calc(100vh-77px)] overflow-auto">
           <Outlet />
         </div>
       </div>

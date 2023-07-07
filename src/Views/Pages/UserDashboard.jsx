@@ -23,18 +23,6 @@ function Dashboard() {
 
   const state = useSelector((state) => state);
 
-  const {
-    viewActivationScreen,
-    viewDeleteScreen,
-    viewCreateSuccess,
-    viewEditSuccess,
-    viewEditForm,
-    viewPasswordSuccess,
-    viewSummary,
-    viewDetails_,
-    viewHelperScreen_,
-    viewAddScreen_,
-  } = state.displayState;
 
   const { getAllRequests, hideLoading2, showLoading2 } = bindActionCreators(
     actionCreators,

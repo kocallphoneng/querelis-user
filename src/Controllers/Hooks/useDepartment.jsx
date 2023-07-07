@@ -11,6 +11,10 @@ const useDepartment = () => {
 
   const [loading, setLoading] = useState(false);
 
+  const [showDepartment, setShowDepartment] = useState(false);
+
+  const [target, setTarget] = useState({});
+
   const modalRef = useRef();
   const openModalRef = useRef();
 
@@ -24,36 +28,44 @@ const useDepartment = () => {
       setError({ ...error, [name]: "" });
     }
   };
+
   const handleStaff = (value) => {
     setStaffValue(value);
     setStaffs([...staffs, value]);
   };
 
-  const handleSubmit = () => {};
+  const removeStaff = (staff) => {
+    const newStaffs = staffs.filter((s) => s.id !== staff.id);
+    setStaffs(newStaffs);
+  };
 
-  window.addEventListener("click", (e) => {
-    if (
-      modal.open &&
-      !modalRef.current?.contains(e.target) &&
-      !openModalRef.current?.contains(e.target)
-    )
-      setModal({ open: false, name: "" });
-  });
+  const closeModal = () => setModal({ open: false, name: "" });
+
+  const handleSubmit = () => {
+    setLoading(true);
+    setLoading(false);
+  };
 
   return {
     loading,
     form,
     error,
     staffValue,
+    staffs,
+    staffInputValue,
+    modalRef,
+    openModalRef,
+    showDepartment,
+    target,
     setStaffValue,
     handleSubmit,
     handleChange,
-    staffs,
-    staffInputValue,
     setStaffInputValue,
     handleStaff,
-    modalRef,
-    openModalRef,
+    removeStaff,
+    closeModal,
+    setShowDepartment,
+    setTarget,
   };
 };
 

@@ -8,6 +8,9 @@ import Dashboard from "./Views/Pages/Dashboard";
 import Home from "./Views/Pages/Home";
 import Departments from "./Views/Pages/Departments";
 import Requests from "./Views/Pages/Requests";
+import Staffs from "./Views/Pages/Staffs";
+import ChangePassword from "./Views/Pages/ChangePassword";
+import Notifications from "./Views/Pages/Notifications";
 // import CompulsoryPassword from "./Pages/CompulsoryChange";
 // import DashboardCtrl from "./Pages/DashboardCtrl";
 // import UserDashboard from "./Pages/UserDashboard";
@@ -23,7 +26,10 @@ function App() {
       <Route path={"/dashboard"} element={<Dashboard />}>
         <Route path="" element={<Home />} />
         <Route path="departments" element={<Departments />} />
-        <Route path="requests" element={<Requests />} />
+        <Route path="tickets" element={<Requests />} />
+        <Route path="staffs" element={<Staffs />} />
+        <Route path="change-password" element={<ChangePassword />} />
+        <Route path="notifications" element={<Notifications />} />
       </Route>
 
       {/* <Route
