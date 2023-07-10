@@ -3,6 +3,7 @@ import { useAppContext } from "../Context/AppContext";
 import ModalLayout from "../../Views/UI/Layouts/ModalLayout";
 import NewDepartment from "../../Views/UI/Modals/NewDepartment";
 import TicketModal from "../../Views/UI/Modals/TicketModal";
+import Staff from "../../Views/UI/Modals/Staff";
 
 const useModal = () => {
   const { modal } = useAppContext();
@@ -39,7 +40,7 @@ const useModal = () => {
   else if (modal.open && modal.name === "staff")
     return (
       <ModalLayout>
-        <TicketModal />
+        <Staff />
       </ModalLayout>
     );
   else return null;
