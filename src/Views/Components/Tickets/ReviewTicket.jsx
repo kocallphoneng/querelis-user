@@ -12,16 +12,16 @@ import { useAppContext } from "../../../Controllers/Context/AppContext";
 const ReviewTicket = () => {
   const { setModal } = useAppContext();
   return (
-    <div className="py-5 flex flex-col gap-4">
-      <div className="grid grid-cols-12 items-center gap-4">
-        <span className=" col-span-3 whitespace-nowrap text-[14px] font-[700]">
+    <div className="border-l px-3 flex flex-col gap-4 relative h-full">
+      <div className=" flex flex-col gap-2 ">
+        <span className=" col-span-3 text-gray-600 whitespace-nowrap text-[12px] font-[700]">
           Reassign Ticket
         </span>
         <Autocomplete
           disablePortal
           id="staffs"
           size="small"
-          className="col-span-9"
+          className="col-span-9 text-[13px]"
           options={staffs}
           renderOption={(props, option) => (
             <li {...props} key={option.id}>
@@ -37,12 +37,17 @@ const ReviewTicket = () => {
           }}
           sx={{ width: "100%" }}
           renderInput={(params) => (
-            <TextField {...params} label="Enter staff name" />
+            <TextField
+              {...params}
+              label="Enter staff name"
+              className="text-[13px]"
+            />
           )}
         />
       </div>
-      <div className="grid grid-cols-12 items-center gap-4">
-        <span className="col-span-3 whitespace-nowrap text-[14px] font-[700]">
+      <hr />
+      <div className="flex flex-col gap-2 ">
+        <span className="col-span-3 text-gray-600 whitespace-nowrap text-[12px] font-[700]">
           Update status
         </span>
         <FormControl className="col-span-9">
@@ -60,8 +65,9 @@ const ReviewTicket = () => {
           </Select>
         </FormControl>
       </div>
-      <div className="grid grid-cols-12  gap-4">
-        <span className="col-span-3 whitespace-nowrap text-[14px] font-[700]">
+      <hr />
+      <div className="flex flex-col gap-2 ">
+        <span className="col-span-3 text-gray-600 whitespace-nowrap text-[12px] font-[700]">
           Add Comment
         </span>
         <FormControl className="col-span-9">
@@ -74,14 +80,13 @@ const ReviewTicket = () => {
           />
         </FormControl>
       </div>
-      <div className="grid grid-cols-6 gap-5">
-        <span onClick={()=> setModal(false)} className="col-span-3 bg-[#ff1c1c91] w-full flex justify-center items-center h-[45px] rounded-md text-white ">
-          Cancel
-        </span>
-        <span onClick={()=> setModal(false)} className="col-span-3 bg-[#0257E6] w-full flex justify-center items-center h-[45px] rounded-md text-white ">
-          Save
-        </span>
-      </div>
+
+      <span
+        onClick={() => setModal(false)}
+        className=" bg-blue-600 min-w-[80px] flex justify-center items-center h-[40px] rounded-md text-[#fff] cursor-pointer "
+      >
+        Save
+      </span>
     </div>
   );
 };

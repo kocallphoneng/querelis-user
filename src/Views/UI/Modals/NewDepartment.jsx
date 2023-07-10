@@ -39,6 +39,7 @@ const NewDepartment = () => {
           label="Name of department*"
           variant="outlined"
           name={"name"}
+          size="small"
           onChange={handleChange}
           value={form.name}
           error={error?.name !== ""}
@@ -63,6 +64,7 @@ const NewDepartment = () => {
           <Autocomplete
             disablePortal
             id="staffs"
+            size="small"
             options={staffs_}
             renderOption={(props, option) => (
               <li {...props} key={option.id}>
