@@ -2,6 +2,7 @@ import React from "react";
 import { useAppContext } from "../Context/AppContext";
 import ModalLayout from "../../Views/UI/Layouts/ModalLayout";
 import NewDepartment from "../../Views/UI/Modals/NewDepartment";
+import TicketModal from "../../Views/UI/Modals/TicketModal";
 
 const useModal = () => {
   const { modal } = useAppContext();
@@ -21,6 +22,24 @@ const useModal = () => {
     return (
       <ModalLayout>
         <NewDepartment />
+      </ModalLayout>
+    );
+  else if (modal.open && modal.name === "ticket")
+    return (
+      <ModalLayout>
+        <TicketModal />
+      </ModalLayout>
+    );
+  else if (modal.open && modal.name === "new_staff")
+    return (
+      <ModalLayout>
+        <TicketModal />
+      </ModalLayout>
+    );
+  else if (modal.open && modal.name === "staff")
+    return (
+      <ModalLayout>
+        <TicketModal />
       </ModalLayout>
     );
   else return null;

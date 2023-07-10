@@ -5,7 +5,7 @@ import StaffsTable from "../UI/Table/StaffsTable";
 
 const Staffs = () => {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 p-5">
       <div className="flex justify-between items-center">
         <span className="text-[24px] leading-[30px] font-[600] ">Staffs</span>
         <div className="flex items-center gap-5">

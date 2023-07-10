@@ -5,7 +5,7 @@ import RequestTable from "../UI/Table/RequestTable";
 
 const Requests = () => {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 p-5">
       <div className="flex justify-between items-center">
         <span className="text-[24px] leading-[30px] font-[600] ">Tickets</span>
         <div className="flex items-center gap-5">

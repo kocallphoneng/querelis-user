@@ -13,7 +13,7 @@ const ChangePassword = () => {
     handleNewPassword,
   } = useAuthentication();
   return (
-    <div className="">
+    <div className="p-10">
       <PreviewLayout
         title={"Change Password"}
         helper={

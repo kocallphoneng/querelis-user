@@ -11,6 +11,7 @@ import Requests from "./Views/Pages/Requests";
 import Staffs from "./Views/Pages/Staffs";
 import ChangePassword from "./Views/Pages/ChangePassword";
 import Notifications from "./Views/Pages/Notifications";
+import Demo from "./Views/Pages/Demo";
 // import CompulsoryPassword from "./Pages/CompulsoryChange";
 // import DashboardCtrl from "./Pages/DashboardCtrl";
 // import UserDashboard from "./Pages/UserDashboard";
@@ -23,6 +24,7 @@ function App() {
       <Route path={"/forgot-password"} element={<ForgotPassword />} />
       <Route path={"/reset-password"} element={<ResetPassword />} />
       <Route path={"/create-new-password"} element={<NewPassword />} />
+      <Route path={"/demo"} element={<Demo />} />
       <Route path={"/dashboard"} element={<Dashboard />}>
         <Route path="" element={<Home />} />
         <Route path="departments" element={<Departments />} />

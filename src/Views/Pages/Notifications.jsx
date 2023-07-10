@@ -13,7 +13,7 @@ function Notication() {
   // const {companies} = state.user
 
   return (
-    <Box>
+    <div className="p-5">
       <Typography
         sx={{
           color: "#110C0C",
@@ -184,7 +184,7 @@ function Notication() {
           ""
         )}
       </Box>
-    </Box>
+    </div>
   );
 }
 

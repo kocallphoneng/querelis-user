@@ -6,29 +6,16 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 const ContentLayout = ({ firstChild, secondChild }) => {
-  const { showDataInfo, setShowDataInfo } = useAppContext();
-  const [toggle, setToggle] = useState(false);
+  const {
+    showDataInfo,
+    targetElement,
+    toggleContentLayout,
+    closeContentModal,
+  } = useAppContext();
+  // const [toggle, setToggle] = useState(false);
   const ref1 = useRef();
   const ref2 = useRef();
-  window.addEventListener("click", (e) => {
-    if (
-      showDataInfo &&
-      !ref1.current?.contains(e.target) &&
-      !ref2.current?.contains(e.target)
-    ) {
-      setToggle(false);
-      setTimeout(() => {
-        setShowDataInfo(false);
-      }, 5000);
-    }
-  });
-  useEffect(() => {
-    if (showDataInfo && !toggle) {
-      setTimeout(() => {
-        setToggle(true);
-      }, 50000);
-    }
-  }, [toggle]);
+
 
   return (
     <div className="grid grid-cols-12">
@@ -40,25 +27,28 @@ const ContentLayout = ({ firstChild, secondChild }) => {
         <div
           ref={ref1}
           className={`${
-            toggle ? "" : ""
+            toggleContentLayout ? "" : ""
           } transition-all ease-in-out duration-100`}
         >
           {firstChild}
         </div>
       </div>
       {showDataInfo && (
-        <div
-          className={` col-span-5 transition-all ease-in-out duration-100`}
-        >
+        <div className={` col-span-5 transition-all ease-in-out duration-100`}>
           <div
             ref={ref2}
             className={`${
-              toggle ? "translate-x-[-100px]" : " translate-x-[-200px]"
-            }fixed px-10 transition-all ease-in-out duration-100 py-5 bg-white min-h-[calc(100vh-100px)] top-[80px] w-[33%] right-0 bottom-0 overflow-y-auto`}
+              toggleContentLayout ? "translate-x-0" : " translate-x-[100px]"
+            } fixed px-10 transition-all ease-in-out duration-100 py-5 bg-white min-h-[calc(100vh-100px)] top-[80px] w-[33%] right-0 bottom-0 overflow-y-auto`}
           >
             <div className="flex items-center gap-6">
-              <IoClose />
-              <span>Title</span>
+              <IoClose
+                onClick={closeContentModal}
+                className="text-[21px] cursor-pointer text-[red]"
+              />
+              <span className="text-[21px] font-[700]">
+                {targetElement?.title}
+              </span>
             </div>
             {secondChild}
           </div>

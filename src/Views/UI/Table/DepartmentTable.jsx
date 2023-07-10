@@ -14,7 +14,8 @@ const DepartmentTable = ({ num_of_rows }) => {
     "Delete",
   ];
   const rows = dapartmentData;
-  const { showDataInfo, setShowDataInfo} = useAppContext();
+  const { showDataInfo, setTargetElement, openContentModal } = useAppContext();
+
   return (
     <div className="flex flex-col gap-2">
       <div className="grid grid-cols-12 text-[14px] font-[700] w-full items-center p-2 h-[50px] bg-[#fff] ">
@@ -47,7 +48,13 @@ const DepartmentTable = ({ num_of_rows }) => {
           )}
           <span className="col-span-2 flex justify-center ">
             <span
-              onClick={() => setShowDataInfo(true)}
+              onClick={() => {
+                openContentModal();
+                setTargetElement({
+                  title: row.name,
+                  data: row,
+                });
+              }}
               className="text-[#0257E6] cursor-pointer font-[700]"
             >
               view

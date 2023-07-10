@@ -4,12 +4,13 @@ import { BsPlus, BsSearch } from "react-icons/bs";
 import { useAppContext } from "../../Controllers/Context/AppContext";
 import useDepartment from "../../Controllers/Hooks/useDepartment";
 import ContentLayout from "../UI/Layouts/ContentLayout";
+import InfoCard from "../Components/Deparment.jsx/InfoCard";
 // import { Link } from "react-router-dom";
 
 const Departments = () => {
   const { setModal } = useAppContext();
   const { openModalRef } = useDepartment();
-  const { showDepartment, showDataInfo, setShowDataInfo } = useAppContext();
+  const { showDataInfo } = useAppContext();
 
   return (
     <>
@@ -49,11 +50,7 @@ const Departments = () => {
             </div>
           </div>
         }
-        secondChild={
-          <div className="fixed px-10 py-5 bg-white min-h-[calc(100vh-100px)] top-[80px] w-[33%] right-0 bottom-0 overflow-y-auto">
-            <span>Department1</span>
-          </div>
-        }
+        secondChild={<InfoCard />}
       />
     </>
   );

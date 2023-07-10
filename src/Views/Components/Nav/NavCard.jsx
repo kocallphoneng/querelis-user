@@ -1,8 +1,7 @@
 import React from "react";
-import { useState } from "react";
-
-const NavCard = ({ Icon, active, title, navigate, children }) => {
-  const [toggle, setToggle] = useState(false);
+import { useAppContext } from "../../../Controllers/Context/AppContext";
+const NavCard = ({ Icon, active, title, navigate }) => {
+  const { setModal } = useAppContext();
   return (
     <div
       className={`flex flex-col min-h-[84px] ${
@@ -14,7 +13,7 @@ const NavCard = ({ Icon, active, title, navigate, children }) => {
       <span
         onClick={() => {
           navigate();
-          setToggle(true);
+          setModal(false);
         }}
         className={`flex items-center min-h-[50px] h-full transition-all duration-200 ease-in-out px-[35px] cursor-pointer gap-3 font-[700] ${
           active
@@ -29,9 +28,6 @@ const NavCard = ({ Icon, active, title, navigate, children }) => {
         />
         {title}
       </span>
-      {/* <div className="flex flex-col pl-10 gap-3">
-        {toggle && title === "Requests" && children}
-      </div> */}
     </div>
   );
 };
