@@ -80,7 +80,7 @@ const Demo = () => {
     setLoading(true);
     try {
       const res = await axios.get(base);
-    //   console.log(res);
+      //   console.log(res);
       const arr = res.data.text.split("\n");
       setData(arr);
       //   setStage(stage);
@@ -93,9 +93,30 @@ const Demo = () => {
   const cancel = () => {
     setStage("stage1");
   };
+  const [items, setItems] = useState(["A", "B", "C"]);
+
+  const shuffle = (letter) => {
+    if (!letter) {
+      return items;
+    } else {
+      let filter = items.filter((f) => f !== letter);
+      const newArr = filter.push(letter);
+      return filter;
+    }
+  };
 
   return (
-    <div className="h-screen relative w-full flex justify-center items-center  ">
+    <ul className="m-auto">
+      {items.map((l) => (
+        <li onClick={() => shuffle(l)}>{l}</li>
+      ))}
+    </ul>
+  );
+};
+
+export default Demo;
+{
+  /* <div className="h-screen relative w-full flex justify-center items-center  ">
       {stage === "stage1" && <Field1 />}
       {stage === "stage2" && (
         <Field2 func={next2} cancel={cancel} data={data} />
@@ -113,8 +134,5 @@ const Demo = () => {
           {<ClipLoader size={24} color={"#110C0C"} loading />}
         </div>
       )}
-    </div>
-  );
-};
-
-export default Demo;
+    </div> */
+}

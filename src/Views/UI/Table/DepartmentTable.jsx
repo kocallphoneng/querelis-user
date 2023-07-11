@@ -15,10 +15,10 @@ const DepartmentTable = ({ num_of_rows }) => {
   ];
   const rows = dapartmentData;
   const { showDataInfo, setTargetElement, openContentModal } = useAppContext();
-
+  // bg-[#0257E6]
   return (
-    <div className="flex flex-col gap-2">
-      <div className="grid grid-cols-12 text-[14px] font-[700] w-full items-center p-2 h-[50px] bg-[#fff] ">
+    <div className="flex flex-col gap-1">
+      <div className="grid grid-cols-12 text-[14px]  bg-[#ffffff9f] text-slate-700 font-[700] w-full items-center p-2 h-[50px]  ">
         <span className={showDataInfo ? "col-span-10" : "col-span-3"}>
           Department
         </span>
@@ -34,7 +34,7 @@ const DepartmentTable = ({ num_of_rows }) => {
       {rows?.slice(0, num_of_rows)?.map((row, n) => (
         <div
           key={n}
-          className="grid grid-cols-12 text-[14px] font-[400] w-full items-center p-2 h-[50px] bg-[#fff] "
+          className="grid grid-cols-12 text-[13px] font-[700] text-slate-600 w-full items-center p-2 h-[50px] bg-[#fff] "
         >
           <span className={showDataInfo ? "col-span-10" : "col-span-3"}>
             {row.name}

@@ -22,7 +22,7 @@ const ContentLayout = ({ firstChild, secondChild }) => {
       <div
         className={` ${
           showDataInfo ? "col-span-7" : "col-span-12"
-        }  flex flex-col gap-3 p-10 border-2 transition-all ease-in-out duration-100`}
+        }  flex flex-col gap-3 p-5 border-2 transition-all ease-in-out duration-100`}
       >
         <div
           ref={ref1}
