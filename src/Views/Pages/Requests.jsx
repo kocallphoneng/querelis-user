@@ -1,27 +1,40 @@
 import React from "react";
 import DepartmentTable from "../UI/Table/DepartmentTable";
-import { BsSearch } from "react-icons/bs";
-import RequestTable from "../UI/Table/RequestTable";
+import { BsFilter, BsPlus, BsSearch } from "react-icons/bs";
+import RequestTable from "../UI/Table/TicketTable";
+import { useAppContext } from "../../Controllers/Context/AppContext";
 
 const Requests = () => {
+  const { setModal } = useAppContext();
   return (
     <div className="flex flex-col gap-3 p-5">
       <div className="flex justify-between items-center">
-        <span className="text-[24px] leading-[30px] font-[600] ">Tickets</span>
+        <span className="text-[22px] leading-[30px] font-[700] ">Tickets</span>
         <div className="flex items-center gap-5">
-          <span className="border rounded-[10px] overflow-hidden flex justify-between items-center min-w-[300px] bg-[#fff] h-[40px]">
+          <span className="flex gap-1 w-[250px] h-[35px] items-center border-2 rounded-[7px] border-gray-300 bg-white">
+            <BsSearch className="mx-2" />
             <input
               type="text"
-              placeholder="Search for requests"
-              className=" p-3 text-[14px] bg-transparent border-none outline-none h-full"
+              placeholder="Search"
+              className="w-full text-gray-600 text-[13px] bg-transparent font-[700] outline-none"
             />
-            <span className="bg-[#c2bfbf1e] cursor-pointer transition-all duration-150 hover:bg-[#c9c9c991] min-w-[40px] h-[40px] flex justify-center items-center">
-              <BsSearch className="text-[#0257E6] text-[20px]" />
+          </span>
+          <span className="flex gap-1 w-[250px] justify-between h-[35px] p-1 px-2 items-center border-2 rounded-[7px] bg-white border-gray-300">
+            <span className="text-[13px] font-[700] text-gray-600 ">
+              All Categories
+            </span>
+            <span className="flex items-center gap-2 text-[12px] cursor-pointer text-gray-600 font-[700]">
+              <BsFilter className="text-[21px] font-[700]" />
+              Filter
             </span>
           </span>
-          {/* <span className="flex items-center h-[40px] cursor-pointer gap-2 transition-all duration-150 bg-[#0257E6] hover:bg-[#0256e6a1] p-2 py-1 font-[700] text-[#fff] rounded-full text-[14px]">
-        <BsPlus className="text-[25px]" />
-      </span> */}
+          {/* <span
+            onClick={() => setModal({ open: true, name: "new_staff" })}
+            className="flex gap-1 cursor-pointer w-fit justify-between h-[35px] p-1 px-2 items-center border-2 rounded-[7px] bg-white border-gray-300"
+          >
+            <span className="text-[13px] font-[700] text-gray-600 ">New</span>
+            <BsPlus className="text-[21px] font-[700] text-gray-600 " />
+          </span> */}
         </div>
       </div>
 

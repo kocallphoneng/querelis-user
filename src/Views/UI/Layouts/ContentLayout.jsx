@@ -18,7 +18,7 @@ const ContentLayout = ({ firstChild, secondChild }) => {
 
 
   return (
-    <div className="grid grid-cols-12">
+    <div className="grid grid-cols-12 gap-4">
       <div
         className={` ${
           showDataInfo ? "col-span-7" : "col-span-12"

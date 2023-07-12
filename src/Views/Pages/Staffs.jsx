@@ -2,8 +2,10 @@ import React from "react";
 import DepartmentTable from "../UI/Table/DepartmentTable";
 import { BsFilter, BsPlus, BsSearch } from "react-icons/bs";
 import StaffsTable from "../UI/Table/StaffsTable";
+import { useAppContext } from "../../Controllers/Context/AppContext";
 
 const Staffs = () => {
+  const { setModal } = useAppContext();
   return (
     <div className="flex flex-col gap-3 p-5">
       <div className="flex justify-between items-center">
@@ -27,7 +29,7 @@ const Staffs = () => {
             </span>
           </span>
           <span
-            // onClick={() => setModal({ open: true, name: "new_department" })}
+            onClick={() => setModal({ open: true, name: "new_staff" })}
             className="flex gap-1 cursor-pointer w-fit justify-between h-[35px] p-1 px-2 items-center border-2 rounded-[7px] bg-white border-gray-300"
           >
             <span className="text-[13px] font-[700] text-gray-600 ">New</span>
