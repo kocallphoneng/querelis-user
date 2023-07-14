@@ -8,9 +8,9 @@ const Navbar = () => {
         <span className="w-[46px] h-[46px] bg-gray-300 rounded-full overflow-hidden border"></span>
         <div className="flex flex-col">
           <span className="text-[18px] leading-[24px] text-slate-700 font-[700] ">
-            Kiki Store
+            Bolu Lawal
           </span>
-          <span className="text-[14px] leading-[20px] font-[300] ">Company </span>
+          <span className="text-[14px] leading-[20px] font-[300] ">Support staff </span>
         </div>
       </div>
     </div>

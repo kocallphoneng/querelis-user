@@ -12,6 +12,7 @@ import Staffs from "./Views/Pages/Staffs";
 import ChangePassword from "./Views/Pages/ChangePassword";
 import Notifications from "./Views/Pages/Notifications";
 import Demo from "./Views/Pages/Demo";
+import Department from "./Views/Pages/Department";
 // import CompulsoryPassword from "./Pages/CompulsoryChange";
 // import DashboardCtrl from "./Pages/DashboardCtrl";
 // import UserDashboard from "./Pages/UserDashboard";
@@ -33,12 +34,10 @@ function App() {
         <Route path="staffs" element={<Staffs />} />
         <Route path="change-password" element={<ChangePassword />} />
         <Route path="notifications" element={<Notifications />} />
+        <Route path="department" element={<Department />} />
       </Route>
 
-      {/* <Route
-        path={"/compulsorypasswordreset"}
-        element={<CompulsoryPassword />}
-      /> */}
+     
     </Routes>
   );
 }
