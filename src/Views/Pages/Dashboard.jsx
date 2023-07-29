@@ -6,8 +6,8 @@ import useModal from "../../Controllers/Hooks/useModal";
 const Dashboard = () => {
   return (
     <div className="">
-      {/* <CompanyDashboard /> */}
-      <UserDashboard />
+      <CompanyDashboard />
+      {/* <UserDashboard /> */}
       {/* {localStorage.isCompany ? <CompanyDashboard /> : <UserDashboard />} */}
       {/* {localStorage.user === "support_staff" ? (
         <UserDashboard />
