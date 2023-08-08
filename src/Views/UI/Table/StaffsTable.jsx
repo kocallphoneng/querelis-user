@@ -11,7 +11,7 @@ const StaffsTable = ({ num_of_rows }) => {
   
   return (
     <div className="flex flex-col gap-1">
-      <div className="grid grid-cols-12 text-[14px]  bg-[#ffffff9f] text-slate-700 font-[700] w-full items-center p-2 h-[50px] ">
+      <div className="grid grid-cols-12 border-y text-[14px]  bg-[#ffffff9f] text-slate-700 font-[700] w-full items-center p-2 h-[50px] ">
         <span className="col-span-2">Name</span>
         <span className="col-span-2">Email</span>
         <span className="col-span-2">Phone</span>
@@ -20,7 +20,7 @@ const StaffsTable = ({ num_of_rows }) => {
         <span className="col-span-1">Active</span>
         <span className="col-span-1"></span>
       </div>
-      {rows?.slice(0, num_of_rows)?.map((row, n) => (
+      {rows?.slice(0, num_of_rows)?.map((_row, n) => (
         <div
           key={n}
           className="grid grid-cols-12 text-[13px] font-[700] text-slate-600 w-full items-center p-2 h-[50px] bg-[#fff] "
@@ -40,10 +40,10 @@ const StaffsTable = ({ num_of_rows }) => {
           </span>
           <span className="col-span-2 flex gap-6">
             <span className="flex items-center gap-1">
-              <span className="w-[20px] h-[7px] bg-[goldenrod] "></span>18
+              <span className="w-[30px] rounded-[10px] h-[7px] bg-[#ff5874ec] "></span>18
             </span>
             <span className="flex items-center gap-1">
-              <span className="w-[20px] h-[7px] flex-nowrap bg-green-600 "></span>
+              <span className="w-[30px] rounded-[10px] h-[7px] flex-nowrap bg-green-600 "></span>
               30
             </span>
           </span>

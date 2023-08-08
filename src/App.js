@@ -7,7 +7,7 @@ import NewPassword from "./Views/Pages/NewPassword";
 import Dashboard from "./Views/Pages/Dashboard";
 import Home from "./Views/Pages/Home";
 import Departments from "./Views/Pages/Departments";
-import Requests from "./Views/Pages/Requests";
+import Requests from "./Views/Pages/Tickets";
 import Staffs from "./Views/Pages/Staffs";
 import ChangePassword from "./Views/Pages/ChangePassword";
 import Notifications from "./Views/Pages/Notifications";
@@ -26,7 +26,6 @@ function App() {
       <Route path={"/reset-password"} element={<ResetPassword />} />
       <Route path={"/create-new-password"} element={<NewPassword />} />
       <Route path={"/demo"} element={<Demo />} />
-      <Route path={"/tst"} element={<Demo />} />
       <Route path={"/dashboard"} element={<Dashboard />}>
         <Route path="" element={<Home />} />
         <Route path="departments" element={<Departments />} />
@@ -36,8 +35,6 @@ function App() {
         <Route path="notifications" element={<Notifications />} />
         <Route path="department" element={<Department />} />
       </Route>
-
-     
     </Routes>
   );
 }

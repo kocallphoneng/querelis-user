@@ -23,8 +23,13 @@
   /* color: #110c0c; */
 }
 body {
-  background: #e5e5e5;
+  background: #2170f813;
   width: 100%;
+}
+:root {
+  --prymary_color: #2170f807;
+  --base_color: #0f59d8;
+  --hue: #0f59d82f;
 }
 .test {
   background: #110c0c75;

@@ -3,12 +3,12 @@ import React from "react";
 const ChatCard = ({ position }) => {
   return (
     <div
-      className={`flex w-full border h-fit ${
+      className={`flex w-full z-[999999] border h-fit ${
         position === "left" ? " justify-start" : " justify-end"
       }`}
     >
       <div
-        className={`flex bg-[#fff] gap-3 max-w-[300px] rounded-[16px] w-fit p-2 `}
+        className={`flex bg-[#ffffff] gap-3 max-w-[300px] rounded-[16px] w-fit p-2 `}
       >
         <span className="min-w-[25px] h-[25px] bg-gray-300 rounded-full"></span>
         <div className="flex flex-col">

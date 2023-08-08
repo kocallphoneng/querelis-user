@@ -8,12 +8,6 @@ const Dashboard = () => {
     <div className="">
       <CompanyDashboard />
       {/* <UserDashboard /> */}
-      {/* {localStorage.isCompany ? <CompanyDashboard /> : <UserDashboard />} */}
-      {/* {localStorage.user === "support_staff" ? (
-        <UserDashboard />
-      ) : (
-        <Dashboard />
-      )} */}
       {useModal()}
     </div>
   );
