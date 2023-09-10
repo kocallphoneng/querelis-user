@@ -4,6 +4,7 @@ import ModalLayout from "../../Views/UI/Layouts/ModalLayout";
 import NewDepartment from "../../Views/UI/Modals/NewDepartment";
 import TicketModal from "../../Views/UI/Modals/TicketModal";
 import Staff from "../../Views/UI/Modals/Staff";
+import NewStaff from "../../Views/UI/Modals/NewStaff";
 
 const useModal = () => {
   const { modal } = useAppContext();
@@ -34,7 +35,7 @@ const useModal = () => {
   else if (modal.open && modal.name === "new_staff")
     return (
       <ModalLayout>
-        <TicketModal />
+        <NewStaff />
       </ModalLayout>
     );
   else if (modal.open && modal.name === "staff")

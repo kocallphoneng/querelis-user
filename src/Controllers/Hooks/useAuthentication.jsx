@@ -35,35 +35,39 @@ const useAuthentication = () => {
   });
 
   const handleLogin = async (values) => {
-    setLoading(true);
+    // setLoading(true);
     const user = {
       email: values.email,
       password: values.password,
     };
-    const res = await login(user);
-    if (res.message === "success") {
-      const token = res.data.access_token;
-      localStorage.setItem("token", token);
-      localStorage.setItem("name", res.data.user);
-      setLoading(false);
-      navigate("/dashboard");
-    } else {
-      if (res.data.code === "FIRST_LOGIN") {
-        localStorage.setItem("firstTimer", user.email);
-        setLoading(false);
-        navigate("/createnewpassword");
-      } else if (res.data.code === "EXPIRED_PASSWORD") {
-        localStorage.setItem("firstTimer", user.email);
-        setLoading(false);
-        navigate("/compulsory-password-reset");
-      } else if (res.data.message === "Invalid credentials") {
-        toast.error("Invalid email or password");
-        setLoading(false);
-      } else {
-        toast.error("Something went wrong, please try again.");
-        setLoading(false);
-      }
-    }
+    if (user.email.includes("company"))
+      localStorage.setItem("user_type", "company");
+    else localStorage.setItem("user_type", "staff");
+    navigate("/dashboard");
+    // const res = await login(user);
+    // if (res.message === "success") {
+    //   const token = res.data.access_token;
+    //   localStorage.setItem("token", token);
+    //   localStorage.setItem("name", res.data.user);
+    //   setLoading(false);
+    //   navigate("/dashboard");
+    // } else {
+    //   if (res.data.code === "FIRST_LOGIN") {
+    //     localStorage.setItem("firstTimer", user.email);
+    //     setLoading(false);
+    //     navigate("/createnewpassword");
+    //   } else if (res.data.code === "EXPIRED_PASSWORD") {
+    //     localStorage.setItem("firstTimer", user.email);
+    //     setLoading(false);
+    //     navigate("/compulsory-password-reset");
+    //   } else if (res.data.message === "Invalid credentials") {
+    //     toast.error("Invalid email or password");
+    //     setLoading(false);
+    //   } else {
+    //     toast.error("Something went wrong, please try again.");
+    //     setLoading(false);
+    //   }
+    // }
   };
   const handleForgotPassword = async (values) => {
     setLoading(true);

@@ -26,12 +26,12 @@ export const ticketData = {
   labels: barChartLabels.map((o) => o.month),
   datasets: [
     {
-      label: "Incoplete",
+      label: "Escalated",
       data: barChartLabels.map((d) => d.pending),
       backgroundColor: "#ff5874ec",
     },
     {
-      label: "completed",
+      label: "Resolved",
       data: barChartLabels.map((d) => d.completed),
       backgroundColor: "#89fc89",
     },
@@ -39,7 +39,7 @@ export const ticketData = {
 };
 
 export const pieChartData = {
-  labels: ["Voice service", "Data service", "SOS", "LOS"],
+  labels: ["Call service", "Data service", "Coverage", "SMS"],
   datasets: [
     {
       label: "Tickets",

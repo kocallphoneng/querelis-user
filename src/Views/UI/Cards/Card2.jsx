@@ -1,5 +1,5 @@
 import React from "react";
-import chart from "../../../../Assets/images/chart.png";
+import chart from "../../../Assets/images/chart.png";
 
 const Card2 = ({ title, classs, num, sign, Icon }) => {
   return (

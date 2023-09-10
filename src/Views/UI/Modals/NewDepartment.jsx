@@ -44,7 +44,27 @@ const NewDepartment = () => {
           value={form.name}
           error={error?.name !== ""}
         />
-        <div className="flex flex-col gap-3">
+        <TextField
+          id="outlined-basic"
+          label="Description of department*"
+          variant="outlined"
+          name={"description"}
+          size="small"
+          onChange={handleChange}
+          value={form.description}
+          error={error?.name !== ""}
+        />
+        <TextField
+          id="outlined-basic"
+          label="Allowed number of staffs*"
+          variant="outlined"
+          name={"staffs"}
+          size="small"
+          onChange={handleChange}
+          value={form.staffs}
+          error={error?.name !== ""}
+        />
+        {/* <div className="flex flex-col gap-3">
           {staffs.length > 0 && (
             <div className="bg-gray-50 mt-3 rounded-md w-full p-3 flex flex-wrap gap-3">
               {staffs?.map((staff, n) => (
@@ -83,7 +103,7 @@ const NewDepartment = () => {
               <TextField {...params} label="Add New User" />
             )}
           />
-        </div>
+        </div> */}
       </DepartmentForm>
     </div>
   );

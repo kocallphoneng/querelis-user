@@ -1,14 +1,16 @@
 // import { toast } from "react-hot-toast";
+import axios from "axios";
 import client from "../../Constants/helpers/axiosInstance";
 
 export const authService = () => {
+  const base_url = "https://9b8d-154-160-11-180.ngrok-free.app/api";
   const resetConfig = localStorage["reset-config"]
     ? JSON.parse(localStorage["reset-config"])
     : { email: "", otp: "" };
 
   const login = async (user) => {
     try {
-      const res = await client.post("/login", user);
+      const res = await axios.post(base_url + "/login", user);
       return { message: "success", data: res.data };
     } catch (err) {
       return { message: "failed", data: err.response.data };

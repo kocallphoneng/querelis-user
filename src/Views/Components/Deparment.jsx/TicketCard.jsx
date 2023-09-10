@@ -6,7 +6,7 @@ const TicketCard = () => {
   return (
     <div
       onClick={() => setModal({ open: true, name: "ticket" })}
-      className="flex flex-col bg-slate-50 hover:bg-slate-200 transition-all duration-100 cursor-pointer gap-1 shadow-md w-full p-2 rounded-lg text-gray-400 text-[12px]"
+      className="flex flex-col bg-[#8080800e] hover:bg-slate-200 transition-all duration-100 cursor-pointer gap-1 shadow-sm w-full p-2 rounded-lg text-gray-400 text-[12px]"
     >
       <div className="flex justify-between items-center">
         <span className="font-[700] flex items-center gap-10">

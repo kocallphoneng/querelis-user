@@ -1,11 +1,11 @@
 import React from "react";
 import { FaEllipsisH } from "react-icons/fa";
 const images = [
-  require("../../../../Assets/images/u1.png"),
-  require("../../../../Assets/images/u2.png"),
-  require("../../../../Assets/images/u3.png"),
-  require("../../../../Assets/images/u4.png"),
-  require("../../../../Assets/images/u5.png"),
+  require("../../../Assets/images/u1.png"),
+  require("../../../Assets/images/u2.png"),
+  require("../../../Assets/images/u3.png"),
+  require("../../../Assets/images/u4.png"),
+  require("../../../Assets/images/u5.png"),
 ];
 const deps = [
   { name: "VS", gradient: "orange" },
@@ -15,7 +15,7 @@ const deps = [
   { name: "CS", gradient: "gray" },
 ];
 
-const Card1 = ({ type,title, Icon }) => {
+const Card1 = ({ type, title, Icon }) => {
   return (
     <div className="col-span-3 p-[20px] bg-[#0000ff0e] rounded-[24px] h-[150px] flex flex-col border border-[#00000098] border-dashed">
       <span className="text-[14px] font-[700]">{title}</span>
@@ -44,7 +44,9 @@ const Card1 = ({ type,title, Icon }) => {
                 <span
                   style={style}
                   className={`w-[40px] text-white font-[700] h-[40px] flex justify-center items-center p-[1px] absolute top-0  shadow-md bg-[#fff] rounded-full`}
-                >{i.name}</span>
+                >
+                  {i.name}
+                </span>
               );
             })}
         <span

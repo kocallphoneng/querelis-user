@@ -30,10 +30,10 @@ const Tickets = () => {
               100 <span className="text-[12px]">Total</span>
             </span>
             <span className="flex px-5 border-x flex-col items-center text-green-600 text-[30px] font-[700]">
-              50 <span className="text-[12px]">Complete</span>
+              50 <span className="text-[12px]">Resolved</span>
             </span>
             <span className="flex flex-col items-center text-[#ff5874ec] text-[30px] font-[700]">
-              50 <span className="text-[12px]">Incomplete</span>
+              50 <span className="text-[12px]">Escalated</span>
             </span>
           </div>
         </div>

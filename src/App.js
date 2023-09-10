@@ -13,6 +13,7 @@ import ChangePassword from "./Views/Pages/ChangePassword";
 import Notifications from "./Views/Pages/Notifications";
 import Demo from "./Views/Pages/Demo";
 import Department from "./Views/Pages/Department";
+import LandingPage from "./Views/Pages/LandingPage";
 // import CompulsoryPassword from "./Pages/CompulsoryChange";
 // import DashboardCtrl from "./Pages/DashboardCtrl";
 // import UserDashboard from "./Pages/UserDashboard";
@@ -20,7 +21,7 @@ import Department from "./Views/Pages/Department";
 function App() {
   return (
     <Routes>
-      <Route path={"/"} element={<Navigate to="/login" />} />
+      <Route path={"/"} element={<LandingPage />} />
       <Route path={"/login"} element={<Login />} />
       <Route path={"/forgot-password"} element={<ForgotPassword />} />
       <Route path={"/reset-password"} element={<ResetPassword />} />
@@ -30,6 +31,9 @@ function App() {
         <Route path="" element={<Home />} />
         <Route path="departments" element={<Departments />} />
         <Route path="tickets" element={<Requests />} />
+        <Route path="tickets/pending" element={<Requests />} />
+        <Route path="tickets/accepted" element={<Requests />} />
+        <Route path="tickets/escalted" element={<Requests />} />
         <Route path="staffs" element={<Staffs />} />
         <Route path="change-password" element={<ChangePassword />} />
         <Route path="notifications" element={<Notifications />} />

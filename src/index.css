@@ -30,6 +30,7 @@ body {
   --prymary_color: #2170f807;
   --base_color: #0f59d8;
   --hue: #0f59d82f;
+  --dark: #22324efd;
 }
 .test {
   background: #110c0c75;
@@ -48,6 +49,9 @@ body {
 }
 .input:focus {
   outline: 2px solid #0257e6;
+}
+.pop {
+  font-family: "Poppins", sans-serif !important;
 }
 ::-webkit-scrollbar {
   width: 0.3em;

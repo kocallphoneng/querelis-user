@@ -5,9 +5,9 @@ import UserHome from "../Components/UserHome/Index";
 const Home = () => {
   return (
     <>
-      <CompanyHome />
+      {/* <CompanyHome /> */}
       {/* <UserHome /> */}
-      {/* {localStorage.isCompany ? <CompanyHome /> : <UserDashboard />} */}
+      {localStorage.user_type === "company" ? <CompanyHome /> : <UserHome />}
     </>
   );
 };

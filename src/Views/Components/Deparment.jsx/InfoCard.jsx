@@ -4,9 +4,10 @@ import TicketCard from "./TicketCard";
 import StaffCard from "./StaffCard";
 import { BsFillPencilFill } from "react-icons/bs";
 import { useAppContext } from "../../../Controllers/Context/AppContext";
+import { staffs } from "../../../Constants/testData";
 
 const InfoCard = () => {
-  const { setModal } = useAppContext();
+  const { setModal, targetElement } = useAppContext();
   const [ticketType, setTicketType] = useState("All Tickets");
   const [view, setView] = useState("tickets");
   const [openTicketType, setOpenTicketType] = useState(false);
@@ -24,16 +25,19 @@ const InfoCard = () => {
       }, 50);
     }
   };
-
+  const data = targetElement.data;
   const tickets = [
     "All Tickets",
-    "Completed Tickets",
-    "Abandoned Tickets",
-    "Assigned Tickets",
-    "Unassigned Tickets",
-    "Abandoned Tickets",
+    "Resolved Tickets",
+    "Escalated Tickets",
+    "Accepted Tickets",
+    "Open Tickets",
   ];
-
+  const staffs_ = localStorage.staffs
+    ? JSON.parse(localStorage.staffs)
+    : staffs;
+  console.log(staffs_);
+  console.log(staffs_?.filter((s) => s.deparment[0] === targetElement.title));
   return (
     <div className="flex flex-col py-5 gap-5">
       <div className="flex flex-col gap-3">
@@ -44,10 +48,7 @@ const InfoCard = () => {
           </div>
         </span>
         <span className="font-[600] relative text-[14px] leading-[21px] text-gray-400">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem,
-          nobis. Possimus, rerum expedita nemo corrupti optio in numquam
-          perferendis saepe maxime fugit non doloribus asperiores quidem magni?
-          Accusantium, provident voluptate.
+          {data.description}
         </span>
       </div>
       <hr />
@@ -79,7 +80,8 @@ const InfoCard = () => {
             <span className="font-[700] text-[14px] flex items-center gap-5">
               # Tickets
               <span className="bg-[#0257E6] flex items-center justify-center text-[10px] w-[25px] h-[25px] rounded-full text-[#fff]">
-                100
+                {parseInt(data.completed_requests) +
+                  parseInt(data.pending_requests)}
               </span>
             </span>
             <span className="flex border p-1 px-2 rounded-md relative gap-3 w-[150px] justify-between items-center text-[14px] cursor-pointer">
@@ -132,7 +134,10 @@ const InfoCard = () => {
             <span className="font-[700] text-[14px] flex items-center gap-5">
               # Staffs
               <span className="bg-[#0257E6] flex items-center justify-center text-[10px] w-[25px] h-[25px] rounded-full text-[#fff]">
-                20
+                {
+                  staffs_?.filter((s) => s.deparment[0] === targetElement.title)
+                    .length
+                }
               </span>
             </span>
             <span
@@ -143,11 +148,11 @@ const InfoCard = () => {
             </span>
           </div>
           <div className="flex flex-col gap-2">
-            <StaffCard />
-            <StaffCard />
-            <StaffCard />
-            <StaffCard />
-            <StaffCard />
+            {staffs_
+              ?.filter((s) => s.deparment[0] === targetElement.title)
+              ?.map((info, n) => (
+                <StaffCard key={n} data={info} />
+              ))}
           </div>
         </div>
       )}

@@ -8,7 +8,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const PieCharts = () => {
   return (
     <div className="col-span-4 h-[350px] bg-white p-5 rounded-md">
-      <span className="text-[18px] font-[700]">Departments</span>
+      <span className="text-[18px] font-[700]">Overall Ticket Types</span>
       <Pie data={pieChartData} height={130} />;
     </div>
   );

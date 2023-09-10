@@ -3,7 +3,7 @@ import { useAppContext } from "../Context/AppContext";
 
 const useDepartment = () => {
   const { modal, setModal } = useAppContext();
-  const [form, setForm] = useState({ name: "", staffs: [] });
+  const [form, setForm] = useState({ name: "", description: "", staffs: "" });
   const [staffs, setStaffs] = useState([]);
   const [error, setError] = useState({ name: "" });
   const [staffValue, setStaffValue] = useState("");
@@ -14,6 +14,8 @@ const useDepartment = () => {
   const [showDepartment, setShowDepartment] = useState(false);
 
   const [target, setTarget] = useState({});
+
+  const departments = JSON.parse(localStorage.departments);
 
   const modalRef = useRef();
   const openModalRef = useRef();
@@ -31,6 +33,7 @@ const useDepartment = () => {
 
   const handleStaff = (value) => {
     setStaffValue(value);
+
     setStaffs([...staffs, value]);
   };
 
@@ -43,9 +46,19 @@ const useDepartment = () => {
 
   const handleSubmit = () => {
     setLoading(true);
+    const newArr = [...departments];
+    newArr.push({
+      completed_requests: 0,
+      description: form.description,
+      name: form.name,
+      pending_requests: 0,
+      staffs: form.staffs,
+    });
+    // console.log(newArr);
+    localStorage.setItem("departments", JSON.stringify(newArr));
     setLoading(false);
   };
-
+  // console.log(departments);
   return {
     loading,
     form,
