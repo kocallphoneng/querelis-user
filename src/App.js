@@ -14,6 +14,7 @@ import Notifications from "./Views/Pages/Notifications";
 import Demo from "./Views/Pages/Demo";
 import Department from "./Views/Pages/Department";
 import LandingPage from "./Views/Pages/LandingPage";
+import CompulsoryPassword from "./Views/Pages/CompulsoryChange";
 // import CompulsoryPassword from "./Pages/CompulsoryChange";
 // import DashboardCtrl from "./Pages/DashboardCtrl";
 // import UserDashboard from "./Pages/UserDashboard";
@@ -26,6 +27,10 @@ function App() {
       <Route path={"/forgot-password"} element={<ForgotPassword />} />
       <Route path={"/reset-password"} element={<ResetPassword />} />
       <Route path={"/create-new-password"} element={<NewPassword />} />
+      <Route
+        path={"/compulsory-password-reset"}
+        element={<CompulsoryPassword />}
+      />
       <Route path={"/demo"} element={<Demo />} />
       <Route path={"/dashboard"} element={<Dashboard />}>
         <Route path="" element={<Home />} />

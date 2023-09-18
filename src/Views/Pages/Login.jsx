@@ -16,7 +16,6 @@ function Login() {
         initialValues={initialLoginValues}
         validator={loginValidation}
         handleSubmit={handleLogin}
-        btn={"SUBMIT"}
         loading={loading}
         link={true}
       >

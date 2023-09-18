@@ -3,7 +3,7 @@ import axios from "axios";
 import client from "../../Constants/helpers/axiosInstance";
 
 export const authService = () => {
-  const base_url = "https://9b8d-154-160-11-180.ngrok-free.app/api";
+  const base_url = "http://159.89.52.5/api";
   const resetConfig = localStorage["reset-config"]
     ? JSON.parse(localStorage["reset-config"])
     : { email: "", otp: "" };
@@ -52,6 +52,19 @@ export const authService = () => {
       }
     }
   };
+
+  // const compulsory_password_change = async (passwords)=>{
+  //   try {
+  //     await client.post("/change-password", {
+  //       email: localStorage.firstTimer,
+  //       password: passwords.password,
+  //       password_confirmation: passwords.cfPassword,
+  //     });
+  //     return { message: "success" };
+  //   } catch (err) {
+  //     return { message: "failed" };
+  //   }
+  // }
 
   return { login, forgotPassword, newPassword };
 };

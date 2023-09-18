@@ -7,8 +7,8 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
 import { Field, ErrorMessage } from "formik";
 
-const PasswordInput = ({ name, type, placeholder }) => {
-  const [vissible, setVissible] = useState();
+const PasswordInput = ({ name, value, placeholder }) => {
+  const [vissible, setVissible] = useState(false);
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
