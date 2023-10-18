@@ -40,11 +40,11 @@ const useAuthentication = () => {
       email: values.email,
       password: values.password,
     };
+   
     const res = await login(user);
     if (res.message === "success") {
-      const token = res.data.access_token;
-      localStorage.setItem("token", token);
-      localStorage.setItem("name", res.data.user);
+      localStorage.setItem("token", res.data.access_token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
       setLoading(false);
       navigate("/dashboard");
     } else {

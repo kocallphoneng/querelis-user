@@ -6,11 +6,11 @@ import Navbar from "../../Components/CompanyLayout/Navbar";
 
 const CompanyDashboard = () => {
   return (
-    <div className="grid grid-cols-12">
-      <div className="col-span-3 ">
+    <div className="flex">
+      <div className="flex-[0.2] p-2 ">
         <Sidebar />
       </div>
-      <div className="col-span-9 flex flex-col ">
+      <div className="flex-[0.8]">
         <Navbar />
         <div className="w-full h-fit min-h-[calc(100vh-77px)] overflow-auto">
           <Outlet />

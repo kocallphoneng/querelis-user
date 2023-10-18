@@ -8,15 +8,16 @@ const NavCard = ({ Icon, active, title, navigate }) => {
         navigate();
         setModal(false);
       }}
-      className={`flex items-center h-[60px]  transition-all duration-200 ease-in-out px-[35px] cursor-pointer gap-3 font-[700] ${
+      className={`flex items-center rounded-[20px] h-[46px] text-[14px] font-[500] transition-all duration-200 ease-in-out px-[35px] cursor-pointer gap-3 ${
         active
-          ? "bg-[#fff] text-[#0257E6] text-[18px] leading-[25px]"
-          : "bg-[#0257E6] text-[#fff] text-[14px] leading-[20px]"
-      } `}
+          ? "bg-[#4082f5] text-[#fff] "
+          : "bg-[transpatent] text-[#fff] "
+      }
+       `}
     >
       <Icon
         className={`${
-          active ? "text-[30px] text-[#0257E6]" : "text-[24px] text-[#fff]"
+          active ? "text-[18px] text-[#fff]" : "text-[20px] text-[#fff]"
         }`}
       />
       {title}

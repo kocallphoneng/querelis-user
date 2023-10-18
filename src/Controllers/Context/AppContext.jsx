@@ -11,6 +11,7 @@ const AppContextProvider = (props) => {
   const [showDataInfo, setShowDataInfo] = useState(false);
   const [toggleContentLayout, setToggleContentLayout] = useState(false);
   const [targetElement, setTargetElement] = useState({});
+  const [targetStaff, setTargetStaff] = useState({});
 
   const openContentModal = () => {
     setShowDataInfo(true);
@@ -40,6 +41,8 @@ const AppContextProvider = (props) => {
         setShowDataInfo,
         openContentModal,
         closeContentModal,
+        targetStaff,
+        setTargetStaff,
       }}
       {...props}
     />

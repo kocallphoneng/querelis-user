@@ -26,25 +26,25 @@ export const ticketData = {
   labels: barChartLabels.map((o) => o.month),
   datasets: [
     {
-      label: "pending",
+      label: "Escalated",
       data: barChartLabels.map((d) => d.pending),
-      backgroundColor: "#fcbf19",
+      backgroundColor: "#ff5874ec",
     },
     {
-      label: "completed",
+      label: "Resolved",
       data: barChartLabels.map((d) => d.completed),
-      backgroundColor: "#8ce6c6",
+      backgroundColor: "#89fc89",
     },
   ],
 };
 
 export const pieChartData = {
-  labels: ["Voice service", "Data service", "SOS", "LOS"],
+  labels: ["Call service", "Data service", "Coverage", "SMS"],
   datasets: [
     {
       label: "Tickets",
       data: [500, 800, 100, 1000],
-      backgroundColor: ["#8ccdff", "#3e81b5", "#05daed", "#01BAEF"],
+      backgroundColor: ["#ff2d5041", "#80008080", "#37f037", "#2bf3f379"],
     },
   ],
 };

@@ -1,15 +1,13 @@
 import React from "react";
 import { Formik, Form } from "formik";
-import { ClipLoader } from "react-spinners";
 import { Link } from "react-router-dom";
-import Button from "@mui/material/Button";
+import { ButtonFill } from "../Utilities/Button";
 
 const AuthForm = ({
   initialValues,
   validator,
   handleSubmit,
   children,
-  btn,
   loading,
   link,
 }) => {
@@ -20,19 +18,22 @@ const AuthForm = ({
       onSubmit={handleSubmit}
     >
       {(props) => (
-        <Form className=" flex flex-col gap-3">
+        <Form className=" flex flex-col gap-5">
           {children}
-          <Button className="h-[45px] w-full" variant="contained" type="submit">
-            {loading ? <ClipLoader size={24} color={"#110C0C"} loading /> : btn}
-          </Button>
           {link && (
             <Link
               to="/forgot-password"
-              className="text-[#C4C4C4] mt-5 text-center text-[16px] font-[500] cursor-pointer"
+              className="text-[#C4C4C4] text-end text-[16px] font-[500] cursor-pointer"
             >
               Change Password
             </Link>
           )}
+          <ButtonFill
+            label={"Submit"}
+            loading={loading}
+            action={() => {}}
+            classes={"h-[45px] text-[#fff]"}
+          />
         </Form>
       )}
     </Formik>

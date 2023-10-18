@@ -1,12 +1,11 @@
 import axios from "axios";
 
 const client = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
-  
+  baseURL: "http://159.89.52.5/api",
 });
 client.interceptors.request.use(function (config) {
   config.headers["Authorization"] = "Bearer " + localStorage.getItem("token");
- 
+
   return config;
 });
 

@@ -6,8 +6,8 @@ const Home = () => {
   return (
     <>
       {/* <CompanyHome /> */}
-      <UserHome />
-      {/* {localStorage.isCompany ? <CompanyHome /> : <UserDashboard />} */}
+      {/* <UserHome /> */}
+      {localStorage.user_type === "company" ? <CompanyHome /> : <UserHome />}
     </>
   );
 };
