@@ -3,10 +3,16 @@ import { useAppContext } from "../Context/AppContext";
 
 const useDepartment = () => {
   const { modal, setModal } = useAppContext();
-  const [form, setForm] = useState({ name: "", description: "", staffs: "" });
+  const [form, setForm] = useState({
+    name: "",
+    description: "",
+    category: "",
+    staffs: "",
+  });
   const [staffs, setStaffs] = useState([]);
   const [error, setError] = useState({ name: "" });
   const [staffValue, setStaffValue] = useState("");
+  const [categoryValue, setCategoryValue] = useState("");
   const [staffInputValue, setStaffInputValue] = useState("");
 
   const [loading, setLoading] = useState(false);
@@ -14,6 +20,8 @@ const useDepartment = () => {
   const [showDepartment, setShowDepartment] = useState(false);
 
   const [target, setTarget] = useState({});
+
+  // const
 
   const departments = JSON.parse(localStorage.departments);
 
@@ -31,6 +39,11 @@ const useDepartment = () => {
     }
   };
 
+  const handleCategory = (value) => {
+    setCategoryValue(value);
+    setForm({ ...form, category: value });
+  };
+
   const handleStaff = (value) => {
     setStaffValue(value);
 
@@ -46,16 +59,7 @@ const useDepartment = () => {
 
   const handleSubmit = () => {
     setLoading(true);
-    const newArr = [...departments];
-    newArr.push({
-      completed_requests: 0,
-      description: form.description,
-      name: form.name,
-      pending_requests: 0,
-      staffs: form.staffs,
-    });
-    // console.log(newArr);
-    localStorage.setItem("departments", JSON.stringify(newArr));
+    console.log(form);
     setLoading(false);
   };
   // console.log(departments);
@@ -78,7 +82,10 @@ const useDepartment = () => {
     removeStaff,
     closeModal,
     setShowDepartment,
+    handleCategory,
     setTarget,
+    categoryValue,
+    setCategoryValue,
   };
 };
 

@@ -6,11 +6,13 @@ import useModal from "../../Controllers/Hooks/useModal";
 const Dashboard = () => {
   return (
     <div className="">
-      {localStorage.user_type === "support_staff" ? (
+      <CompanyDashboard />
+      {/* <UserDashboard /> */}
+      {/* {localStorage.user_type === "support_staff" ? (
         <CompanyDashboard />
       ) : (
         <UserDashboard />
-      )}
+      )} */}
       {useModal()}
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { IoClose } from "react-icons/io5";
 import Form from "../Forms/StaffForm";
-import { TextField } from "@mui/material";
+import { Autocomplete, TextField } from "@mui/material";
 import { useAppContext } from "../../../Controllers/Context/AppContext";
 
 const NewStaff = () => {
@@ -13,12 +13,15 @@ const NewStaff = () => {
     id: "",
     image: "",
     label: "",
+    category: "",
     pending_request: 0,
     phone: "",
     total_requests: 0,
   });
   const [error, setError] = useState({});
   const [loading, setLoading] = useState(false);
+  const [categoryValue, setCategoryValue] = useState("");
+  const [roleValue, setRoleValue] = useState("");
   const handleChange = (e) => {
     const { value, name } = e.target;
     setForm({ ...form, [name]: value });
@@ -27,6 +30,17 @@ const NewStaff = () => {
   const handleSubmit = () => {};
   const [open, setOpen] = useState(false);
   // console.log(JSON.parse(localStorage.staffs));
+
+  const handleCategory = (value) => {
+    setCategoryValue(value);
+    setForm({ ...form, category: value });
+  };
+  const handleRole = (value) => {
+    setRoleValue(value);
+    setForm({ ...form, role: value });
+  };
+  const categories = ["call", "data", "sms", "enterprise", "general"];
+  const roles = ["company", "staff"];
   return (
     <div className="flex flex-col gap-4">
       <div className="flex justify-between items-center">
@@ -57,20 +71,46 @@ const NewStaff = () => {
           value={form.email}
           error={false}
         />
-        <div
-          className="border relative h-[35px]
-       "
-        >
-          {" "}
-          Select Department
-          {open &&
-            departments.map((d, n) => (
-              <span key={n} value={d.name}>
-                {d.name}
-              </span>
-            ))}
-          <select name="" id=""></select>
-        </div>
+        <Autocomplete
+          disablePortal
+          id="category"
+          size="small"
+          options={categories}
+          renderOption={(props, option) => (
+            <li {...props} key={option}>
+              {option}
+            </li>
+          )}
+          onChange={(event, newValue) => {
+            handleRole(newValue);
+          }}
+          inputValue={categoryValue}
+          onInputChange={(event, newInputValue) => {
+            setCategoryValue(newInputValue);
+          }}
+          sx={{ width: "100%" }}
+          renderInput={(params) => <TextField {...params} label="Category" />}
+        />
+        <Autocomplete
+          disablePortal
+          id="role"
+          size="small"
+          options={roles}
+          renderOption={(props, option) => (
+            <li className="capitalize" {...props} key={option}>
+              {option}
+            </li>
+          )}
+          onChange={(event, newValue) => {
+            handleRole(newValue);
+          }}
+          inputValue={roleValue}
+          onInputChange={(event, newInputValue) => {
+            setRoleValue(newInputValue);
+          }}
+          sx={{ width: "100%" }}
+          renderInput={(params) => <TextField {...params} label="Role" />}
+        />
       </Form>
     </div>
   );

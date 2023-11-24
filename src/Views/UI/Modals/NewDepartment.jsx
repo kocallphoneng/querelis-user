@@ -15,14 +15,17 @@ const NewDepartment = () => {
     handleChange,
     form,
     error,
-    staffInputValue,
-    setStaffInputValue,
+    categoryValue,
+    setCategoryValue,
     staffs,
     handleStaff,
     modalRef,
     closeModal,
     removeStaff,
+    handleCategory,
   } = useDepartment();
+
+  const categories = ["call", "data", "sms", "enterprise", "general"];
 
   return (
     <div ref={modalRef} className="flex flex-col gap-4">
@@ -44,6 +47,27 @@ const NewDepartment = () => {
           value={form.name}
           error={error?.name !== ""}
         />
+        <Autocomplete
+          disablePortal
+          id="category"
+          size="small"
+          options={categories}
+          renderOption={(props, option) => (
+            <li {...props} key={option}>
+              {option}
+            </li>
+          )}
+          onChange={(event, newValue) => {
+            handleCategory(newValue);
+          }}
+          inputValue={categoryValue}
+          onInputChange={(event, newInputValue) => {
+            setCategoryValue(newInputValue);
+          }}
+          sx={{ width: "100%" }}
+          renderInput={(params) => <TextField {...params} label="Category" />}
+        />
+        {/* </div> */}
         <TextField
           id="outlined-basic"
           label="Description of department*"
@@ -81,28 +105,7 @@ const NewDepartment = () => {
               ))}
             </div>
           )}
-          <Autocomplete
-            disablePortal
-            id="staffs"
-            size="small"
-            options={staffs_}
-            renderOption={(props, option) => (
-              <li {...props} key={option.id}>
-                {option.label}
-              </li>
-            )}
-            onChange={(event, newValue) => {
-              handleStaff(newValue);
-            }}
-            inputValue={staffInputValue}
-            onInputChange={(event, newInputValue) => {
-              setStaffInputValue(newInputValue);
-            }}
-            sx={{ width: "100%" }}
-            renderInput={(params) => (
-              <TextField {...params} label="Add New User" />
-            )}
-          />
+          
         </div> */}
       </DepartmentForm>
     </div>
