@@ -14,9 +14,9 @@ import ReviewTicket from "../../Components/Tickets/ReviewTicket";
 import Thread from "../../Components/Tickets/Thread";
 
 const TicketModal = () => {
-  const { setModal } = useAppContext();
+  const { setModal, targetTicket } = useAppContext();
   const [activePage, setActivePage] = useState("ticket_info");
-
+  console.log(targetTicket);
   return (
     <div className="flex flex-col gap-2 h-[400px] overflow-y-auto">
       <div className="flex items-center justify-between ">
@@ -59,9 +59,9 @@ const TicketModal = () => {
         </span>
       </div>
       <hr />
-      {activePage === "ticket_info" && <TicketInfo />}
-      {activePage === "ticket_review" && <ReviewTicket />}
-      {activePage === "ticket_thread" && <Thread />}
+      {activePage === "ticket_info" && <TicketInfo ticket={targetTicket} />}
+      {activePage === "ticket_review" && <ReviewTicket ticket={targetTicket} />}
+      {activePage === "ticket_thread" && <Thread ticket={targetTicket} />}
     </div>
   );
 };

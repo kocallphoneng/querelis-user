@@ -8,10 +8,10 @@ import ContentLayout from "../UI/Layouts/ContentLayout";
 import InfoCard from "../Components/Deparment.jsx/InfoCard";
 
 const Departments = () => {
-  const { setModal } = useAppContext();
+  const { setModal, departments } = useAppContext();
   // const { openModalRef } = useDepartment();
   // const { showDataInfo } = useAppContext();
-
+  console.log(departments);
   return (
     <ContentLayout
       firstChild={
@@ -45,7 +45,7 @@ const Departments = () => {
               </div>
             </div>
             <span className="flex flex-col items-center text-[--base_color] text-[30px] font-[700]">
-              100 <span className="text-[12px]">Total</span>
+              {departments?.data?.length} <span className="text-[12px]">Total</span>
             </span>
           </div>
           <div className="flex flex-col gap-3 w-full pt-0 p-5">

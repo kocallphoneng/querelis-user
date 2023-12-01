@@ -5,7 +5,8 @@ import StaffsTable from "../UI/Table/StaffsTable";
 import { useAppContext } from "../../Controllers/Context/AppContext";
 
 const Staffs = () => {
-  const { setModal } = useAppContext();
+  const { setModal, staffs } = useAppContext();
+  console.log(staffs)
   return (
     <div className="flex flex-col gap-3 p-5">
       <div className="flex flex-col gap-5 bg-white rounded-[20px]">
@@ -36,7 +37,7 @@ const Staffs = () => {
             </div>
           </div>
           <span className="flex flex-col items-center text-[--base_color] text-[30px] font-[700]">
-              100 <span className="text-[12px]">Total</span>
+              {staffs?.data?.length}<span className="text-[12px]">Total</span>
             </span>
         </div>
         <div className="flex flex-col gap-3 w-full pt-0 p-5">

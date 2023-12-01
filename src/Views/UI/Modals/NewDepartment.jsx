@@ -53,7 +53,7 @@ const NewDepartment = () => {
           size="small"
           options={categories}
           renderOption={(props, option) => (
-            <li {...props} key={option}>
+            <li className=" capitalize" {...props} key={option}>
               {option}
             </li>
           )}
@@ -65,7 +65,7 @@ const NewDepartment = () => {
             setCategoryValue(newInputValue);
           }}
           sx={{ width: "100%" }}
-          renderInput={(params) => <TextField {...params} label="Category" />}
+          renderInput={(params) => <TextField className="capitalize" {...params} label="Category" />}
         />
         {/* </div> */}
         <TextField
@@ -76,17 +76,7 @@ const NewDepartment = () => {
           size="small"
           onChange={handleChange}
           value={form.description}
-          error={error?.name !== ""}
-        />
-        <TextField
-          id="outlined-basic"
-          label="Allowed number of staffs*"
-          variant="outlined"
-          name={"staffs"}
-          size="small"
-          onChange={handleChange}
-          value={form.staffs}
-          error={error?.name !== ""}
+          error={error?.description !== ""}
         />
         {/* <div className="flex flex-col gap-3">
           {staffs.length > 0 && (

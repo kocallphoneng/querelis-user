@@ -1,8 +1,16 @@
 import React from "react";
 import { useAppContext } from "../../../Controllers/Context/AppContext";
 
-const TicketCard = () => {
+const TicketCard = ({ data }) => {
   const { setModal } = useAppContext();
+  const getColors = () => {
+    if (data.status === "PENDING") return { color: "gold" };
+    else if (data.status === "RESOLVED") return { color: "green" };
+    else if (data.status === "REJECTED") return { color: "purple" };
+    else if (data.status === "ACCEPTED") return { color: "orange" };
+    else if (data.status === "ESCALTED") return { color: "red" };
+    else return { color: "gray" };
+  };
   return (
     <div
       onClick={() => setModal({ open: true, name: "ticket" })}
@@ -10,13 +18,16 @@ const TicketCard = () => {
     >
       <div className="flex justify-between items-center">
         <span className="font-[700] flex items-center gap-10">
-          MTN <span># 6266291</span>
+          {data?.reporter?.network} <span># {data?.ticket_id}</span>
         </span>
       </div>
-      <div className="flex justify-between items-center">
-        <span>Handler: James Okoro</span>
+      <div className="flex justify-between gap-5 items-center">
+        <span className=" whitespace-nowrap truncate">
+          Handler: {data?.assigned_to?.first_name}
+        </span>
         <span className="flex items-center gap-3">
-          Status: <span className="text-[green] font-[500]">Completed</span>{" "}
+          Status:{" "}
+          <span style={getColors()} className=" font-[500]">{data?.status}</span>{" "}
         </span>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import React from "react";
 import { useAppContext } from "../../../Controllers/Context/AppContext";
 import call from "../../../Assets/images/call.svg";
+import { staffService } from "../../../Controllers/Services/staff.service";
 
 const Info = ({ name, value }) => {
   return (
@@ -10,45 +11,53 @@ const Info = ({ name, value }) => {
   );
 };
 
-const TicketInfo = () => {
-  const { setModal } = useAppContext();
+const TicketInfo = ({ ticket }) => {
+  const { setModal, staffs } = useAppContext();
+  const {getStaff} = new staffService()
+  const getAssignee = async ()=>{
+const res= getStaff()
+  }
   return (
     <div className="flex flex-col gap-5 text-slate-700 border-l px-2 overflow-y-auto">
       <div className="flex flex-col">
         <span className="text-[14px] font-[700] ">#Ticket Informaion</span>
         <div className="flex bg-gray-50 shadow-sm rounded-md p-3 flex-wrap gap-5 gap-y-2">
-          <Info name={"CC Ticket ID"} value={"717u9282"} />
-          <Info name={"Provider name"} value={"MTN"} />
-          <Info name={"Phone number"} value={"081892992002"} />
-          <Info name={"Category"} value={"Voice call service"} />
-          <Info name={"Created Date"} value={"5 days ago"} />
-          <Info name={"Due Date"} value={"20-10-2023"} />
+          <Info name={"CC Ticket ID"} value={ticket?.ticket_id} />
+          <Info name={"Provider name"} value={ticket?.reporter?.network} />
+          <Info name={"Phone number"} value={ticket?.reporter?.msisdn} />
+          <Info name={"Category"} value={ticket?.category} />
+          <Info
+            name={"Created Date"}
+            value={ticket?.created_at?.split(0, 16)}
+          />
+          <Info
+            name={"Last updated"}
+            value={ticket?.updated_at?.split(0, 16)}
+          />
         </div>
       </div>
       <div className="flex flex-col">
         <span className="text-[14px] font-[700] ">#Report </span>
-        <div className="flex gap-3 flex-wrap p-2 shadow-sm bg-gray-50 ">
-          <span className="bg-blue-100 text-[12px] w-fit px-1 rounded-[5px]">
-            Has happened before
-          </span>
-          <span className="bg-blue-100 text-[12px] w-fit px-1 rounded-[5px]">
-            Unable to call
-          </span>
-          <span className="bg-blue-100 text-[12px] w-fit px-1 rounded-[5px]">
-            Poor internet speed
-          </span>
-          <span className="bg-blue-100 text-[12px] w-fit px-1 rounded-[5px]">
-            No reception
-          </span>
+        <div className="flex gap-3 flex-wrap p-3 shadow-sm bg-gray-50 ">
+          {JSON.parse(ticket?.issue)?.map((issue, n) => (
+            <span
+              key={n}
+              className="bg-blue-100 text-[12px] w-fit px-1 rounded-[4px]"
+            >
+              {issue?.key}
+            </span>
+          ))}
         </div>
       </div>
       <div className="flex flex-col">
-      <span className="text-[14px] font-[700] ">#Assinged To </span>
+        <span className="text-[14px] font-[700] ">#Assinged To </span>
         <div className="flex flex-col bg-gray-50 shadow-sm p-3 ">
-          <span className="font-[700] text-[13px]">@Voice Call Services</span>
+          <span className="font-[700] text-[13px]">
+            @{ticket?.assigned_to?.department?.code}
+          </span>
           <div className="flex justify-between font-[500] text-[12px]">
-            <span>Assigned By : Ola Bolu</span>
-            <span>Assigned To : John Kalu</span>
+            <span className=" capitalize">Assigned To : {ticket?.assigned_to?.first_name} {ticket?.assigned_to?.last_name}</span>
+            <span className=" capitalize">Assigned By : {ticket?.assigned_by?.first_name} {ticket?.assigned_by?.last_name}</span>
           </div>
         </div>
       </div>
@@ -57,4 +66,3 @@ const TicketInfo = () => {
 };
 
 export default TicketInfo;
-

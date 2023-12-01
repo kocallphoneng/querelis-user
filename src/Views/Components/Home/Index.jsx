@@ -9,6 +9,7 @@ import { HiBadgeCheck } from "react-icons/hi";
 import { MdGroups } from "react-icons/md";
 
 const Index = () => {
+  
   return (
     <div className="w-full p-5 flex flex-col gap-6">
       <div className="grid grid-cols-12 gap-5  ">

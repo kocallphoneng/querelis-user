@@ -4,7 +4,7 @@ import TicketTable from "../UI/Table/TicketTable";
 import { useAppContext } from "../../Controllers/Context/AppContext";
 
 const Tickets = () => {
-  const { setModal } = useAppContext();
+  const { setModal, ticketSummary } = useAppContext();
   return (
     <div className="flex flex-col gap-3 p-5">
       <div className="flex flex-col gap-5 bg-white rounded-[20px]">
@@ -27,13 +27,15 @@ const Tickets = () => {
           </div>
           <div className="flex gap-4">
             <span className="flex flex-col items-center text-[--base_color] text-[30px] font-[700]">
-              100 <span className="text-[12px]">Total</span>
+              {ticketSummary?.total} <span className="text-[12px]">Total</span>
             </span>
             <span className="flex px-5 border-x flex-col items-center text-green-600 text-[30px] font-[700]">
-              50 <span className="text-[12px]">Resolved</span>
+              {ticketSummary?.resolved}{" "}
+              <span className="text-[12px]">Resolved</span>
             </span>
             <span className="flex flex-col items-center text-[#ff5874ec] text-[30px] font-[700]">
-              50 <span className="text-[12px]">Escalated</span>
+              {ticketSummary?.pending}{" "}
+              <span className="text-[12px]">Escalated</span>
             </span>
           </div>
         </div>

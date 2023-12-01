@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
+import { ticketService } from "../../../Controllers/Services/ticket.service";
 
 const Chat = ({ children }) => {
   const [open, toggle] = useState(false);
@@ -22,7 +23,10 @@ const Chat = ({ children }) => {
           <span className="absolute bottom-0 right-0 cursor-pointer hover:text-blue-600">
             Reply
           </span>
-          <span onClick={()=> toggle(!open)} className="absolute bottom-[-11px] text-blue-500 left-[-50px] cursor-pointer hover:text-blue-600">
+          <span
+            onClick={() => toggle(!open)}
+            className="absolute bottom-[-11px] text-blue-500 left-[-50px] cursor-pointer hover:text-blue-600"
+          >
             {open ? " Hide replies" : "show replies"}
           </span>
         </div>
@@ -61,20 +65,31 @@ const Reply = () => {
     </div>
   );
 };
-const Thread = () => {
+const Thread = ({ ticket }) => {
+  const { getTicketLog } = new ticketService();
+  const [logs, setLogs] = useState([]);
+  const getLogs = async () => {
+    const res = await getTicketLog();
+    if (res.message === "success") setLogs(res.data.data.logs);
+  };
+  useEffect(() => {
+    getLogs();
+  }, []);
   return (
     <div className="h-fit border-l px-2 flex flex-col gap-7">
-      <Chat>
-        <Reply />
-        <Reply />
-        <Reply />
-      </Chat>
-      <Chat>
-        <Reply />
-        <Reply />
-        <Reply />
-      </Chat>
-
+      {logs.length > 0 ? (
+        logs.map((l, n) => (
+          <Chat key={n}>
+            <Reply />
+            <Reply />
+            <Reply />
+          </Chat>
+        ))
+      ) : (
+        <div className="h-[150px] w-full bg-[#00000013] flex items-center justify-center round-[20px  ]">
+          No Logs Found
+        </div>
+      )}
     </div>
   );
 };
