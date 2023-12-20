@@ -1,0 +1,81 @@
+[debug] [2023-12-02T11:12:13.911Z] ----------------------------------------------------------------------
+[debug] [2023-12-02T11:12:13.917Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\KADA\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy
+[debug] [2023-12-02T11:12:13.921Z] CLI Version:   11.16.0
+[debug] [2023-12-02T11:12:13.922Z] Platform:      win32
+[debug] [2023-12-02T11:12:13.923Z] Node Version:  v18.14.2
+[debug] [2023-12-02T11:12:13.933Z] Time:          Sat Dec 02 2023 12:12:13 GMT+0100 (West Africa Standard Time)
+[debug] [2023-12-02T11:12:13.934Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-12-02T11:12:13.945Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2023-12-02T11:12:14.497Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-12-02T11:12:14.498Z] > authorizing via signed-in user (tekenna06@gmail.com)
+[debug] [2023-12-02T11:12:14.498Z] [iam] checking project querelis-user for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2023-12-02T11:12:14.501Z] > refreshing access token with scopes: []
+[debug] [2023-12-02T11:12:14.506Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2023-12-02T11:12:14.506Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2023-12-02T11:12:16.346Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2023-12-02T11:12:16.347Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2023-12-02T11:12:16.363Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/querelis-user:testIamPermissions [none]
+[debug] [2023-12-02T11:12:16.363Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/querelis-user:testIamPermissions x-goog-quota-user=projects/querelis-user
+[debug] [2023-12-02T11:12:16.364Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/querelis-user:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2023-12-02T11:12:16.752Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2023-12-02T11:12:16.752Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[debug] [2023-12-02T11:12:19.358Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/querelis-user:testIamPermissions 200
+[debug] [2023-12-02T11:12:19.358Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/querelis-user:testIamPermissions {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2023-12-02T11:12:19.360Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/querelis-user [none]
+[debug] [2023-12-02T11:12:26.510Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/querelis-user 200
+[debug] [2023-12-02T11:12:26.510Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/querelis-user {"projectId":"querelis-user","projectNumber":"972652589357","displayName":"querelis-user","name":"projects/querelis-user","resources":{"hostingSite":"querelis-user"},"state":"ACTIVE","etag":"1_247ece6a-a76d-4f75-a4f8-e3c7d3bb7808"}
+[info] 
+[info] === Deploying to 'querelis-user'...
+[info] 
+[info] i  deploying hosting 
+[debug] [2023-12-02T11:12:26.871Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/querelis-user/versions [none]
+[debug] [2023-12-02T11:12:26.872Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/querelis-user/versions {"status":"CREATED","labels":{"deployment-tool":"cli-firebase"}}
+[debug] [2023-12-02T11:12:30.147Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/querelis-user/versions 200
+[debug] [2023-12-02T11:12:30.147Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/-/sites/querelis-user/versions {"name":"projects/972652589357/sites/querelis-user/versions/87f235a9ab56f3d4","status":"CREATED","config":{},"labels":{"deployment-tool":"cli-firebase"}}
+[info] i  hosting[querelis-user]: beginning deploy... 
+[info] i  hosting[querelis-user]: found 21 files in build 
+[debug] [2023-12-02T11:12:30.358Z] [hosting] uploading with 200 concurrency
+[debug] [2023-12-02T11:12:39.297Z] [hosting] hash cache [YnVpbGQ] stored for 21 files
+[debug] [2023-12-02T11:12:39.298Z] [hosting][hash queue][FINAL] {"max":8792,"min":16,"avg":725.3809523809524,"active":0,"complete":21,"success":21,"errored":0,"retried":0,"total":21,"elapsed":8840}
+[debug] [2023-12-02T11:12:39.299Z] >>> [apiv2][query] POST https://firebasehosting.googleapis.com/v1beta1/projects/972652589357/sites/querelis-user/versions/87f235a9ab56f3d4:populateFiles [none]
+[debug] [2023-12-02T11:12:39.299Z] >>> [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/972652589357/sites/querelis-user/versions/87f235a9ab56f3d4:populateFiles {"files":{"/logo.png":"18afa0fc6ef0f3ffd88a86dc46b31140bffe28b91ec8b20236396079d1ec9988","/manifest.json":"5c997de1364b8be939319fa9209abd77f2caf7f8844999a9e2e9173f844e7840","/robots.txt":"b2090cf9761ef60aa06e4fab97679bd43dfa5e5df073701ead5879d7c68f1ec5","/user.jpg":"cf4958d904ad449076820deb047a35f70051003f9c61101cc82c4e83bb602f2a","/asset-manifest.json":"7efd6adea43e040830a44aa78e7a11067eeb1a680fe06d48b1b30c3b59003e0c","/index.html":"c91d64c0ff812813e1862003dba87ed5e936f2c7076d45d35f4ae606003cf08d","/static/css/main.e7cd5de0.css":"77c853bceee9afdae4cd6de64673555f20124c5ccf19ee86e916ce6fe1ca21a2","/static/css/main.e7cd5de0.css.map":"fb9b698ac5729968eb15e65d749f08532802fd9b3ed694c8903edc42dfafa37c","/static/js/main.f2380519.js.LICENSE.txt":"1f7d805cc6d7c43f01964755d1f4d656bed7a098bab3a5b21e9082aefb0a525a","/static/media/call.0296b2fc544c05d64f5a0b982c8b13bd.svg":"532e86439ef11ba327a441e1a8a73e9ac40e3381c1ec3775b5036dccea331dc5","/static/media/glo.423d968f1abd9e117339.png":"790ba60e781680a66a5f377b6fbf47ab327dcd615fbc07e75bd97017ce994b6a","/static/media/aedc.29bf82ee2e88405c33b8.png":"d782ad3dea21100afd65d4a44a4eae7325c6e13364b7e4cba492e31aac3951af","/static/media/v2.c307a93e875c4da6eed1.png":"d70094fc1c733ce92d1e910003a1c150bed280c0233747a66419baf3239f2c36","/static/media/board.23bace0ce336a2e323bc.png":"9b823e02ecd2e37711e28fdd793ff51aa4b4af7451ba2f3c492fb289a6160587","/static/media/network.57b20a81ed5f5ed8adc3.png":"42e9bb00cf074138c3a01b60012dca72ebeb52d337e0b1e01dc5a65f707623fc","/static/media/logo.69699cee0de1384219756374768c046f.svg":"131f48fc13ed4914901264e479330538ff3818c445f9a154dbcdc460f9e84adc","/static/media/eedc.be0ba75239919eb0931b.png":"3f50fdb4eb51198b9197f5bb2b76d1cbaae626e74d1f0b124f63e1da34d31760","/static/media/connected.4c4bbbf4d8a94357e181.png":"a65f711f92de4a1d576ff5c700ef352bee6f8ae2bd3437bc01d7db34d8da2871","/static/js/main.f2380519.js":"c5f0526d8feff634f6b770880aef486b7dfc17ae121eae42f1ed83a2fe815ddb","/static/media/chat.0e53b1a01d15d21460c9.jpg":"de27170b7a54f10a0ad3b02c843d4c29aefca06a4f284a1ba1fa35d0e028d629","/static/js/main.f2380519.js.map":"57ca13749186642cce31671784ee66742315f978c8bc3ff4ba26daf20d56ad3e"}}
+[debug] [2023-12-02T11:12:46.481Z] <<< [apiv2][status] POST https://firebasehosting.googleapis.com/v1beta1/projects/972652589357/sites/querelis-user/versions/87f235a9ab56f3d4:populateFiles 200
+[debug] [2023-12-02T11:12:46.482Z] <<< [apiv2][body] POST https://firebasehosting.googleapis.com/v1beta1/projects/972652589357/sites/querelis-user/versions/87f235a9ab56f3d4:populateFiles {"uploadRequiredHashes":["57ca13749186642cce31671784ee66742315f978c8bc3ff4ba26daf20d56ad3e","c91d64c0ff812813e1862003dba87ed5e936f2c7076d45d35f4ae606003cf08d","7efd6adea43e040830a44aa78e7a11067eeb1a680fe06d48b1b30c3b59003e0c","c5f0526d8feff634f6b770880aef486b7dfc17ae121eae42f1ed83a2fe815ddb"],"uploadUrl":"https://upload-firebasehosting.googleapis.com/upload/sites/querelis-user/versions/87f235a9ab56f3d4/files"}
+[debug] [2023-12-02T11:12:46.486Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/querelis-user/versions/87f235a9ab56f3d4/files/57ca13749186642cce31671784ee66742315f978c8bc3ff4ba26daf20d56ad3e [none]
+[debug] [2023-12-02T11:12:46.486Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/querelis-user/versions/87f235a9ab56f3d4/files/57ca13749186642cce31671784ee66742315f978c8bc3ff4ba26daf20d56ad3e [stream]
+[debug] [2023-12-02T11:12:46.489Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/querelis-user/versions/87f235a9ab56f3d4/files/c91d64c0ff812813e1862003dba87ed5e936f2c7076d45d35f4ae606003cf08d [none]
+[debug] [2023-12-02T11:12:46.490Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/querelis-user/versions/87f235a9ab56f3d4/files/c91d64c0ff812813e1862003dba87ed5e936f2c7076d45d35f4ae606003cf08d [stream]
+[debug] [2023-12-02T11:12:46.493Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/querelis-user/versions/87f235a9ab56f3d4/files/7efd6adea43e040830a44aa78e7a11067eeb1a680fe06d48b1b30c3b59003e0c [none]
+[debug] [2023-12-02T11:12:46.493Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/querelis-user/versions/87f235a9ab56f3d4/files/7efd6adea43e040830a44aa78e7a11067eeb1a680fe06d48b1b30c3b59003e0c [stream]
+[debug] [2023-12-02T11:12:46.496Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/querelis-user/versions/87f235a9ab56f3d4/files/c5f0526d8feff634f6b770880aef486b7dfc17ae121eae42f1ed83a2fe815ddb [none]
+[debug] [2023-12-02T11:12:46.496Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/querelis-user/versions/87f235a9ab56f3d4/files/c5f0526d8feff634f6b770880aef486b7dfc17ae121eae42f1ed83a2fe815ddb [stream]
+[debug] [2023-12-02T11:12:46.500Z] [hosting][populate queue][FINAL] {"max":7196,"min":7196,"avg":7196,"active":0,"complete":1,"success":1,"errored":0,"retried":0,"total":1,"elapsed":7211}
+[debug] [2023-12-02T11:12:46.501Z] [hosting] uploads queued: 4
+[debug] [2023-12-02T11:12:51.205Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/querelis-user/versions/87f235a9ab56f3d4/files/c91d64c0ff812813e1862003dba87ed5e936f2c7076d45d35f4ae606003cf08d 200
+[debug] [2023-12-02T11:12:51.206Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/querelis-user/versions/87f235a9ab56f3d4/files/c91d64c0ff812813e1862003dba87ed5e936f2c7076d45d35f4ae606003cf08d [stream]
+[debug] [2023-12-02T11:13:15.235Z] <<< [apiv2][status] POST https://upload-firebasehosting.googleapis.com/upload/sites/querelis-user/versions/87f235a9ab56f3d4/files/7efd6adea43e040830a44aa78e7a11067eeb1a680fe06d48b1b30c3b59003e0c 200
+[debug] [2023-12-02T11:13:15.235Z] <<< [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/querelis-user/versions/87f235a9ab56f3d4/files/7efd6adea43e040830a44aa78e7a11067eeb1a680fe06d48b1b30c3b59003e0c [stream]
+[debug] [2023-12-02T11:13:16.912Z] [uploadQueue] Retrying task c5f0526d8feff634f6b770880aef486b7dfc17ae121eae42f1ed83a2fe815ddb
+[debug] [2023-12-02T11:13:16.914Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/querelis-user/versions/87f235a9ab56f3d4/files/c5f0526d8feff634f6b770880aef486b7dfc17ae121eae42f1ed83a2fe815ddb [none]
+[debug] [2023-12-02T11:13:16.914Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/querelis-user/versions/87f235a9ab56f3d4/files/c5f0526d8feff634f6b770880aef486b7dfc17ae121eae42f1ed83a2fe815ddb [stream]
+[debug] [2023-12-02T11:13:47.730Z] [uploadQueue] Retrying task c5f0526d8feff634f6b770880aef486b7dfc17ae121eae42f1ed83a2fe815ddb
+[debug] [2023-12-02T11:13:47.732Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/querelis-user/versions/87f235a9ab56f3d4/files/c5f0526d8feff634f6b770880aef486b7dfc17ae121eae42f1ed83a2fe815ddb [none]
+[debug] [2023-12-02T11:13:47.732Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/querelis-user/versions/87f235a9ab56f3d4/files/c5f0526d8feff634f6b770880aef486b7dfc17ae121eae42f1ed83a2fe815ddb [stream]
+[debug] [2023-12-02T11:14:19.341Z] [uploadQueue] Retrying task c5f0526d8feff634f6b770880aef486b7dfc17ae121eae42f1ed83a2fe815ddb
+[debug] [2023-12-02T11:14:19.343Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/querelis-user/versions/87f235a9ab56f3d4/files/c5f0526d8feff634f6b770880aef486b7dfc17ae121eae42f1ed83a2fe815ddb [none]
+[debug] [2023-12-02T11:14:19.343Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/querelis-user/versions/87f235a9ab56f3d4/files/c5f0526d8feff634f6b770880aef486b7dfc17ae121eae42f1ed83a2fe815ddb [stream]
+[debug] [2023-12-02T11:14:52.555Z] [uploadQueue] Retrying task c5f0526d8feff634f6b770880aef486b7dfc17ae121eae42f1ed83a2fe815ddb
+[debug] [2023-12-02T11:14:52.558Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/querelis-user/versions/87f235a9ab56f3d4/files/c5f0526d8feff634f6b770880aef486b7dfc17ae121eae42f1ed83a2fe815ddb [none]
+[debug] [2023-12-02T11:14:52.559Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/querelis-user/versions/87f235a9ab56f3d4/files/c5f0526d8feff634f6b770880aef486b7dfc17ae121eae42f1ed83a2fe815ddb [stream]
+[debug] [2023-12-02T11:15:26.492Z] [uploadQueue] Retrying task c5f0526d8feff634f6b770880aef486b7dfc17ae121eae42f1ed83a2fe815ddb
+[debug] [2023-12-02T11:15:26.499Z] >>> [apiv2][query] POST https://upload-firebasehosting.googleapis.com/upload/sites/querelis-user/versions/87f235a9ab56f3d4/files/c5f0526d8feff634f6b770880aef486b7dfc17ae121eae42f1ed83a2fe815ddb [none]
+[debug] [2023-12-02T11:15:26.500Z] >>> [apiv2][body] POST https://upload-firebasehosting.googleapis.com/upload/sites/querelis-user/versions/87f235a9ab56f3d4/files/c5f0526d8feff634f6b770880aef486b7dfc17ae121eae42f1ed83a2fe815ddb [stream]
+[debug] Task c5f0526d8feff634f6b770880aef486b7dfc17ae121eae42f1ed83a2fe815ddb failed: retries exhausted after 6 attempts, with error: Timeout reached making request to https://upload-firebasehosting.googleapis.com/upload/sites/querelis-user/versions/87f235a9ab56f3d4/files/c5f0526d8feff634f6b770880aef486b7dfc17ae121eae42f1ed83a2fe815ddb
+[debug] [2023-12-02T11:15:56.524Z] [hosting][upload queue][FINAL] {"max":28751,"min":4722,"avg":16736.5,"active":1,"complete":3,"success":2,"errored":1,"retried":5,"total":4,"elapsed":190042}
+[debug] [2023-12-02T11:16:01.626Z] Error: Timed out.
+    at Timeout._onTimeout (C:\Users\KADA\AppData\Roaming\npm\node_modules\firebase-tools\lib\utils.js:253:49)
+    at listOnTimeout (node:internal/timers:569:17)
+    at process.processTimers (node:internal/timers:512:7)
+[error] 
+[error] Error: An unexpected error has occurred.
