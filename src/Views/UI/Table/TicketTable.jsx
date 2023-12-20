@@ -16,8 +16,8 @@ const TicketTable = ({ num_of_rows }) => {
         <span className="col-span-2">Provider Name</span>
         <span className="col-span-2">Phone</span>
         <span className="col-span-1">Assigned</span>
-        <span className="col-span-2">Category</span>
-        <span className="col-span-3">Issue</span>
+        <span className="col-span-1">Category</span>
+        <span className="col-span-4">Server Query</span>
       </div>
       {rows?.slice(0, num_of_rows)?.map((row, n) => {
         // console.log(row?.issue);
@@ -34,11 +34,20 @@ const TicketTable = ({ num_of_rows }) => {
                 ? "TRUE"
                 : "FALSE"}
             </span>
-            <span className="col-span-2">{row?.category}</span>
-            <div className="col-span-3 text-[12px] flex flex-wrap gap-3 gap-y-0 text-gray-400 ">
-              {JSON.parse(row?.issue)?.map((issue, n) => (
-                <span className=" whitespace-nowrap">#{issue?.key}</span>
-              ))}
+            <span className="col-span-1">{row?.category}</span>
+            <div className="col-span-4 text-[12px] pr-4 flex flex-wrap gap-3 gap-y-1 text-gray-400 ">
+              {row?.issue &&
+                Object.keys(JSON.parse(row?.server_query))?.map((issue, n) => (
+                  <span
+                    key={n}
+                    className="bg-blue-100 text-[12px] w-fit px-1 rounded-[4px]"
+                  >
+                    # <span className="">{issue}</span> --
+                    <i className="text-slate-700 font-[600]">
+                      {JSON.parse(row?.server_query)[issue]}
+                    </i>
+                  </span>
+                ))}
             </div>
             <span className="absolute right-0 h-full flex items-center justify-center w-[40px]">
               <div className="relative">

@@ -13,10 +13,10 @@ const Info = ({ name, value }) => {
 
 const TicketInfo = ({ ticket }) => {
   const { setModal, staffs } = useAppContext();
-  const {getStaff} = new staffService()
-  const getAssignee = async ()=>{
-const res= getStaff()
-  }
+  const { getStaff } = new staffService();
+  const getAssignee = async () => {
+    const res = getStaff();
+  };
   return (
     <div className="flex flex-col gap-5 text-slate-700 border-l px-2 overflow-y-auto">
       <div className="flex flex-col">
@@ -37,14 +37,31 @@ const res= getStaff()
         </div>
       </div>
       <div className="flex flex-col">
-        <span className="text-[14px] font-[700] ">#Report </span>
+        <span className="text-[14px] font-[700] ">#User Report </span>
         <div className="flex gap-3 flex-wrap p-3 shadow-sm bg-gray-50 ">
           {JSON.parse(ticket?.issue)?.map((issue, n) => (
             <span
               key={n}
               className="bg-blue-100 text-[12px] w-fit px-1 rounded-[4px]"
             >
-              {issue?.key}
+              <span className="">{issue?.key}</span> --{" "}
+              <i className="text-slate-700 font-[600]">{issue?.value}</i>
+            </span>
+          ))}
+        </div>
+      </div>
+      <div className="flex flex-col">
+        <span className="text-[14px] font-[700] ">#Server Report </span>
+        <div className="flex gap-3 flex-wrap p-3 shadow-sm bg-gray-50 ">
+          {Object.keys(JSON.parse(ticket?.server_query))?.map((issue, n) => (
+            <span
+              key={n}
+              className="bg-blue-100 text-[12px] w-fit px-1 rounded-[4px]"
+            >
+              <span className="">{issue}</span> --{" "}
+              <i className="text-slate-700 font-[600]">
+                {JSON.parse(ticket?.server_query)[issue]}
+              </i>
             </span>
           ))}
         </div>
@@ -56,8 +73,14 @@ const res= getStaff()
             @{ticket?.assigned_to?.department?.code}
           </span>
           <div className="flex justify-between font-[500] text-[12px]">
-            <span className=" capitalize">Assigned To : {ticket?.assigned_to?.first_name} {ticket?.assigned_to?.last_name}</span>
-            <span className=" capitalize">Assigned By : {ticket?.assigned_by?.first_name} {ticket?.assigned_by?.last_name}</span>
+            <span className=" capitalize">
+              Assigned To : {ticket?.assigned_to?.first_name}{" "}
+              {ticket?.assigned_to?.last_name}
+            </span>
+            <span className=" capitalize">
+              Assigned By : {ticket?.assigned_by?.first_name}{" "}
+              {ticket?.assigned_by?.last_name}
+            </span>
           </div>
         </div>
       </div>
