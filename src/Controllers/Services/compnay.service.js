@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export class companyService {
+export default class companyService {
   base_url =  "http://146.190.120.240:8091/api/v1";
   get_summary = async () => {
     try {

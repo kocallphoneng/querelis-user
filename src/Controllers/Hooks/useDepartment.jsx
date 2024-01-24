@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useAppContext } from "../Context/AppContext";
-import { companyService } from "../Services/compnay.service";
+// import { companyService } from "../Services/compnay.service";
 import { departmentService } from "../Services/departmentService";
 import { toast } from "react-hot-toast";
 

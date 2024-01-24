@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useAppContext } from "../Context/AppContext";
-import { companyService } from "../Services/compnay.service";
+import  companyService  from "../Services/compnay.service";
 
 const useData = () => {
   const {
@@ -12,6 +12,7 @@ const useData = () => {
     get_tickets,
     get_vendors,
   } = new companyService();
+
   const {
     setStat,
     setSummary,
@@ -22,6 +23,7 @@ const useData = () => {
     setTickets,
     setNotifications,
   } = useAppContext();
+
   const getCompanyData = async () => {
     const summary = await get_summary();
     const stat = await get_monthly_data();
