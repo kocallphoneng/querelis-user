@@ -21,15 +21,15 @@ const NewStaff = () => {
     last_name: "",
     email: "",
     user_type: "",
-    department_id: "",
-    department_name: "",
+    vendor_id: "",
+    vendor_name: "",
   });
   const [error, setError] = useState({
     first_name: "",
     last_name: "",
     email: "",
     user_type: "",
-    department: "",
+    vendor: "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -56,7 +56,7 @@ const NewStaff = () => {
     setError({ ...error, user_type: "" });
   };
   const validateForm = () => {
-    const { first_name, last_name, email, user_type, department_id } = form;
+    const { first_name, last_name, email, user_type, vendor_id } = form;
     const newErrors = {};
     if (first_name === "") newErrors.first_name = "Required*";
     if (last_name === "") newErrors.last_name = "Required*";
@@ -64,7 +64,7 @@ const NewStaff = () => {
     else if (email !== "" && !validateEmail(email))
       newErrors.email = "Invalid Email*";
     if (user_type === "") newErrors.role = "Required*";
-    if (department_id === "") newErrors.department_id = "Required*";
+    if (vendor_id === "") newErrors.vendor_id = "Required*";
     return newErrors;
   };
   const handleSubmit = async () => {
@@ -87,7 +87,7 @@ const NewStaff = () => {
   // const categories = ["call", "data", "sms", "enterprise", "general"];
   const roles = ["admin", "support"];
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-5">
       <div className="flex justify-between items-center">
         <span className="text-[22px] font-[700]">Create New Staff</span>
         <IoClose
@@ -146,14 +146,14 @@ const NewStaff = () => {
         </FormControl>
 
         <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Department*</InputLabel>
+          <InputLabel id="demo-simple-select-label">Vendor*</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={form.department_id}
-            name="department_id"
+            value={form.vendor_id}
+            name="vendor_id"
             size="small"
-            label="Department*"
+            label="Vendor*"
             onChange={handleChange}
           >
             {departments?.data?.map((d, n) => (

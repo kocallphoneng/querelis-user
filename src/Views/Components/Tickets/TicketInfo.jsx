@@ -26,6 +26,11 @@ const TicketInfo = ({ ticket }) => {
           <Info name={"Provider name"} value={ticket?.reporter?.network} />
           <Info name={"Phone number"} value={ticket?.reporter?.msisdn} />
           <Info name={"Category"} value={ticket?.category} />
+          <Info name={"Unit"} value={ticket?.unit?.name} />
+          <Info
+            name={"Vendor"}
+            value={ticket?.vendor ? ticket?.vendor?.name : "null"}
+          />
           <Info
             name={"Created Date"}
             value={ticket?.created_at?.split(0, 16)}
@@ -69,17 +74,14 @@ const TicketInfo = ({ ticket }) => {
       <div className="flex flex-col">
         <span className="text-[14px] font-[700] ">#Assinged To </span>
         <div className="flex flex-col bg-gray-50 shadow-sm p-3 ">
-          <span className="font-[700] text-[13px]">
-            @{ticket?.assigned_to?.department?.code}
-          </span>
+          <span className="font-[700] text-[13px]">@{ticket?.unit?.name}</span>
           <div className="flex justify-between font-[500] text-[12px]">
             <span className=" capitalize">
-              Assigned To : {ticket?.assigned_to?.first_name}{" "}
-              {ticket?.assigned_to?.last_name}
+              Assigned To : {ticket?.vendor ? ticket?.vendor?.name : "null"}
             </span>
             <span className=" capitalize">
-              Assigned By : {ticket?.assigned_by?.first_name}{" "}
-              {ticket?.assigned_by?.last_name}
+              Assigned Staff : {ticket?.assigned_to?.first_name}{" "}
+              {ticket?.assigned_to?.last_name}
             </span>
           </div>
         </div>

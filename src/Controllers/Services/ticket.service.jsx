@@ -2,7 +2,7 @@ import axios from "axios";
 import { useAppContext } from "../Context/AppContext";
 
 export class ticketService {
-  base_url = "http://146.190.120.240:8091/api/v1";
+  base_url =  "http://146.190.120.240:8091/api/v1"
   context = useAppContext();
   getTickets = async () => {
     try {
@@ -64,6 +64,23 @@ export class ticketService {
       return { message: "failed", data: err.response.data };
     }
   };
+  assignTicketToVendor = async (payload) => {
+    try {
+      const res = await axios.post(
+        this.base_url + `/app/tickets/assign/vendor`,
+        payload,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.token}`,
+          },
+        }
+      );
+      return { message: "success", data: res.data };
+    } catch (err) {
+      return { message: "failed", data: err.response.data };
+    }
+  };
+ 
   updateTicketStatus = async (uuid, payload) => {
     try {
       const res = await axios.post(

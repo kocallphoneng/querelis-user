@@ -16,7 +16,7 @@ import Thread from "../../Components/Tickets/Thread";
 const TicketModal = () => {
   const { setModal, targetTicket } = useAppContext();
   const [activePage, setActivePage] = useState("ticket_info");
-  console.log(targetTicket);
+  // console.log(targetTicket);
   return (
     <div className="flex flex-col gap-2 h-[400px] overflow-y-auto">
       <div className="flex items-center justify-between ">

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export class companyService {
-  base_url = "http://146.190.120.240:8091/api/v1";
+  base_url =  "http://146.190.120.240:8091/api/v1";
   get_summary = async () => {
     try {
       const res = await axios.get(this.base_url + "/app/dashboard/summary", {
@@ -41,6 +41,18 @@ export class companyService {
   get_departments = async () => {
     try {
       const res = await axios.get(this.base_url + "/app/departments/list", {
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+        },
+      });
+      return { message: "success", data: res.data };
+    } catch (err) {
+      return { message: "failed", data: err.response.data };
+    }
+  };
+  get_vendors = async () => {
+    try {
+      const res = await axios.get(this.base_url + "/app/vendors/list", {
         headers: {
           Authorization: `Bearer ${localStorage.token}`,
         },

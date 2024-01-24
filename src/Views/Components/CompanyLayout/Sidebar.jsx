@@ -26,9 +26,9 @@ const Sidebar = () => {
           />
           <NavCard
             Icon={HiRectangleGroup}
-            title={"Departments"}
-            active={path === "/dashboard/departments"}
-            navigate={() => navigate("/dashboard/departments")}
+            title={"Vendors"}
+            active={path === "/dashboard/vendors"}
+            navigate={() => navigate("/dashboard/vendors")}
           />
           <NavCard
             Icon={MdGroups}

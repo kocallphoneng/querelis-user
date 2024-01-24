@@ -9,18 +9,20 @@ const TicketTable = ({ num_of_rows }) => {
   const [options, setOptions] = useState(false);
   const [index, setIndex] = useState("");
   const rows = tickets?.data;
+  console.log("tickets", rows);
   return (
     <div className="flex flex-col gap-1">
       <div className="grid grid-cols-12 gap-4 border-y text-[14px]  bg-[#ffffff9f] text-slate-700 font-[700] w-full items-center p-2 h-[50px] ">
         <span className="col-span-2">CC Ticket Id</span>
-        <span className="col-span-2">Provider Name</span>
-        <span className="col-span-2">Phone</span>
-        <span className="col-span-1">Assigned</span>
-        <span className="col-span-1">Category</span>
-        <span className="col-span-4">Server Query</span>
+        <span className="col-span-2">Provider</span>
+        <span className="col-span-1">Phone</span>
+        <span className="col-span-2">Unit</span>
+        <span className="col-span-2">Category</span>
+        <span className="col-span-1">Status</span>
+        <span className="col-span-2">Vendor</span>
       </div>
       {rows?.slice(0, num_of_rows)?.map((row, n) => {
-        // console.log(row?.issue);
+        console.log(row);
         return (
           <div
             key={n}
@@ -28,27 +30,13 @@ const TicketTable = ({ num_of_rows }) => {
           >
             <span className="col-span-2">{row?.ticket_id}</span>
             <span className="col-span-2">{row?.reporter?.network}</span>
-            <span className="col-span-2">{row?.reporter?.msisdn}</span>
-            <span className="col-span-1">
-              {row?.assigned_to !== null || row?.assigned_to !== undefined
-                ? "TRUE"
-                : "FALSE"}
+            <span className="col-span-1">{row?.reporter?.msisdn}</span>
+            <span className="col-span-2">{row?.unit?.name}</span>
+            <span className="col-span-2">{row?.category}</span>
+            <span className="col-span-1">{row?.status}</span>
+            <span className="col-span-2">
+              {row?.vendor ? row?.vendor?.name : "---"}
             </span>
-            <span className="col-span-1">{row?.category}</span>
-            <div className="col-span-4 text-[12px] pr-4 flex flex-wrap gap-3 gap-y-1 text-gray-400 ">
-              {row?.issue &&
-                Object.keys(JSON.parse(row?.server_query))?.map((issue, n) => (
-                  <span
-                    key={n}
-                    className="bg-blue-100 text-[12px] w-fit px-1 rounded-[4px]"
-                  >
-                    # <span className="">{issue}</span> --
-                    <i className="text-slate-700 font-[600]">
-                      {JSON.parse(row?.server_query)[issue]}
-                    </i>
-                  </span>
-                ))}
-            </div>
             <span className="absolute right-0 h-full flex items-center justify-center w-[40px]">
               <div className="relative">
                 <IoEllipsisVertical

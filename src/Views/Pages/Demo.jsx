@@ -14,7 +14,7 @@ const Field1 = () => {
 };
 const Field2 = ({ func, cancel, data }) => {
   const [input, setInput] = useState("");
-  const url = `http://146.190.120.240:8091/api/v2/ussd?msisdn=07051119073&sessionid=987654324567897&mno=glo&msg=${input}`;
+  const url = `https://a7ba-154-160-16-41.ngrok-free.app/api/v2/ussd?msisdn=07051119073&session_id=987654324567897&network=glo&input=${input}`;
   return (
     <div className="flex flex-col font-[700] text-[14px] w-full mx-5 p-5 bg-white ">
       <div className="flex flex-col">
@@ -58,7 +58,7 @@ const Keyboard = () => {
 
 const Demo = () => {
   const url =
-    "http://146.190.120.240:8091/api/v2/ussd?msisdn=07051119073&sessionid=987654324567897&mno=glo&msg=1";
+    `https://a7ba-154-160-16-41.ngrok-free.app/api/v2/ussd?msisdn=07051119073&session_id=987654324567897&network=glo&msg=*174*51#`;
   const [loading, setLoading] = useState(false);
   const [values, setValues] = useState([]);
   const [stage, setStage] = useState("stage1");
@@ -66,10 +66,10 @@ const Demo = () => {
   const next1 = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(url);
+      const res = await axios.post(url);
       console.log(res);
       setStage("stage2");
-      const arr = res.data.text.split("\n");
+      const arr = res.data.message.split("\n");
       setData(arr);
       setLoading(false);
     } catch (err) {
@@ -79,9 +79,9 @@ const Demo = () => {
   const next2 = async (base) => {
     setLoading(true);
     try {
-      const res = await axios.get(base);
+      const res = await axios.post(base);
       //   console.log(res);
-      const arr = res.data.text.split("\n");
+      const arr = res.data.message.split("\n");
       setData(arr);
       //   setStage(stage);
       setLoading(false);

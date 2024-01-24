@@ -10,6 +10,7 @@ const useData = () => {
     get_staffs,
     get_departments,
     get_tickets,
+    get_vendors,
   } = new companyService();
   const {
     setStat,
@@ -26,18 +27,22 @@ const useData = () => {
     const stat = await get_monthly_data();
     const category = await get_dashboard_category();
     const staffs = await get_staffs();
-    const departments = await get_departments();
+    // const departments = await get_departments();
+    const vendors = await get_vendors();
+    console.log(vendors);
     const tickets = await get_tickets();
-    console.log(departments.data);
+    // console.log(departments.data);
     if (stat.message === "success") setStat(summary.data.data.monthly);
     if (summary.message === "success") setSummary(summary.data.data.summary);
     if (category.message === "success") setCategory(category.data.data.summary);
-    if (departments.message === "success")
-      setDepartments(departments.data.data.departments);
+    // if (departments.message === "success")
+    //   setDepartments(vendors.data.data.departments);
+    if (vendors.message === "success")
+      setDepartments(vendors.data.data.vendors);
     if (staffs.message === "success") setStaffs(staffs.data.data.users);
     if (tickets.message === "success") {
       setTickets(tickets.data.data.tickets);
-      setTicketSummary(tickets.data.data.summary)
+      setTicketSummary(tickets.data.data.summary);
     }
   };
 
