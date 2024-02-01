@@ -43,11 +43,12 @@ const InfoCard = () => {
     if (res.message === "success") setStaffs(res.data.data.users.data);
     const res2 = await getDepartmentTickets(data?.uuid);
     if (res2.message === "success") setTickets(res2.data.data.tickets.data);
+    console.log(res2);
   };
   console.log(tickets_);
   useEffect(() => {
     getData();
-  }, []);
+  }, [data]);
 
   return (
     <div className="flex flex-col py-5 gap-5">

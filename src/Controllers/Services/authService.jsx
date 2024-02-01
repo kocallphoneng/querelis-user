@@ -3,7 +3,8 @@ import axios from "axios";
 import client from "../../Constants/helpers/axiosInstance";
 
 export const authService = () => {
-  const   base_url =  "http://146.190.120.240:8091/api/v1";
+  // const   base_url =  "http://146.190.120.240:8091/api/v1";
+  const base_url = "https://1987-154-160-17-69.ngrok-free.app/api/v1";
   const resetConfig = localStorage["reset-config"]
     ? JSON.parse(localStorage["reset-config"])
     : { email: "", otp: "" };
@@ -12,7 +13,7 @@ export const authService = () => {
     try {
       const res = await axios.post(base_url + "/auth/login", user);
       localStorage.clear();
-      
+
       return { message: "success", data: res.data };
     } catch (err) {
       return { message: "failed", data: err.response.data };

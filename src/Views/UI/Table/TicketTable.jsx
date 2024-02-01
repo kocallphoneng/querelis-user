@@ -26,7 +26,7 @@ const TicketTable = ({ num_of_rows }) => {
         return (
           <div
             key={n}
-            className="grid grid-cols-12 gap-4 border-b h-fit relative text-[13px] font-[700] text-slate-600 w-full items-center p-2  bg-[#fff] "
+            className="grid grid-cols-12 gap-4 border-b h-fit relative text-[13px] font-[400] text-slate-600 w-full items-center p-2  bg-[#fff] "
           >
             <span className="col-span-2">{row?.ticket_id}</span>
             <span className="col-span-2">{row?.reporter?.network}</span>

@@ -21,15 +21,15 @@ const NewStaff = () => {
     last_name: "",
     email: "",
     user_type: "",
-    vendor_id: "",
-    vendor_name: "",
+    unit_id: "",
+    unit_name: "",
   });
   const [error, setError] = useState({
     first_name: "",
     last_name: "",
     email: "",
     user_type: "",
-    vendor: "",
+    unit: "",
   });
   const [loading, setLoading] = useState(false);
 
@@ -146,14 +146,14 @@ const NewStaff = () => {
         </FormControl>
 
         <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Vendor*</InputLabel>
+          <InputLabel id="demo-simple-select-label">Unit*</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
-            value={form.vendor_id}
-            name="vendor_id"
+            value={form.unit_id}
+            name="unit_id"
             size="small"
-            label="Vendor*"
+            label="Unit*"
             onChange={handleChange}
           >
             {departments?.data?.map((d, n) => (

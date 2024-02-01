@@ -28,11 +28,12 @@ const Index = () => {
           Icon={FcCancel}
           classs={"text-pink-600 bg-[#9c33330e]"}
         />
-        <Card1 Icon={MdGroups} type={"dep"} title={"Departments"} />
+        <Card1 Icon={MdGroups} type={"dep"} title={"Vendors"} />
       </div>
       <div className="grid grid-cols-12 gap-5">
         <BarChart />
         <PieChart />
+        <div className="flex col-span-12 w-full h-[200px] bg-slate-50"></div>
       </div>
     </div>
   );

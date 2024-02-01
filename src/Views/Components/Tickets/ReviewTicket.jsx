@@ -24,15 +24,15 @@ const ReviewTicket = ({ ticket }) => {
   const [loading_, setLoading_] = useState(false);
   const [loading___, setLoading___] = useState(false);
   const [loading__, setLoading__] = useState(false);
-  const [vendors, setVendors] = useState([]);
-  const [vendor, setVendor] = useState(null);
+  const [units, setUnits] = useState([]);
+  const [unit, setUnit] = useState(null);
   const {
     assignTicket,
     postComment,
     updateTicketStatus,
-    assignTicketToVendor,
+    assignTicketToUnit,
   } = new ticketService();
-  const { getVendorsByUnit } = new departmentService();
+  const { getUnitsByVendor } = new departmentService();
   const formData = new FormData();
   const changeStatus = async () => {
     if (status !== "" && status !== ticket?.status) {
@@ -58,12 +58,12 @@ const ReviewTicket = ({ ticket }) => {
       setLoading_(false);
     }
   };
-  const assignVendorTicket = async () => {
-    if (vendor) {
+  const assignUnitTicket = async () => {
+    if (unit) {
       setLoading___(true);
-      const res = await assignTicketToVendor({
+      const res = await assignTicketToUnit({
         ticket_id: ticket?.id,
-        vendor_id: vendor,
+        unit_id: unit,
       });
       if (res.message === "success")
         toast.success("Ticket assigned successfully");
@@ -85,36 +85,36 @@ const ReviewTicket = ({ ticket }) => {
     }
   };
 
-  const getAllVendors = async () => {
-    const res = await getVendorsByUnit(ticket?.unit?.id);
-    // console.log(res.data);
-    setVendors(res.data.data.vendors);
+  const getAllUnits = async () => {
+    const res = await getUnitsByVendor(ticket?.vendor?.id);
+    console.log(res.data);
+    setUnits(res.data.data?.units);
   };
 
   // console.log(departments.data)
   useEffect(() => {
     setStatus(ticket?.status);
     ticket?.assigned_to && setStaff(ticket?.assigned_to_id);
-    ticket?.vendors && setVendor(ticket?.vendors.id);
-    getAllVendors();
+    ticket?.unit && setUnit(ticket?.unit.id);
+    getAllUnits();
   }, []);
   console.log(ticket);
   return (
     <div className="border-l px-3 flex flex-col gap-4 relative h-full">
       <div className=" flex flex-col gap-2 ">
         <span className=" col-span-3 text-gray-600 whitespace-nowrap text-[12px] font-[700]">
-          Assign to Vendor
+          Assign to unit
         </span>
         <div className="grid grid-cols-12 items-center gap-4">
           <FormControl className="col-span-8">
             <Select
-              value={vendor}
-              onChange={(e) => setVendor(e.target.value)}
+              value={unit}
+              onChange={(e) => setUnit(e.target.value)}
               size="small"
               id="staff"
               className="w-full"
             >
-              {vendors?.map((option) => (
+              {units?.map((option) => (
                 <MenuItem className=" capitalize" value={option?.id}>
                   {option.name}
                 </MenuItem>
@@ -124,13 +124,13 @@ const ReviewTicket = ({ ticket }) => {
           <ButtonFill
             label={"save"}
             classes={"w-[120px] col-span-4 text-[#fff] h-[40px]"}
-            action={assignVendorTicket}
+            action={assignUnitTicket}
             loading={loading___}
           />
         </div>
       </div>
       <hr />
-      {vendor && (
+      {unit && (
         <div className=" flex flex-col gap-2 ">
           <span className=" col-span-3 text-gray-600 whitespace-nowrap text-[12px] font-[700]">
             Assign to staff
@@ -161,7 +161,7 @@ const ReviewTicket = ({ ticket }) => {
         </div>
       )}
       <hr />
-      {vendor && (
+      {unit && (
         <div className="flex flex-col gap-2 ">
           <span className="col-span-3 text-gray-600 whitespace-nowrap text-[12px] font-[700]">
             Update status

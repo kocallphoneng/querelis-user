@@ -27,9 +27,9 @@ const Staff = () => {
       const res = await reassignStaffDepartment(
         {
           user_id: targetStaff?.id,
-          department_id: departmentId,
+          unit_id: departmentId,
         },
-        targetStaff?.uuid
+        targetStaff?.id
       );
       if (res.message === "success") toast.success("Department updated");
       else toast.success("Failed to update department");
@@ -63,7 +63,7 @@ const Staff = () => {
       <hr />
 
       <div className="flex gap-3">
-        <span className="w-[110px] text-[60px] h-[110px] text-[#fff] flex items-center justify-center bg-[--base_color] rounded-[10px]">
+        <span className="w-[110px] text-[60px] uppercase h-[110px] text-[#fff] flex items-center justify-center bg-[--base_color] rounded-[10px]">
           {targetStaff?.first_name[0]}
           {targetStaff?.last_name[0]}
         </span>
@@ -74,7 +74,7 @@ const Staff = () => {
           <span>{targetStaff?.email}</span>
           <span>{targetStaff?.phone ? targetStaff?.phone : "- -"}</span>
           <span className="text-[12px] flex flex-wrap">
-            {targetStaff?.deparment ? targetStaff?.deparment : "- -"}
+            {targetStaff?.unit ? targetStaff?.unit?.name :"- -"}
           </span>
         </div>
       </div>
@@ -103,7 +103,7 @@ const Staff = () => {
       <hr />
 
       <div className="flex flex-col gap-2">
-        <span className="text-[14px] font-[700]">#Change Department</span>
+        <span className="text-[14px] font-[700]">#Change Unit</span>
         <div className="flex items-center gap-5">
           <FormControl className="w-[200px] text-[14px]">
             {/* <InputLabel id="demo-simple-select-label">Deparment</InputLabel> */}
