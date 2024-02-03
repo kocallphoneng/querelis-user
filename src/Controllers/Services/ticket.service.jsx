@@ -2,8 +2,8 @@ import axios from "axios";
 import { useAppContext } from "../Context/AppContext";
 
 export class ticketService {
-  // base_url =  "http://146.190.120.240:8091/api/v1"
-  base_url =  "https://1987-154-160-17-69.ngrok-free.app/api/v1"
+  base_url = process.env.REACT_APP_API_URL;
+  // base_url =  "https://1987-154-160-17-69.ngrok-free.app/api/v1"
   context = useAppContext();
   getTickets = async () => {
     try {
@@ -81,7 +81,7 @@ export class ticketService {
       return { message: "failed", data: err.response.data };
     }
   };
- 
+
   updateTicketStatus = async (uuid, payload) => {
     try {
       const res = await axios.post(

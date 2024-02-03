@@ -45,7 +45,7 @@ const InfoCard = () => {
     if (res2.message === "success") setTickets(res2.data.data.tickets.data);
     console.log(res2);
   };
-  console.log(tickets_);
+  // console.log(tickets_);
   useEffect(() => {
     getData();
   }, [data]);
