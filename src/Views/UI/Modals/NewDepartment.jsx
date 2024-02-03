@@ -31,7 +31,7 @@ const NewDepartment = () => {
   } = useDepartment();
 
   const categories = ["call", "data", "sms", "enterprise", "general"];
-  console.log("unitValue", unitValue);
+  // console.log("unitValue", unitValue);
   return (
     <div ref={modalRef} className="flex flex-col gap-4">
       <div className="flex justify-between items-center">
