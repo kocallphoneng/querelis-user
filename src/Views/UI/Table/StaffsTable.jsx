@@ -3,9 +3,11 @@ import { RiDeleteBinLine, RiPencilFill } from "react-icons/ri";
 import { dapartmentData, staffs } from "../../../Constants/testData";
 import { IoEllipsisVertical } from "react-icons/io5";
 import { useAppContext } from "../../../Controllers/Context/AppContext";
+import Loader from "../Utilities/Loader";
 
 const StaffsTable = ({ num_of_rows }) => {
-  const { setModal, targetStaff, setTargetStaff, staffs } = useAppContext();
+  const { setModal, targetStaff, setTargetStaff, staffs, loadingData } =
+    useAppContext();
 
   const rows = localStorage.staffs ? JSON.parse(localStorage.staffs) : staffs;
   // console.log(JSON.parse(localStorage.staffs));
@@ -20,7 +22,7 @@ const StaffsTable = ({ num_of_rows }) => {
         <span className="col-span-1">Active</span>
         <span className="col-span-1"></span>
       </div>
-      {staffs?.data.length > 0 &&
+      {staffs?.data.length > 0 && !loadingData ? (
         staffs?.data?.map((row, n) => (
           <div
             key={n}
@@ -62,7 +64,12 @@ const StaffsTable = ({ num_of_rows }) => {
               />
             </span>
           </div>
-        ))}
+        ))
+      ) : (
+        <div className="flex flex-col text-gray-300 items-center justify-center min-h-[300px]">
+          {loadingData ? <Loader size={[50, 50]} /> : <span>No Data Yet</span>}
+        </div>
+      )}
     </div>
   );
 };

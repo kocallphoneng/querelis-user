@@ -26,10 +26,10 @@ const Departments = () => {
                   <span className="text-[13px] font-[700] text-gray-600 ">
                     All Units
                   </span>
-                  <span className="flex items-center text-[--base_color] gap-2 text-[12px] cursor-pointer  font-[700]">
+                  {/* <span className="flex items-center text-[--base_color] gap-2 text-[12px] cursor-pointer  font-[700]">
                     <BsFilter className="text-[21px] text-[--base_color] font-[700]" />
                     Filter
-                  </span>
+                  </span> */}
                 </div>
                 <span
                   onClick={() =>

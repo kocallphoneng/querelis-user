@@ -13,6 +13,8 @@ const useData = () => {
     get_vendors,
   } = new companyService();
 
+  // const [loading, setLoad]
+
   const {
     setStat,
     setSummary,
@@ -22,9 +24,12 @@ const useData = () => {
     setStaffs,
     setTickets,
     setNotifications,
+    loadingData,
+    setLoadingData
   } = useAppContext();
 
   const getCompanyData = async () => {
+    setLoadingData(true)
     const summary = await get_summary();
     const stat = await get_monthly_data();
     const category = await get_dashboard_category();
@@ -46,6 +51,7 @@ const useData = () => {
       setTickets(tickets.data.data.tickets);
       setTicketSummary(tickets.data.data.summary);
     }
+    setLoadingData(false)
   };
 
   useEffect(() => {

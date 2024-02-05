@@ -1,7 +1,7 @@
 import React from "react";
 import chart from "../../../Assets/images/chart.png";
 
-const Card3 = ({ title, classs, num, sign, Icon }) => {
+const Card3 = ({ title, classs, num, sign, Icon, loading }) => {
   return (
     <div
       className={

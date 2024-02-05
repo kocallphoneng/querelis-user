@@ -27,6 +27,8 @@ const AppContextProvider = (props) => {
   });
   const [notifications, setNotifications] = useState({});
 
+  const [loadingData, setLoadingData] = useState(false);
+
   const openContentModal = () => {
     setShowDataInfo(true);
     setTimeout(() => {
@@ -75,6 +77,8 @@ const AppContextProvider = (props) => {
         setTicketSummary,
         targetTicket,
         setTargetTicket,
+        loadingData,
+        setLoadingData,
       }}
       {...props}
     />
