@@ -15,8 +15,12 @@
 FROM node:18-alpine as build
 
 WORKDIR /app
+
 COPY package*.json ./
+
 RUN npm install
+
+ENV NODE_OPTIONS="--max-old-space-size=4096"
 
 COPY . .
 
@@ -28,5 +32,4 @@ COPY --from=build /app/build /usr/share/nginx/html
 
 EXPOSE 80
 
-# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]
