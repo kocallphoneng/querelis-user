@@ -48,12 +48,12 @@ const Sidebar = () => {
             active={path === "/dashboard/change-password"}
             navigate={() => navigate("/dashboard/change-password")}
           />
-          <NavCard
+          {/* <NavCard
             Icon={BsBellFill}
             title={"Notifications"}
             active={path === "/dashboard/notifications"}
             navigate={() => navigate("/dashboard/notifications")}
-          />
+          /> */}
         </div>
       </div>
       <div className="flex mt-10 justify-center gap-5 items-center w-full">
