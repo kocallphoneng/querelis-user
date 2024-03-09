@@ -54,7 +54,7 @@ const Staff = () => {
     if (targetStaff?.department) setDepartmentId(targetStaff?.department?.id);
   }, []);
   return (
-    <div className="flex flex-col gap-2 h-[400px] overflow-y-auto">
+    <div className="flex flex-col gap-2 min-h-[400px] overflow-y-auto pb-[20px]">
       <div className="flex items-center justify-between ">
         <span className="font-[700] text-[21px]">Staff Profile</span>
         <IoClose onClick={() => setModal(false)} className=" cursor-pointer" />
@@ -63,18 +63,18 @@ const Staff = () => {
       <hr />
 
       <div className="flex gap-3">
-        <span className="w-[110px] text-[60px] uppercase h-[110px] text-[#fff] flex items-center justify-center bg-[--base_color] rounded-[10px]">
+        <span className="sm:w-[110px] w-[80px] sm:text-[60px] text-[36px] uppercase sm:h-[110px] h-[80px] text-[#fff] flex items-center justify-center bg-[--base_color] rounded-[10px]">
           {targetStaff?.first_name[0]}
           {targetStaff?.last_name[0]}
         </span>
         <div className="flex flex-col text-slate-600">
-          <span className="text-[21px] font-[700] capitalize">
+          <span className="sm:text-[21px] text-[16px] font-[700] capitalize">
             {targetStaff?.first_name} {targetStaff?.last_name}
           </span>
-          <span>{targetStaff?.email}</span>
+          <span className="sm:text-[14px] text-[12px]">{targetStaff?.email}</span>
           <span>{targetStaff?.phone ? targetStaff?.phone : "- -"}</span>
           <span className="text-[12px] flex flex-wrap">
-            {targetStaff?.unit ? targetStaff?.unit?.name :"- -"}
+            {targetStaff?.unit ? targetStaff?.unit?.name : "- -"}
           </span>
         </div>
       </div>
@@ -92,11 +92,11 @@ const Staff = () => {
         <div className="flex gap-5">
           <span className="flex items-center gap-3 font-[700] text-[12px]">
             <span className="h-[10px] w-[40px] bg-green-600"></span> Resolved
-            tickets {r}%
+            <span className="sm:block hidden">tickets</span> {r}%
           </span>
           <span className="flex items-center gap-3 font-[700] text-[12px]">
             <span className="h-[10px] w-[40px] bg-[#ff5874ec]"></span>Pending
-            tickets {p}%
+            <span className="sm:block hidden">tickets</span> {p}%
           </span>
         </div>
       </div>

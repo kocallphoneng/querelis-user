@@ -21,9 +21,16 @@ ChartJS.register(
 
 const BarChart = () => {
   return (
-    <div className="col-span-8 h-[350px] bg-white p-5 rounded-[20px]">
+    <div className="lg:col-span-8 col-span-12 min-h-[350px] bg-white p-5 rounded-[20px] ">
       <span className="text-[18px] font-[700]">Tickets</span>
-      <Bar height={140} options={barChartOptions} data={ticketData} />;
+      <div className=" overflow-x-auto">
+        <Bar
+          height={140}
+          options={barChartOptions}
+          style={{ minHeight: "350px", minWidth: "500px", fontSize: '10px !important' }}
+          data={ticketData}
+        />
+      </div>
     </div>
   );
 };

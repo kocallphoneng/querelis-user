@@ -9,12 +9,12 @@ import { BsBellFill } from "react-icons/bs";
 import { IoSettings } from "react-icons/io5";
 // import SubNavCard from "../Nav/SubNavCard";
 
-const Sidebar = () => {
+const Sidebar = ({ menu }) => {
   const path = window.location.pathname;
   const navigate = useNavigate();
 
   return (
-    <div className=" fixed left-0 top-0 h-screen w-[20%] p-4">
+    <div className=" fixed left-0 md:top-0 top-[80px]  md:h-screen h-[calc(100vh-80px)] z-[99999] w-[20%] p-4 min-w-[300px]">
       <div className="flex flex-col bg-[#0f59d8] rounded-[20px]  h-[90%]">
         <img src={logo} alt="" className="h-[77px] w-[236px]" />
         <div className="flex flex-col">

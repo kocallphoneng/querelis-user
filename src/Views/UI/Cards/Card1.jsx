@@ -21,11 +21,11 @@ const Card1 = ({ type, title, Icon, count }) => {
     { name: departments?.data[1]?.name[0], gradient: "green" },
     { name: departments?.data[2]?.name[0], gradient: "red" },
     { name: departments?.data[3]?.name[0], gradient: "purple" },
-    { name: departments?.data[4]?.name[0], gradient: "gray" },
+    // { name: departments?.data[4]?.name[0], gradient: "gray" },
   ];
 
   return (
-    <div className="col-span-3 p-[20px] bg-[#0000ff0e] rounded-[24px] h-[150px] flex flex-col  border border-[#00000098] border-dashed">
+    <div className="lg:col-span-3 col-span-6 overflow-hidden p-[20px] bg-[#0000ff0e] rounded-[24px] h-[150px] flex flex-col  border border-[#00000098] border-dashed">
       <span className="text-[14px] font-[700]">{title}</span>
       <div className="flex gap-5  items-baseline min-h-[27px]">
         <span className="text-[27px] font-bold min-h-[27px]">{count}</span>

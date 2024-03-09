@@ -18,7 +18,7 @@ const TicketModal = () => {
   const [activePage, setActivePage] = useState("ticket_info");
   // console.log(targetTicket);
   return (
-    <div className="flex flex-col gap-2 h-[400px] overflow-y-auto">
+    <div className="flex flex-col gap-2 min-h-[400px] max-h-[calc(100vh-200px)] overflow-y-auto">
       <div className="flex items-center justify-between ">
         <span className="font-[700] text-[21px]">Ticket 820uw9</span>
         <IoClose onClick={() => setModal(false)} className=" cursor-pointer" />
