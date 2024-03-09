@@ -7,7 +7,7 @@ const Card2 = ({ title, classs, num, sign, Icon }) => {
   return (
     <div
       className={
-        "col-span-3 p-[20px] rounded-[24px] h-[150px] flex flex-col border border-[#00000098] border-dashed " +
+        "lg:col-span-3 col-span-6 p-[20px] overflow-hidden rounded-[24px] h-[150px] flex flex-col border border-[#00000098] border-dashed " +
         classs
       }
     >

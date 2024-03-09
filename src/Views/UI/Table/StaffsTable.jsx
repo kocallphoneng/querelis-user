@@ -12,8 +12,10 @@ const StaffsTable = ({ num_of_rows }) => {
   const rows = localStorage.staffs ? JSON.parse(localStorage.staffs) : staffs;
   // console.log(JSON.parse(localStorage.staffs));
   return (
-    <div className="flex flex-col gap-1">
-      <div className="grid grid-cols-12 border-y text-[14px]  bg-[#ffffff9f] text-slate-700 font-[700] w-full items-center p-2 h-[50px] ">
+    <div className="flex flex-col gap-1 overflow-x-auto pb-[40px]">
+      <div
+        className={`grid min-w-[800px]  grid-cols-12 text-[13px] font-[700]  justify-between text-slate-400 w-full items-center md:p-2 md:px-2 px-5 min-h-[50px] bg-[#fff]`}
+      >
         <span className="col-span-2">Name</span>
         <span className="col-span-2">Email</span>
         <span className="col-span-2">Phone</span>
@@ -26,32 +28,32 @@ const StaffsTable = ({ num_of_rows }) => {
         staffs?.data?.map((row, n) => (
           <div
             key={n}
-            className="grid grid-cols-12 text-[13px] font-[700] text-slate-600 w-full items-center p-2 h-[50px] bg-[#fff] "
+            className={`grid grid-cols-12 min-w-[800px] text-[13px] font-[700]  justify-between text-slate-400 w-full items-center md:p-2 md:px-2 px-5 min-h-[50px] bg-[#fff] `}
           >
             <span className="col-span-2 flex gap-3 items-center">
               <span className="w-[25px] whitespace-nowrap truncate h-[25px] bg-gray-300 rounded-full"></span>
               {row?.first_name} {row?.last_name[0]}
             </span>
-            <span className="col-span-2 whitespace-nowrap truncate">
+            <span className="col-span-2 whitespace-nowrap   truncate">
               {row?.email}
             </span>
-            <span className="col-span-2 whitespace-nowrap truncate">
+            <span className="col-span-2 whitespace-nowrap   truncate">
               {row?.phone ? row?.phone : "- -"}
             </span>
-            <span className="col-span-2 whitespace-nowrap truncate">
+            <span className="col-span-2 whitespace-nowrap   truncate">
               {row?.department ? row?.department?.name : " - -"}
             </span>
-            <span className="col-span-2 flex gap-6">
+            <span className="col-span-2 flex gap-6  ">
               <span className="flex items-center gap-1">
                 <span className="w-[30px] rounded-[10px] h-[7px] bg-[#ff5874ec] "></span>
                 {row?.pending_tickets_count}
               </span>
-              <span className="flex items-center gap-1">
+              <span className="flex items-center gap-1  ">
                 <span className="w-[30px] rounded-[10px] h-[7px] flex-nowrap bg-green-600 "></span>
                 {row?.resolved_tickets_count}
               </span>
             </span>
-            <span className="col-span-1 text-red-600">
+            <span className="col-span-1 text-red-600  ">
               {row?.is_active === 1 ? "Active" : "Inactive"}
             </span>
             <span className="col-span-1 flex justify-center items-center ">
