@@ -4,6 +4,12 @@ import { IoEllipsisVertical } from "react-icons/io5";
 import { useAppContext } from "../../../Controllers/Context/AppContext";
 import { useState } from "react";
 import Loader from "../Utilities/Loader";
+import { GiSandsOfTime } from "react-icons/gi";
+import moment from "moment";
+import mtn from "../../../Assets/images/mtn.png";
+import glo from "../../../Assets/images/glo.png";
+import airtel from "../../../Assets/images/airtel.png";
+import etisalat from "../../../Assets/images/9mobile.png";
 
 const TicketTable = ({ num_of_rows }) => {
   const { setModal, tickets, setTargetTicket, loadingData } = useAppContext();
@@ -15,12 +21,28 @@ const TicketTable = ({ num_of_rows }) => {
 
   const getStatus = (status) => {
     if (status.toLowerCase() === "pending")
-      return "text-[goldenrod] bg-[#daa5200f] px-2";
-    else if (status.toLowerCase() === "rolved")
-      return "text-[green] bg-[#00800014] px-2";
+      return "text-[#fff] bg-[goldenrod] px-2";
+    else if (status.toLowerCase() === "resolved")
+      return "text-[#fff] bg-[green] px-2";
     else if (status.toLowerCase() === "excalated")
-      return "text-red-500 bg-[#ff00001e] px-2";
-    else return "text-blue-500 bg-[#0000ff11] px-2";
+      return "text-[#fff] bg-red-500 px-2";
+    else return "text-[#fff] bg-blue-500 px-2";
+  };
+
+  const getResolvedTime = (status) => {
+    if (
+      status.toLowerCase() !== "resolved " &&
+      status.toLowerCase() !== "escalated"
+    )
+      return false;
+    else return true;
+  };
+
+  const providers = {
+    mtn: mtn,
+    airtel: airtel,
+    "9mobile": etisalat,
+    glo: glo,
   };
 
   window.addEventListener("click", (e) => {
@@ -33,31 +55,57 @@ const TicketTable = ({ num_of_rows }) => {
       console.log(options);
     }
   });
+
+  console.log(rows);
   return (
     <div className="flex flex-col gap-1 overflow-x-auto pb-[40px]">
       <div className="grid grid-cols-12 gap-4 border-y text-[14px] min-w-[850px]  bg-[#ffffff9f] text-slate-700 font-[700] w-full items-center p-2 h-[50px] ">
-        <span className="col-span-2">CC Ticket Id</span>
-        <span className="col-span-2">Provider</span>
-        <span className="col-span-1">Phone</span>
-        <span className="col-span-2">Unit</span>
-        <span className="col-span-2">Category</span>
-        <span className="col-span-1">Status</span>
-        <span className="col-span-2">Vendor</span>
+        <span className="col-span-2 whitespace-nowrap">CC Ticket Id</span>
+        <span className="col-span-1 whitespace-nowrap">Provider</span>
+        <span className="col-span-1 whitespace-nowrap">Phone</span>
+        <span className="col-span-2 whitespace-nowrap">Unit</span>
+        <span className="col-span-2 whitespace-nowrap">Category</span>
+        <span className="col-span-1 whitespace-break-spaces">
+          Resolved Time
+        </span>
+        <span className="col-span-1 whitespace-nowrap">Status</span>
+        <span className="col-span-2 whitespace-nowrap">Vendor</span>
       </div>
       {rows && rows?.length > 0 && !loadingData ? (
         rows?.slice(0, num_of_rows)?.map((row, n) => {
-          // console.log(row);
+          // console.log("row", row);
           return (
             <div
               key={n}
               className="grid grid-cols-12 gap-4 border-b h-fit relative text-[13px] min-w-[850px]  font-[400] text-slate-600 w-full items-center p-2  bg-[#fff] "
             >
               <span className="col-span-2">{row?.ticket_id}</span>
-              <span className="col-span-2">{row?.reporter?.network}</span>
+              <span className="col-span-1 flex items-center gap-1 uppercase">
+                <img
+                  className="w-[20px] h-[20px]  rounded-full"
+                  src={providers[row?.reporter?.network]}
+                  alt=""
+                />
+                {row?.reporter?.network}{" "}
+              </span>
               <span className="col-span-1">{row?.reporter?.msisdn}</span>
               <span className="col-span-2">{row?.unit?.name}</span>
               <span className="col-span-2">{row?.category}</span>
-              <span className={`col-span-1  ${getStatus(row?.status)}`}>{row?.status}</span>
+              <span className=" col-span-1">
+                {getResolvedTime(row?.status) ? (
+                  moment(row?.updated_at).fromNow()
+                ) : (
+                  <GiSandsOfTime className="text-[24px]" />
+                )}
+              </span>
+              <span
+                className={`col-span-1 flex items-center justify-center rounded-[5px]  ${getStatus(
+                  row?.status
+                )}`}
+              >
+                {row?.status}
+              </span>
+
               <span className="col-span-2 ">
                 {row?.vendor ? row?.vendor?.name : "---"}
               </span>

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default class companyService {
-  base_url =  process.env.REACT_APP_API_URL;
+  base_url = process.env.REACT_APP_API_URL;
   // base_url =  "https://1987-154-160-17-69.ngrok-free.app/api/v1"
   get_summary = async () => {
     try {
@@ -10,7 +10,9 @@ export default class companyService {
           Authorization: `Bearer ${localStorage.token}`,
         },
       });
-      return { message: "success", data: res.data };
+      if (res.data.response_code === "00")
+        return { message: "success", data: res.data };
+      else return { message: "failed", data: res.data };
     } catch (err) {
       return { message: "failed", data: err.response.data };
     }
@@ -22,7 +24,9 @@ export default class companyService {
           Authorization: `Bearer ${localStorage.token}`,
         },
       });
-      return { message: "success", data: res.data };
+      if (res.data.response_code === "00")
+        return { message: "success", data: res.data };
+      else return { message: "failed", data: res.data };
     } catch (err) {
       return { message: "failed", data: err.response.data };
     }
@@ -34,7 +38,9 @@ export default class companyService {
           Authorization: `Bearer ${localStorage.token}`,
         },
       });
-      return { message: "success", data: res.data };
+      if (res.data.response_code === "00")
+        return { message: "success", data: res.data };
+      else return { message: "failed", data: res.data };
     } catch (err) {
       return { message: "failed", data: err.response.data };
     }
@@ -46,7 +52,9 @@ export default class companyService {
           Authorization: `Bearer ${localStorage.token}`,
         },
       });
-      return { message: "success", data: res.data };
+      if (res.data.response_code === "00")
+        return { message: "success", data: res.data };
+      else return { message: "failed", data: res.data };
     } catch (err) {
       return { message: "failed", data: err.response.data };
     }
@@ -58,7 +66,9 @@ export default class companyService {
           Authorization: `Bearer ${localStorage.token}`,
         },
       });
-      return { message: "success", data: res.data };
+      if (res.data.response_code === "00")
+        return { message: "success", data: res.data };
+      else return { message: "failed", data: res.data };
     } catch (err) {
       return { message: "failed", data: err.response.data };
     }
@@ -73,7 +83,9 @@ export default class companyService {
           },
         }
       );
-      return { message: "success", data: res.data };
+      if (res.data.response_code === "00")
+        return { message: "success", data: res.data };
+      else return { message: "failed", data: res.data };
     } catch (err) {
       return { message: "failed", data: err.response.data };
     }
@@ -85,7 +97,9 @@ export default class companyService {
           Authorization: `Bearer ${localStorage.token}`,
         },
       });
-      return { message: "success", data: res.data };
+      if (res.data.response_code === "00")
+        return { message: "success", data: res.data };
+      else return { message: "failed", data: res.data };
     } catch (err) {
       return { message: "failed", data: err.response.data };
     }
@@ -97,19 +111,23 @@ export default class companyService {
           Authorization: `Bearer ${localStorage.token}`,
         },
       });
-      return { message: "success", data: res.data };
+      if (res.data.response_code === "00")
+        return { message: "success", data: res.data };
+      else return { message: "failed", data: res.data };
     } catch (err) {
       return { message: "failed", data: err.response.data };
     }
   };
-  get_tickets  = async () => {
+  get_tickets = async () => {
     try {
       const res = await axios.get(this.base_url + "/app/tickets/list", {
         headers: {
           Authorization: `Bearer ${localStorage.token}`,
         },
       });
-      return { message: "success", data: res.data };
+      if (res.data.response_code === "00")
+        return { message: "success", data: res.data };
+      else return { message: "failed", data: res.data };
     } catch (err) {
       return { message: "failed", data: err.response.data };
     }
@@ -121,7 +139,10 @@ export default class companyService {
           Authorization: `Bearer ${localStorage.token}`,
         },
       });
-      return { message: "success", data: res.data };
+      if (res.data.response_code === "00") {
+        this.get_staffs();
+        return { message: "success", data: res.data };
+      } else return { message: "failed", data: res.data };
     } catch (err) {
       return { message: "failed", data: err.response.data };
     }
@@ -133,7 +154,11 @@ export default class companyService {
           Authorization: `Bearer ${localStorage.token}`,
         },
       });
-      return { message: "success", data: res.data };
+      if (res.data.response_code === "00") {
+        this.get_staff();
+        this.get_tickets();
+        return { message: "success", data: res.data };
+      } else return { message: "failed", data: res.data };
     } catch (err) {
       return { message: "failed", data: err.response.data };
     }

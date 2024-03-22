@@ -3,7 +3,7 @@ import axios from "axios";
 import client from "../../Constants/helpers/axiosInstance";
 
 export const authService = () => {
-  const   base_url =  process.env.REACT_APP_API_URL;
+  const base_url = process.env.REACT_APP_API_URL;
   // const base_url = "https://1987-154-160-17-69.ngrok-free.app/api/v1";
   const resetConfig = localStorage["reset-config"]
     ? JSON.parse(localStorage["reset-config"])
@@ -13,8 +13,10 @@ export const authService = () => {
     try {
       const res = await axios.post(base_url + "/auth/login", user);
       localStorage.clear();
-
-      return { message: "success", data: res.data };
+      // console.log(res.data.response_code);
+      if (res.data.response_code === "00")
+        return { message: "success", data: res.data };
+      else return { message: "failed", data: res.data };
     } catch (err) {
       return { message: "failed", data: err.response.data };
     }
@@ -23,7 +25,8 @@ export const authService = () => {
   const forgotPassword = async (email) => {
     try {
       const res = await client.post("/get-otp", { email: email });
-      return { message: "success", data: res };
+      if (res.data.response_code === "00") return { message: "success", data: res };
+      else return { message: "failed", data: res };
     } catch (err) {
       return { message: "failed", data: err.response.data };
     }

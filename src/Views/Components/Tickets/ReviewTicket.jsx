@@ -63,7 +63,7 @@ const ReviewTicket = ({ ticket }) => {
       setLoading___(true);
       const res = await assignTicketToUnit({
         ticket_id: ticket?.id,
-        unit_id: unit,
+        units_id: unit,
       });
       if (res.message === "success")
         toast.success("Ticket assigned successfully");

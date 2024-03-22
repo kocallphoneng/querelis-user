@@ -2,7 +2,7 @@ import axios from "axios";
 import { useAppContext } from "../Context/AppContext";
 
 export class staffService {
-  base_url =  process.env.REACT_APP_API_URL
+  base_url = process.env.REACT_APP_API_URL;
   // base_url =  "https://1987-154-160-17-69.ngrok-free.app/api/v1"
   context = useAppContext();
   getStaffs = async () => {
@@ -12,8 +12,10 @@ export class staffService {
           Authorization: `Bearer ${localStorage.token}`,
         },
       });
-      this.context.setStaffs(res.data.data.users);
-      return { message: "success", data: res.data };
+      if (res.data.response_code === "00") {
+        this.context.setStaffs(res.data.data.users);
+        return { message: "success", data: res.data };
+      } else return { message: "failed", data: res.data };
     } catch (err) {
       return { message: "failed", data: err.response.data };
     }
@@ -25,7 +27,9 @@ export class staffService {
           Authorization: `Bearer ${localStorage.token}`,
         },
       });
-      return { message: "success", data: res.data };
+      if (res.data.response_code === "00")
+        return { message: "success", data: res.data };
+      else return { message: "failed", data: res.data };
     } catch (err) {
       return { message: "failed", data: err.response.data };
     }
@@ -40,7 +44,9 @@ export class staffService {
           },
         }
       );
-      return { message: "success", data: res.data };
+      if (res.data.response_code === "00")
+        return { message: "success", data: res.data };
+      else return { message: "failed", data: res.data };
     } catch (err) {
       return { message: "failed", data: err.response.data };
     }
@@ -55,7 +61,9 @@ export class staffService {
           },
         }
       );
-      return { message: "success", data: res.data };
+      if (res.data.response_code === "00")
+        return { message: "success", data: res.data };
+      else return { message: "failed", data: res.data };
     } catch (err) {
       return { message: "failed", data: err.response.data };
     }
@@ -69,7 +77,9 @@ export class staffService {
         },
       });
       this.getStaffs();
-      return { message: "success", data: res.data };
+      if (res.data.response_code === "00")
+        return { message: "success", data: res.data };
+      else return { message: "failed", data: res.data };
     } catch (err) {
       console.log(err);
       return { message: "failed", data: null };
@@ -87,7 +97,9 @@ export class staffService {
         }
       );
       this.getStaffs();
-      return { message: "success", data: res.data };
+      if (res.data.response_code === "00")
+        return { message: "success", data: res.data };
+      else return { message: "failed", data: res.data };
     } catch (err) {
       console.log(err);
       return { message: "failed", data: null };
@@ -105,7 +117,9 @@ export class staffService {
         }
       );
       this.getStaffs();
-      return { message: "success", data: res.data };
+      if (res.data.response_code === "00")
+        return { message: "success", data: res.data };
+      else return { message: "failed", data: res.data };
     } catch (err) {
       console.log(err);
       return { message: "failed", data: null };

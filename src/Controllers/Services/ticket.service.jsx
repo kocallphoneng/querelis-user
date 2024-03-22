@@ -12,8 +12,11 @@ export class ticketService {
           Authorization: `Bearer ${localStorage.token}`,
         },
       });
-      this.context.setTickets(res.data.data.tickets);
-      return { message: "success", data: res.data };
+      console.log(res);
+      if (res.data.response_code === "00") {
+        this.context.setTickets(res.data.data.tickets);
+        return { message: "success", data: res.data };
+      } else return { message: "failed", data: res.data };
     } catch (err) {
       return { message: "failed", data: err.response.data };
     }
@@ -28,7 +31,9 @@ export class ticketService {
           },
         }
       );
-      return { message: "success", data: res.data };
+      if (res.data.response_code === "00")
+        return { message: "success", data: res.data };
+      else return { message: "failed", data: res.data };
     } catch (err) {
       return { message: "failed", data: err.response.data };
     }
@@ -44,7 +49,9 @@ export class ticketService {
           },
         }
       );
-      return { message: "success", data: res?.data };
+      if (res.data.response_code === "00")
+        return { message: "success", data: res.data };
+      else return { message: "failed", data: res.data };
     } catch (err) {
       return { message: "failed", data: err?.response?.data };
     }
@@ -60,7 +67,9 @@ export class ticketService {
           },
         }
       );
-      return { message: "success", data: res.data };
+      if (res.data.response_code === "00")
+        return { message: "success", data: res.data };
+      else return { message: "failed", data: res.data };
     } catch (err) {
       return { message: "failed", data: err.response.data };
     }
@@ -76,7 +85,11 @@ export class ticketService {
           },
         }
       );
-      return { message: "success", data: res.data };
+      console.log(res);
+      if (res.data.response_code === "00") {
+        this.getTickets();
+        return { message: "success", data: res.data };
+      } else return { message: "failed", data: res.data };
     } catch (err) {
       return { message: "failed", data: err.response.data };
     }
@@ -93,7 +106,9 @@ export class ticketService {
           },
         }
       );
-      return { message: "success", data: res.data };
+      if (res.data.response_code === "00")
+        return { message: "success", data: res.data };
+      else return { message: "failed", data: res.data };
     } catch (err) {
       return { message: "failed", data: err.response.data };
     }
@@ -109,7 +124,9 @@ export class ticketService {
         }
       );
       console.log("res lod", res);
-      return { message: "success", data: res.data };
+      if (res.data.response_code === "00") {
+        return { message: "success", data: res.data };
+      } else return { message: "failed", data: res.data };
     } catch (err) {
       return { message: "failed", data: err.response.data };
     }

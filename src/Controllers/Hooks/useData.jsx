@@ -25,12 +25,13 @@ const useData = () => {
     setTickets,
     setNotifications,
     loadingData,
-    setLoadingData
+    setLoadingData,
   } = useAppContext();
 
   const getCompanyData = async () => {
-    setLoadingData(true)
+    setLoadingData(true);
     const summary = await get_summary();
+    console.log("summary", summary);
     const stat = await get_monthly_data();
     const category = await get_dashboard_category();
     const staffs = await get_staffs();
@@ -44,14 +45,15 @@ const useData = () => {
     if (category.message === "success") setCategory(category.data.data.summary);
     // if (departments.message === "success")
     //   setDepartments(vendors.data.data.departments);
-    console.log(vendors)
+    console.log(vendors);
     if (vendors.message === "success") setDepartments(vendors.data.data.unit);
     if (staffs.message === "success") setStaffs(staffs.data.data.users);
     if (tickets.message === "success") {
       setTickets(tickets.data.data.tickets);
-      setTicketSummary(tickets.data.data.summary);
+      console.log(tickets.data.data.summary);
+      setTicketSummary(summary.data.data.summary);
     }
-    setLoadingData(false)
+    setLoadingData(false);
   };
 
   useEffect(() => {

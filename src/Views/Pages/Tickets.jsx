@@ -5,6 +5,7 @@ import { useAppContext } from "../../Controllers/Context/AppContext";
 
 const Tickets = () => {
   const { setModal, ticketSummary } = useAppContext();
+  console.log(ticketSummary);
   return (
     <div className="flex flex-col gap-3 md:p-5">
       <div className="flex flex-col gap-5 md:bg-white rounded-[20px]">
@@ -33,9 +34,9 @@ const Tickets = () => {
               {ticketSummary?.resolved}{" "}
               <span className="text-[12px]">Resolved</span>
             </span>
-            <span className="flex flex-col items-center text-[#ff5874ec] text-[30px] font-[700]">
+            <span className="flex flex-col items-center text-[goldenrod] text-[30px] font-[700]">
               {ticketSummary?.pending}{" "}
-              <span className="text-[12px]">Escalated</span>
+              <span className="text-[12px]">Pending</span>
             </span>
           </div>
         </div>
