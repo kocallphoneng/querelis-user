@@ -7,6 +7,7 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { staffs as staffs_ } from "../../../Constants/testData";
 import { IoCloseCircleOutline, IoClose } from "react-icons/io5";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 const NewDepartment = () => {
   const {
@@ -15,19 +16,26 @@ const NewDepartment = () => {
     handleChange,
     form,
     error,
-    staffInputValue,
-    setStaffInputValue,
+    categoryValue,
+    setCategoryValue,
     staffs,
     handleStaff,
     modalRef,
     closeModal,
+    units,
+    unitValue,
+    handleUnit,
     removeStaff,
+    handleCategory,
+    setUnitValue,
   } = useDepartment();
 
+  const categories = ["call", "data", "sms", "enterprise", "general"];
+  // console.log("unitValue", unitValue);
   return (
     <div ref={modalRef} className="flex flex-col gap-4">
       <div className="flex justify-between items-center">
-        <span className="text-[22px] font-[700]">Create New Department</span>
+        <span className="text-[22px] font-[700]">Create New Vendor</span>
         <IoClose
           onClick={closeModal}
           className="text-[21px] cursor-pointer hover:text-red-500 "
@@ -36,7 +44,7 @@ const NewDepartment = () => {
       <DepartmentForm loading={loading} handleSubmit={handleSubmit}>
         <TextField
           id="outlined-basic"
-          label="Name of department*"
+          label="Name of vendor*"
           variant="outlined"
           name={"name"}
           size="small"
@@ -44,25 +52,83 @@ const NewDepartment = () => {
           value={form.name}
           error={error?.name !== ""}
         />
+        {/* <Autocomplete
+          disablePortal
+          id="unit"
+          size="small"
+          options={units}
+          renderOption={(props, option) => {
+            console.log("option", option);
+            console.log("props", props);
+            return (
+              <li className=" capitalize " {...props} key={option.id}>
+                {option.name}
+              </li>
+            );
+          }}
+          onChange={(event, newValue) => {
+            console.log(newValue);
+            handleUnit(newValue.id);
+          }}
+          inputValue={unitValue.name}
+          onInputChange={(event, newInputValue) => {
+            // console.log(newInputValue);
+            setUnitValue(newInputValue);
+          }}
+          sx={{ width: "100%" }}
+          renderInput={(params) => (
+            <TextField className="capitalize" {...params} label="Unit" />
+          )}
+        /> */}
+        <FormControl fullWidth size="small">
+          <InputLabel id="demo-simple-select-label">Unit</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={unitValue}
+            label="Unit"
+            onChange={(e) => handleUnit(e.target.value)}
+          >
+            <MenuItem value={""}></MenuItem>
+            {units?.map((u, n) => (
+              <MenuItem key={n} value={u}>
+                {u.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <Autocomplete
+          disablePortal
+          id="category"
+          size="small"
+          options={categories}
+          renderOption={(props, option) => (
+            <li className=" capitalize " {...props} key={option}>
+              {option}
+            </li>
+          )}
+          onChange={(event, newValue) => {
+            handleCategory(newValue);
+          }}
+          inputValue={categoryValue}
+          onInputChange={(event, newInputValue) => {
+            setCategoryValue(newInputValue);
+          }}
+          sx={{ width: "100%" }}
+          renderInput={(params) => (
+            <TextField className="capitalize" {...params} label="Category" />
+          )}
+        />
+        {/* </div> */}
         <TextField
           id="outlined-basic"
-          label="Description of department*"
+          label="Description of vendor*"
           variant="outlined"
           name={"description"}
           size="small"
           onChange={handleChange}
           value={form.description}
-          error={error?.name !== ""}
-        />
-        <TextField
-          id="outlined-basic"
-          label="Allowed number of staffs*"
-          variant="outlined"
-          name={"staffs"}
-          size="small"
-          onChange={handleChange}
-          value={form.staffs}
-          error={error?.name !== ""}
+          error={error?.description !== ""}
         />
         {/* <div className="flex flex-col gap-3">
           {staffs.length > 0 && (
@@ -81,28 +147,7 @@ const NewDepartment = () => {
               ))}
             </div>
           )}
-          <Autocomplete
-            disablePortal
-            id="staffs"
-            size="small"
-            options={staffs_}
-            renderOption={(props, option) => (
-              <li {...props} key={option.id}>
-                {option.label}
-              </li>
-            )}
-            onChange={(event, newValue) => {
-              handleStaff(newValue);
-            }}
-            inputValue={staffInputValue}
-            onInputChange={(event, newInputValue) => {
-              setStaffInputValue(newInputValue);
-            }}
-            sx={{ width: "100%" }}
-            renderInput={(params) => (
-              <TextField {...params} label="Add New User" />
-            )}
-          />
+          
         </div> */}
       </DepartmentForm>
     </div>

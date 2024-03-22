@@ -8,29 +8,26 @@ import ContentLayout from "../UI/Layouts/ContentLayout";
 import InfoCard from "../Components/Deparment.jsx/InfoCard";
 
 const Departments = () => {
-  const { setModal } = useAppContext();
+  const { setModal, departments } = useAppContext();
   // const { openModalRef } = useDepartment();
   // const { showDataInfo } = useAppContext();
-
+  console.log(departments);
   return (
     <ContentLayout
       firstChild={
-        <div className="flex flex-col gap-5 bg-white rounded-[20px]">
-          <div className="flex bg-[#2170f807] h-[100px] p-5 justify-between items-center">
+        <div className="flex flex-col gap-5 md:bg-white md:rounded-[20px]">
+          <div className="flex md:bg-[#2170f807] h-[100px] p-5 justify-between items-center">
             <div className="flex flex-col gap-2 ">
               <span className="text-[22px] leading-[30px] font-[700] ">
-                Departments
+                Units
               </span>
               <div className="flex gap-7 items-center">
-                <div className="flex gap-1 w-[250px] shadow-[0px,10px,19px,-3px,#0f59d82f] justify-between h-[35px] p-1 px-4 items-center rounded-[20px] bg-white ">
+                {/* <div className="flex gap-1 w-[250px] shadow-[0px,10px,19px,-3px,#0f59d82f] justify-between h-[35px] p-1 px-4 items-center rounded-[20px] bg-white ">
                   <span className="text-[13px] font-[700] text-gray-600 ">
-                    All Departments
+                    All Units
                   </span>
-                  <span className="flex items-center text-[--base_color] gap-2 text-[12px] cursor-pointer  font-[700]">
-                    <BsFilter className="text-[21px] text-[--base_color] font-[700]" />
-                    Filter
-                  </span>
-                </div>
+                =
+                </div> */}
                 <span
                   onClick={() =>
                     setModal({ open: true, name: "new_department" })
@@ -45,10 +42,10 @@ const Departments = () => {
               </div>
             </div>
             <span className="flex flex-col items-center text-[--base_color] text-[30px] font-[700]">
-              100 <span className="text-[12px]">Total</span>
+              {departments?.data?.length} <span className="text-[12px]">Total</span>
             </span>
           </div>
-          <div className="flex flex-col gap-3 w-full pt-0 p-5">
+          <div className="flex flex-col gap-3 w-full pt-0 md:p-5">
             <DepartmentTable num_of_rows={1000} />
           </div>
         </div>

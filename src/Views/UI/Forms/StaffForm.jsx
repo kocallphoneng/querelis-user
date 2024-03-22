@@ -13,6 +13,7 @@ const StaffForm = ({
   loading,
   link,
 }) => {
+  console.log(loading)
   return (
     <Formik
       initialValues={initialValues}
@@ -25,7 +26,10 @@ const StaffForm = ({
           <ButtonFill
             classes="h-[45px] text-[#fff] w-full"
             label={"Submit"}
-            action={handleSubmit}
+            action={() => {
+              handleSubmit();
+              console.log("dbcbncd");
+            }}
             loading={loading}
           />
         </Form>

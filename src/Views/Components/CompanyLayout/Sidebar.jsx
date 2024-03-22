@@ -9,12 +9,12 @@ import { BsBellFill } from "react-icons/bs";
 import { IoSettings } from "react-icons/io5";
 // import SubNavCard from "../Nav/SubNavCard";
 
-const Sidebar = () => {
+const Sidebar = ({ menu }) => {
   const path = window.location.pathname;
   const navigate = useNavigate();
 
   return (
-    <div className=" fixed left-0 top-0 h-screen w-[20%] p-4">
+    <div className=" fixed left-0 md:top-0 top-[80px]  md:h-screen h-[calc(100vh-80px)] z-[99999] w-[20%] p-4 min-w-[300px]">
       <div className="flex flex-col bg-[#0f59d8] rounded-[20px]  h-[90%]">
         <img src={logo} alt="" className="h-[77px] w-[236px]" />
         <div className="flex flex-col">
@@ -26,9 +26,9 @@ const Sidebar = () => {
           />
           <NavCard
             Icon={HiRectangleGroup}
-            title={"Departments"}
-            active={path === "/dashboard/departments"}
-            navigate={() => navigate("/dashboard/departments")}
+            title={"Units"}
+            active={path === "/dashboard/units"}
+            navigate={() => navigate("/dashboard/units")}
           />
           <NavCard
             Icon={MdGroups}
@@ -48,12 +48,12 @@ const Sidebar = () => {
             active={path === "/dashboard/change-password"}
             navigate={() => navigate("/dashboard/change-password")}
           />
-          <NavCard
+          {/* <NavCard
             Icon={BsBellFill}
             title={"Notifications"}
             active={path === "/dashboard/notifications"}
             navigate={() => navigate("/dashboard/notifications")}
-          />
+          /> */}
         </div>
       </div>
       <div className="flex mt-10 justify-center gap-5 items-center w-full">

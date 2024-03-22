@@ -36,15 +36,22 @@ const useAuthentication = () => {
 
   const handleLogin = async (values) => {
     setLoading(true);
+    console.log(values);
     const user = {
       email: values.email,
       password: values.password,
     };
-   
+
     const res = await login(user);
     if (res.message === "success") {
-      localStorage.setItem("token", res.data.access_token);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
+      console.log(res);
+      localStorage.setItem("token", res.data.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.data.user));
+      localStorage.setItem(
+        "user_type",
+        JSON.stringify(res.data.data.user.user_type)
+      );
+
       setLoading(false);
       navigate("/dashboard");
     } else {

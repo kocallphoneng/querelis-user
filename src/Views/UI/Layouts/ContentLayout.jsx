@@ -20,33 +20,33 @@ const ContentLayout = ({ firstChild, secondChild }) => {
     <div className="grid grid-cols-12 gap-4">
       <div
         className={` ${
-          showDataInfo ? "col-span-7" : "col-span-12"
-        }  flex flex-col gap-3 p-5 transition-all ease-in-out duration-100`}
+          showDataInfo ? "md:col-span-7 col-span-12" : "col-span-12"
+        }  flex flex-col gap-3 md:p-5 md:px-0 transition-all ease-in-out duration-100`}
       >
         <div
           ref={ref1}
-          className={`${
-            toggleContentLayout ? "" : ""
-          } transition-all ease-in-out duration-100`}
+          className={` transition-all ease-in-out  duration-100`}
         >
           {firstChild}
         </div>
       </div>
       {showDataInfo && (
-        <div className={` col-span-5 transition-all ease-in-out duration-100`}>
+        <div
+          className={` lg:col-span-5 bg-[#00000025] w-full fixed min-h-screen h-full top-0 left-0 z-[999999] transition-all ease-in-out duration-100`}
+        >
           <div
             ref={ref2}
             className={`${
               toggleContentLayout ? "translate-x-0" : " translate-x-[100px]"
-            } fixed p-5 transition-all ease-in-out duration-100 py-5  min-h-[calc(100vh-100px)] top-[80px] w-[33%] right-0 bottom-0 overflow-y-auto`}
+            } fixed  lg:bg-transparent lg:w-[33%] lg:p-5 min-w-[350px] transition-all ease-in-out duration-100 lg:py-5  min-h-screen lg:top-[80px] top-0  right-0 bottom-0 overflow-y-auto`}
           >
-            <div className="bg-white p-5 rounded-[20px]">
+            <div className="bg-white p-5 lg:rounded-[20px] lg:min-h-fit min-h-screen">
               <div className="flex items-center gap-6 border-b pb-4">
                 <IoClose
                   onClick={closeContentModal}
                   className="text-[21px] cursor-pointer text-[red]"
                 />
-                <span className="text-[21px] font-[700]">
+                <span className="md:text-[21px] text-[18px] font-[700]">
                   {targetElement?.title}
                 </span>
               </div>

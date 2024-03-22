@@ -1,79 +1,56 @@
 import axios from "axios";
+import { useAppContext } from "../Context/AppContext";
 
-export default class companyService {
+export class departmentService {
   base_url = process.env.REACT_APP_API_URL;
   // base_url =  "https://1987-154-160-17-69.ngrok-free.app/api/v1"
-  get_summary = async () => {
-    try {
-      const res = await axios.get(this.base_url + "/app/dashboard/summary", {
-        headers: {
-          Authorization: `Bearer ${localStorage.token}`,
-        },
-      });
-      if (res.data.response_code === "00")
-        return { message: "success", data: res.data };
-      else return { message: "failed", data: res.data };
-    } catch (err) {
-      return { message: "failed", data: err.response.data };
-    }
-  };
-  get_monthly_data = async () => {
-    try {
-      const res = await axios.get(this.base_url + "/app/dashboard/monthly", {
-        headers: {
-          Authorization: `Bearer ${localStorage.token}`,
-        },
-      });
-      if (res.data.response_code === "00")
-        return { message: "success", data: res.data };
-      else return { message: "failed", data: res.data };
-    } catch (err) {
-      return { message: "failed", data: err.response.data };
-    }
-  };
-  get_dashboard_category = async () => {
-    try {
-      const res = await axios.get(this.base_url + "/app/dashboard/category", {
-        headers: {
-          Authorization: `Bearer ${localStorage.token}`,
-        },
-      });
-      if (res.data.response_code === "00")
-        return { message: "success", data: res.data };
-      else return { message: "failed", data: res.data };
-    } catch (err) {
-      return { message: "failed", data: err.response.data };
-    }
-  };
-  get_departments = async () => {
+  context = useAppContext();
+  getDepartments = async () => {
     try {
       const res = await axios.get(this.base_url + "/app/departments/list", {
         headers: {
           Authorization: `Bearer ${localStorage.token}`,
         },
       });
-      if (res.data.response_code === "00")
+      if (res.data.response_code === "00") {
+        this.context.setDepartments(res.data.data.departments);
         return { message: "success", data: res.data };
-      else return { message: "failed", data: res.data };
+      } else return { message: "failed", data: res.data };
     } catch (err) {
       return { message: "failed", data: err.response.data };
     }
   };
-  get_vendors = async () => {
+  getVendors = async () => {
     try {
       const res = await axios.get(this.base_url + "/app/units/list", {
         headers: {
           Authorization: `Bearer ${localStorage.token}`,
         },
       });
-      if (res.data.response_code === "00")
+      if (res.data.response_code === "00") {
+        this.context.setDepartments(res.data.data.vendors);
         return { message: "success", data: res.data };
-      else return { message: "failed", data: res.data };
+      } else return { message: "failed", data: res.data };
     } catch (err) {
       return { message: "failed", data: err.response.data };
     }
   };
-  get_department = async (uuid) => {
+  getVendors = async () => {
+    try {
+      const res = await axios.get(this.base_url + "/app/units/list", {
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+        },
+      });
+      if (res.data.response_code === "00") {
+        this.context.setDepartments(res.data.data.vendors);
+        return { message: "success", data: res.data };
+      } else return { message: "failed", data: res.data };
+    } catch (err) {
+      return { message: "failed", data: err.response.data };
+    }
+  };
+  getDepartment = async (uuid) => {
     try {
       const res = await axios.get(
         this.base_url + `/app/departments/department/${uuid}`,
@@ -90,9 +67,9 @@ export default class companyService {
       return { message: "failed", data: err.response.data };
     }
   };
-  get_staffs = async () => {
+  getDepartmentUsers = async (uuid) => {
     try {
-      const res = await axios.get(this.base_url + "/app/users/list", {
+      const res = await axios.get(this.base_url + `/app/units/users/${uuid}`, {
         headers: {
           Authorization: `Bearer ${localStorage.token}`,
         },
@@ -104,13 +81,16 @@ export default class companyService {
       return { message: "failed", data: err.response.data };
     }
   };
-  get_staff = async (staff_id) => {
+  getDepartmentTickets = async (uuid) => {
     try {
-      const res = await axios.get(this.base_url + "", {
-        headers: {
-          Authorization: `Bearer ${localStorage.token}`,
-        },
-      });
+      const res = await axios.get(
+        this.base_url + `/app/units/tickets/${uuid}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.token}`,
+          },
+        }
+      );
       if (res.data.response_code === "00")
         return { message: "success", data: res.data };
       else return { message: "failed", data: res.data };
@@ -118,47 +98,68 @@ export default class companyService {
       return { message: "failed", data: err.response.data };
     }
   };
-  get_tickets = async () => {
+  createDepartment = async (payload) => {
     try {
-      const res = await axios.get(this.base_url + "/app/tickets/list", {
+      const res = await axios.post(this.base_url + `/app/units/add`, payload, {
         headers: {
           Authorization: `Bearer ${localStorage.token}`,
         },
       });
+      this.getDepartments();
+      this.getDepartments();
       if (res.data.response_code === "00")
         return { message: "success", data: res.data };
       else return { message: "failed", data: res.data };
     } catch (err) {
-      return { message: "failed", data: err.response.data };
+      console.log(err);
+      return { message: "failed", data: null };
     }
   };
-  create_staff = async (user) => {
+  createVendor = async (payload) => {
     try {
-      const res = await axios.get(this.base_url + "", {
+      const res = await axios.post(this.base_url + `/app/units/add`, payload, {
         headers: {
           Authorization: `Bearer ${localStorage.token}`,
         },
       });
-      if (res.data.response_code === "00") {
-        this.get_staffs();
+      this.getVendors();
+      if (res.data.response_code === "00")
         return { message: "success", data: res.data };
-      } else return { message: "failed", data: res.data };
+      else return { message: "failed", data: res.data };
     } catch (err) {
-      return { message: "failed", data: err.response.data };
+      console.log(err);
+      return { message: "failed", data: null };
     }
   };
-  assign_ticket_to_staff = async (ticket_id, staff_id) => {
+  getUnits = async (payload) => {
     try {
-      const res = await axios.get(this.base_url + "", {
+      const res = await axios.get(this.base_url + `/app/vendors/units`, {
         headers: {
           Authorization: `Bearer ${localStorage.token}`,
         },
       });
-      if (res.data.response_code === "00") {
-        this.get_staff();
-        this.get_tickets();
+      this.getVendors();
+      if (res.data.response_code === "00")
         return { message: "success", data: res.data };
-      } else return { message: "failed", data: res.data };
+      else return { message: "failed", data: res.data };
+    } catch (err) {
+      console.log(err);
+      return { message: "failed", data: null };
+    }
+  };
+  getUnitsByVendor = async (vendorId) => {
+    try {
+      const res = await axios.get(
+        this.base_url + `/app/units/options/${vendorId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.token}`,
+          },
+        }
+      );
+      if (res.data.response_code === "00")
+        return { message: "success", data: res.data };
+      else return { message: "failed", data: res.data };
     } catch (err) {
       return { message: "failed", data: err.response.data };
     }

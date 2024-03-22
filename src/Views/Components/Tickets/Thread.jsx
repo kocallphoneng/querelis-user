@@ -1,36 +1,40 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
+import { ticketService } from "../../../Controllers/Services/ticket.service";
 
-const Chat = ({ children }) => {
+const Chat = ({ children, log }) => {
   const [open, toggle] = useState(false);
+  console.log(log)
   return (
-    <div className="border min-h-[100px] p-1  relative w-full rounded-[10px] flex gap-3">
+    <div className="border h-fit p-1  relative w-full rounded-[10px] flex gap-3">
       <span className="min-w-[40px] col-span-1 h-[40px]  rounded-full bg-gray-100"></span>
-      <div className="flex flex-col col-span-10">
+      <div className="flex flex-col gap-3 col-span-10">
         <div className="flex flex-col text-[14px]  font-[700] text-gray-600">
-          <span>Mike Onaga</span>
-          <span className="text-[12px] ">081890200209</span>
+          <span>
+            {log?.user?.first_name} {log?.user?.last_name}
+          </span>
+          <span className="text-[12px] ">{log?.user?.email}</span>
         </div>
         <div className=" relative w-full flex font-[700] gap-2 text-[11px] text-gray-600">
           #{" "}
           <span className="pb-3">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Culpa
-            nulla, corporis autem quasi aliquam in sint praesentium unde
-            perspiciatis voluptas deleniti tempore tenetur exercitationem nam
-            vitae sapiente saepe. Nemo, provident!
+            {log.comment}
           </span>
-          <span className="absolute bottom-0 right-0 cursor-pointer hover:text-blue-600">
+          {/* <span className="absolute bottom-0 right-0 cursor-pointer hover:text-blue-600">
             Reply
-          </span>
-          <span onClick={()=> toggle(!open)} className="absolute bottom-[-11px] text-blue-500 left-[-50px] cursor-pointer hover:text-blue-600">
+          </span> */}
+          {/* <span
+            onClick={() => toggle(!open)}
+            className="absolute bottom-[-11px] text-blue-500 left-[-50px] cursor-pointer hover:text-blue-600"
+          >
             {open ? " Hide replies" : "show replies"}
-          </span>
+          </span> */}
         </div>
         {open && children}
       </div>
       <span className="absolute top-1 right-1 text-[11px] font-[600] text-gray-600 flex flex-row-reverse gap-3 ">
-        12:40pm
-        <span>/</span> <span>12-12-20</span>
+        {log.created_at.slice(11, 16)}
+        <span>/</span> <span>{log.created_at.slice(0, 10)}</span>
       </span>
     </div>
   );
@@ -61,20 +65,31 @@ const Reply = () => {
     </div>
   );
 };
-const Thread = () => {
+const Thread = ({ ticket }) => {
+  const { getTicketLog } = new ticketService();
+  const [logs, setLogs] = useState([]);
+  const getLogs = async () => {
+    const res = await getTicketLog(ticket?.uuid);
+    if (res.message === "success") setLogs(res.data.data.logs);
+  };
+  useEffect(() => {
+    getLogs();
+  }, []);
   return (
     <div className="h-fit border-l px-2 flex flex-col gap-7">
-      <Chat>
-        <Reply />
-        <Reply />
-        <Reply />
-      </Chat>
-      <Chat>
-        <Reply />
-        <Reply />
-        <Reply />
-      </Chat>
-
+      {logs.length > 0 ? (
+        logs.map((l, n) => (
+          <Chat key={n} log={l}>
+            <Reply />
+            <Reply />
+            <Reply />
+          </Chat>
+        ))
+      ) : (
+        <div className="h-[150px] w-full bg-[#00000013] flex items-center justify-center round-[20px  ]">
+          No Logs Found
+        </div>
+      )}
     </div>
   );
 };

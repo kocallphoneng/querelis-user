@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { IoChevronDownOutline } from "react-icons/io5";
 import TicketCard from "./TicketCard";
 import StaffCard from "./StaffCard";
 import { BsFillPencilFill } from "react-icons/bs";
 import { useAppContext } from "../../../Controllers/Context/AppContext";
 import { staffs } from "../../../Constants/testData";
+import { departmentService } from "../../../Controllers/Services/departmentService";
 
 const InfoCard = () => {
   const { setModal, targetElement } = useAppContext();
@@ -12,6 +13,9 @@ const InfoCard = () => {
   const [view, setView] = useState("tickets");
   const [openTicketType, setOpenTicketType] = useState(false);
   const [ticketDelay, setTicketDelay] = useState(false);
+  const { getDepartmentUsers, getDepartmentTickets } = new departmentService();
+  const [tickets_, setTickets] = useState([]);
+  const [staffs_, setStaffs] = useState([]);
   const changeTicketType = () => {
     if (!openTicketType) {
       setOpenTicketType(true);
@@ -33,11 +37,19 @@ const InfoCard = () => {
     "Accepted Tickets",
     "Open Tickets",
   ];
-  const staffs_ = localStorage.staffs
-    ? JSON.parse(localStorage.staffs)
-    : staffs;
-  console.log(staffs_);
-  console.log(staffs_?.filter((s) => s.deparment[0] === targetElement.title));
+
+  const getData = async () => {
+    const res = await getDepartmentUsers(data?.uuid);
+    if (res.message === "success") setStaffs(res.data.data.users.data);
+    const res2 = await getDepartmentTickets(data?.uuid);
+    if (res2.message === "success") setTickets(res2.data.data.tickets.data);
+    console.log(res2);
+  };
+  // console.log(tickets_);
+  useEffect(() => {
+    getData();
+  }, [data]);
+
   return (
     <div className="flex flex-col py-5 gap-5">
       <div className="flex flex-col gap-3">
@@ -48,7 +60,7 @@ const InfoCard = () => {
           </div>
         </span>
         <span className="font-[600] relative text-[14px] leading-[21px] text-gray-400">
-          {data.description}
+          {data?.description}
         </span>
       </div>
       <hr />
@@ -80,8 +92,7 @@ const InfoCard = () => {
             <span className="font-[700] text-[14px] flex items-center gap-5">
               # Tickets
               <span className="bg-[#0257E6] flex items-center justify-center text-[10px] w-[25px] h-[25px] rounded-full text-[#fff]">
-                {parseInt(data.completed_requests) +
-                  parseInt(data.pending_requests)}
+                {tickets_.length}
               </span>
             </span>
             <span className="flex border p-1 px-2 rounded-md relative gap-3 w-[150px] justify-between items-center text-[14px] cursor-pointer">
@@ -114,16 +125,9 @@ const InfoCard = () => {
             </span>
           </div>
           <div className="flex flex-col pr-3 max-h-[300px] gap-3 overflow-auto">
-            <TicketCard />
-            <TicketCard />
-            <TicketCard />
-            <TicketCard />
-            <TicketCard />
-            <TicketCard />
-            <TicketCard />
-            <TicketCard />
-            <TicketCard />
-            <TicketCard />
+            {tickets_.map((t, n) => (
+              <TicketCard key={n} data={t} />
+            ))}
           </div>
         </div>
       )}
@@ -134,10 +138,7 @@ const InfoCard = () => {
             <span className="font-[700] text-[14px] flex items-center gap-5">
               # Staffs
               <span className="bg-[#0257E6] flex items-center justify-center text-[10px] w-[25px] h-[25px] rounded-full text-[#fff]">
-                {
-                  staffs_?.filter((s) => s.deparment[0] === targetElement.title)
-                    .length
-                }
+                {staffs_.length}
               </span>
             </span>
             <span
@@ -148,11 +149,9 @@ const InfoCard = () => {
             </span>
           </div>
           <div className="flex flex-col gap-2">
-            {staffs_
-              ?.filter((s) => s.deparment[0] === targetElement.title)
-              ?.map((info, n) => (
-                <StaffCard key={n} data={info} />
-              ))}
+            {staffs_?.map((info, n) => (
+              <StaffCard key={n} data={info} />
+            ))}
           </div>
         </div>
       )}

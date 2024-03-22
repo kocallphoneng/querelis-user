@@ -14,7 +14,7 @@ const Field1 = () => {
 };
 const Field2 = ({ func, cancel, data }) => {
   const [input, setInput] = useState("");
-  const url = `https://704d20f3ef4e-12873552563918160908.ngrok-free.app/api/v2/ussd?msisdn=07051119073&sessionid=987654324567897&mno=glo&msg=${input}`;
+  const url = `https://1987-154-160-17-69.ngrok-free.app/api/v2/ussd?msisdn=07051119073&session_id=987654324567897&network=glo&input=${input}`;
   return (
     <div className="flex flex-col font-[700] text-[14px] w-full mx-5 p-5 bg-white ">
       <div className="flex flex-col">
@@ -58,7 +58,7 @@ const Keyboard = () => {
 
 const Demo = () => {
   const url =
-    "https://704d20f3ef4e-12873552563918160908.ngrok-free.app/api/v2/ussd?msisdn=07051119073&sessionid=987654324567897&mno=glo&msg=1";
+    `https://1987-154-160-17-69.ngrok-free.app/api/v2/ussd?msisdn=07051119073&session_id=987654324567897&network=glo&msg=*174*51#`;
   const [loading, setLoading] = useState(false);
   const [values, setValues] = useState([]);
   const [stage, setStage] = useState("stage1");
@@ -66,10 +66,10 @@ const Demo = () => {
   const next1 = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(url);
+      const res = await axios.post(url, {});
       console.log(res);
       setStage("stage2");
-      const arr = res.data.text.split("\n");
+      const arr = res.data.message.split("\n");
       setData(arr);
       setLoading(false);
     } catch (err) {
@@ -79,9 +79,9 @@ const Demo = () => {
   const next2 = async (base) => {
     setLoading(true);
     try {
-      const res = await axios.get(base);
+      const res = await axios.post(base);
       //   console.log(res);
-      const arr = res.data.text.split("\n");
+      const arr = res.data.message.split("\n");
       setData(arr);
       //   setStage(stage);
       setLoading(false);
@@ -106,11 +106,25 @@ const Demo = () => {
   };
 
   return (
-    <ul className="m-auto">
-      {items.map((l) => (
-        <li onClick={() => shuffle(l)}>{l}</li>
-      ))}
-    </ul>
+    <div className="h-screen relative w-full flex justify-center items-center  ">
+      {stage === "stage1" && <Field1 />}
+      {stage === "stage2" && (
+        <Field2 func={next2} cancel={cancel} data={data} />
+      )}
+
+      <Keyboard />
+      <span
+        onClick={next1}
+        className="absolute bottom-[10px] w-[40px] h-[40px] m-auto bg-green-500 flex justify-center items-center rounded-full"
+      >
+        <IoMdCall />
+      </span>
+      {loading && (
+        <div className="fixed bg-[#0000001c]">
+          {<ClipLoader size={24} color={"#110C0C"} loading />}
+        </div>
+      )}
+    </div>
   );
 };
 
