@@ -30,12 +30,9 @@ const TicketTable = ({ num_of_rows }) => {
   };
 
   const getResolvedTime = (status) => {
-    if (
-      status.toLowerCase() !== "resolved " &&
-      status.toLowerCase() !== "escalated"
-    )
+    if (status.toLowerCase() !== "resolved ") {
       return false;
-    else return true;
+    } else return true;
   };
 
   const providers = {
@@ -52,11 +49,10 @@ const TicketTable = ({ num_of_rows }) => {
       !optRef.current?.contains(e.target)
     ) {
       // setOptions(false);
-      console.log(options);
+      // console.log(options);
     }
   });
 
-  console.log(rows);
   return (
     <div className="flex flex-col gap-1 overflow-x-auto pb-[40px]">
       <div className="grid grid-cols-12 gap-4 border-y text-[14px] min-w-[850px]  bg-[#ffffff9f] text-slate-700 font-[700] w-full items-center p-2 h-[50px] ">
@@ -74,6 +70,7 @@ const TicketTable = ({ num_of_rows }) => {
       {rows && rows?.length > 0 && !loadingData ? (
         rows?.slice(0, num_of_rows)?.map((row, n) => {
           // console.log("row", row);
+          console.log(row?.status);
           return (
             <div
               key={n}
@@ -92,7 +89,7 @@ const TicketTable = ({ num_of_rows }) => {
               <span className="col-span-2">{row?.unit?.name}</span>
               <span className="col-span-2">{row?.category}</span>
               <span className=" col-span-1">
-                {getResolvedTime(row?.status) ? (
+                {row.status === "RESOLVED" ? (
                   moment(row?.updated_at).fromNow()
                 ) : (
                   <GiSandsOfTime className="text-[24px]" />
