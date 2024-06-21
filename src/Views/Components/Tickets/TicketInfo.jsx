@@ -11,7 +11,7 @@ const Info = ({ name, value }) => {
   );
 };
 
-const TicketInfo = ({ ticket }) => {
+const TicketInfo = ({ ticket,loading }) => {
   const { setModal, staffs } = useAppContext();
   const { getStaff } = new staffService();
   const getAssignee = async () => {

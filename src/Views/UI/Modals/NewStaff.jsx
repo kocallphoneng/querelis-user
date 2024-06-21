@@ -145,7 +145,7 @@ const NewStaff = () => {
           </Select>
         </FormControl>
 
-        <FormControl fullWidth>
+        <FormControl fullWidth className="z-[9999999]">
           <InputLabel id="demo-simple-select-label">Unit*</InputLabel>
           <Select
             labelId="demo-simple-select-label"
@@ -154,10 +154,11 @@ const NewStaff = () => {
             name="unit_id"
             size="small"
             label="Unit*"
+            className=" z-[999999999999999]"
             onChange={handleChange}
           >
             {departments?.data?.map((d, n) => (
-              <MenuItem key={n} value={d.id}>
+              <MenuItem className=" z-[999999999999999]" key={n} value={d.id}>
                 {d.name}
               </MenuItem>
             ))}

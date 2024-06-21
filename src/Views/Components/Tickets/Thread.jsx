@@ -1,25 +1,25 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { ticketService } from "../../../Controllers/Services/ticket.service";
+import Loader from "../../UI/Utilities/Loader";
 
-const Chat = ({ children, log }) => {
+const Chat = ({ children, log, loading }) => {
   const [open, toggle] = useState(false);
-  console.log(log)
+  console.log(log);
   return (
     <div className="border h-fit p-1  relative w-full rounded-[10px] flex gap-3">
-      <span className="min-w-[40px] col-span-1 h-[40px]  rounded-full bg-gray-100"></span>
+      {/* <span className="min-w-[40px] col-span-1 h-[40px]  rounded-full bg-gray-100"></span> */}
       <div className="flex flex-col gap-3 col-span-10">
         <div className="flex flex-col text-[14px]  font-[700] text-gray-600">
-          <span>
-            {log?.user?.first_name} {log?.user?.last_name}
+          <span className="sm:text-[14px] text-[12px]  ">
+            {log?.user?.first_name} {log?.user?.last_name[0]}
           </span>
-          <span className="text-[12px] ">{log?.user?.email}</span>
+          <span className="sm:text-[12px]  text-[10px]">
+            {log?.user?.email}
+          </span>
         </div>
         <div className=" relative w-full flex font-[700] gap-2 text-[11px] text-gray-600">
-          #{" "}
-          <span className="pb-3">
-            {log.comment}
-          </span>
+          # <span className="pb-3">{log.comment}</span>
           {/* <span className="absolute bottom-0 right-0 cursor-pointer hover:text-blue-600">
             Reply
           </span> */}
@@ -32,7 +32,7 @@ const Chat = ({ children, log }) => {
         </div>
         {open && children}
       </div>
-      <span className="absolute top-1 right-1 text-[11px] font-[600] text-gray-600 flex flex-row-reverse gap-3 ">
+      <span className="absolute top-1 right-1 sm:text-[11px] text-[9px] font-[600] text-gray-400 flex flex-row-reverse sm:gap-3 gap-1 ">
         {log.created_at.slice(11, 16)}
         <span>/</span> <span>{log.created_at.slice(0, 10)}</span>
       </span>
@@ -68,30 +68,41 @@ const Reply = () => {
 const Thread = ({ ticket }) => {
   const { getTicketLog } = new ticketService();
   const [logs, setLogs] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const getLogs = async () => {
+    setLoading(true);
     const res = await getTicketLog(ticket?.uuid);
     if (res.message === "success") setLogs(res.data.data.logs);
+    setLoading(false);
   };
   useEffect(() => {
     getLogs();
   }, []);
-  return (
-    <div className="h-fit border-l px-2 flex flex-col gap-7">
-      {logs.length > 0 ? (
-        logs.map((l, n) => (
-          <Chat key={n} log={l}>
-            <Reply />
-            <Reply />
-            <Reply />
-          </Chat>
-        ))
-      ) : (
-        <div className="h-[150px] w-full bg-[#00000013] flex items-center justify-center round-[20px  ]">
-          No Logs Found
-        </div>
-      )}
-    </div>
-  );
+  if (loading)
+    return (
+      <div className="flex w-full min-h-[250px] bg-slate-100 items-center justify-center ">
+        <Loader size={[40, 40]} color={"blue"} />
+      </div>
+    );
+  else
+    return (
+      <div className="h-fit border-l px-2 flex flex-col gap-7">
+        {logs.length > 0 ? (
+          logs.map((l, n) => (
+            <Chat key={n} log={l}>
+              <Reply />
+              <Reply />
+              <Reply />
+            </Chat>
+          ))
+        ) : (
+          <div className="h-[150px] w-full bg-[#00000013] flex items-center justify-center round-[20px  ]">
+            No Logs Found
+          </div>
+        )}
+      </div>
+    );
 };
 
 export default Thread;

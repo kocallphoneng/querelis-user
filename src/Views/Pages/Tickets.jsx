@@ -1,5 +1,5 @@
 import React from "react";
-import { BsFilter, BsPlus, BsSearch } from "react-icons/bs";
+// import { BsFilter, BsPlus, BsSearch } from "react-icons/bs";
 import TicketTable from "../UI/Table/TicketTable";
 import { useAppContext } from "../../Controllers/Context/AppContext";
 
@@ -37,6 +37,12 @@ const Tickets = () => {
             <span className="flex flex-col items-center text-[goldenrod] text-[30px] font-[700]">
               {ticketSummary?.pending}{" "}
               <span className="text-[12px]">Pending</span>
+            </span>
+            <span className="flex flex-col items-center text-blue-700 text-[30px] font-[700]">
+              {ticketSummary?.wip} <span className="text-[12px]">WIP</span>
+            </span>
+            <span className="flex flex-col items-center text-red-500 text-[30px] font-[700]">
+              {ticketSummary?.wip} <span className="text-[12px]">Rejected</span>
             </span>
           </div>
         </div>

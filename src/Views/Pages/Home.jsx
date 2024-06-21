@@ -1,6 +1,6 @@
 import React from "react";
 import CompanyHome from "../Components/Home/Index";
-import UserHome from "../Components/UserHome/Index";
+// import UserHome from "../Components/UserHome/Index";
 
 const Home = () => {
   return (

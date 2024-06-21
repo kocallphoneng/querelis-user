@@ -4,6 +4,7 @@ import UserDashboard from "../UI/Layouts/UserDashboard";
 import useModal from "../../Controllers/Hooks/useModal";
 
 const Dashboard = () => {
+  console.log(localStorage.user);
   return (
     <div className="">
       <CompanyDashboard />

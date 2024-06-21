@@ -12,7 +12,7 @@ import { useAppContext } from "../../../Controllers/Context/AppContext";
 const Index = () => {
   const { loadingData, departments, tickets, staffs } = useAppContext();
 
-  console.log(departments);
+  console.log(tickets);
   const staffData = loadingData
     ? []
     : staffs?.data?.slice(0, 5)?.map((s) => s.first_name[0] + s?.last_name[0]);

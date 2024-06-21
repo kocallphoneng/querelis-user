@@ -2,8 +2,8 @@ import axios from "axios";
 import { useAppContext } from "../Context/AppContext";
 
 export class departmentService {
-  base_url = process.env.REACT_APP_API_URL;
-  // base_url =  "https://1987-154-160-17-69.ngrok-free.app/api/v1"
+  //  base_url = process.env.REACT_APP_API_URL+'/api/v1';
+  base_url = "https://app.querelis.com/api/v1";
   context = useAppContext();
   getDepartments = async () => {
     try {

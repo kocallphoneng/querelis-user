@@ -29,7 +29,7 @@ const TicketTable = ({ num_of_rows }) => {
     else return "text-[#fff] bg-blue-500 px-2";
   };
 
-  const getResolvedTime = (status) => {
+  const getResolvedTime = (status, time) => {
     if (status.toLowerCase() !== "resolved ") {
       return false;
     } else return true;
@@ -55,10 +55,12 @@ const TicketTable = ({ num_of_rows }) => {
 
   return (
     <div className="flex flex-col gap-1 overflow-x-auto pb-[40px]">
-      <div className="grid grid-cols-12 gap-4 border-y text-[14px] min-w-[850px]  bg-[#ffffff9f] text-slate-700 font-[700] w-full items-center p-2 h-[50px] ">
+      <div className="grid grid-cols-12 gap-4 border-y text-[14px] min-w-[950px]  bg-[#ffffff9f] text-slate-700 font-[700] w-full items-center p-2 h-[50px] ">
         <span className="col-span-2 whitespace-nowrap">CC Ticket Id</span>
         <span className="col-span-1 whitespace-nowrap">Provider</span>
-        <span className="col-span-1 whitespace-nowrap">Phone</span>
+        <span className="col-span-1 whitespace-nowrap">
+          Phone <span className="text-slate-300 text-[12px]">(234)</span>
+        </span>
         <span className="col-span-2 whitespace-nowrap">Unit</span>
         <span className="col-span-2 whitespace-nowrap">Category</span>
         <span className="col-span-1 whitespace-break-spaces">
@@ -74,7 +76,7 @@ const TicketTable = ({ num_of_rows }) => {
           return (
             <div
               key={n}
-              className="grid grid-cols-12 gap-4 border-b h-fit relative text-[13px] min-w-[850px]  font-[400] text-slate-600 w-full items-center p-2  bg-[#fff] "
+              className="grid grid-cols-12 gap-4 border-b h-fit relative text-[13px] min-w-[950px]  font-[400] text-slate-600 w-full items-center p-2  bg-[#fff] "
             >
               <span className="col-span-2">{row?.ticket_id}</span>
               <span className="col-span-1 flex items-center gap-1 uppercase">
@@ -85,8 +87,10 @@ const TicketTable = ({ num_of_rows }) => {
                 />
                 {row?.reporter?.network}{" "}
               </span>
-              <span className="col-span-1">{row?.reporter?.msisdn}</span>
-              <span className="col-span-2">{row?.unit?.name}</span>
+              <span className="col-span-1 pr-4 text-[12px]">
+                0{row?.reporter?.msisdn?.slice(3)}
+              </span>
+              <span className="col-span-2 text-[12px]">{row?.unit?.name}</span>
               <span className="col-span-2">{row?.category}</span>
               <span className=" col-span-1">
                 {row.status === "RESOLVED" ? (

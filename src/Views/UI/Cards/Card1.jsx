@@ -31,15 +31,15 @@ const Card1 = ({ type, title, Icon, count }) => {
         <span className="text-[27px] font-bold min-h-[27px]">{count}</span>
         <Icon className=" text-[--base_color]" />
       </div>
-      {!loadingData ? (
+      {!loadingData && staffData.length && deps.length > 0 ? (
         <div className="flex relative">
           {type === "staff"
-            ? staffData.map((i, n) => {
+            ? staffData?.map((i, n) => {
                 const position = n * 30;
                 let style = {
                   left: `${position}px`,
                   color: "#fff",
-                  background: deps[n].gradient,
+                  background: deps[n]?.gradient,
                 };
                 return (
                   <span
@@ -50,7 +50,7 @@ const Card1 = ({ type, title, Icon, count }) => {
                   </span>
                 );
               })
-            : deps.map((i, n) => {
+            : deps?.map((i, n) => {
                 const position = n * 30;
                 let style = { left: `${position}px`, background: i.gradient };
                 return (
@@ -58,11 +58,11 @@ const Card1 = ({ type, title, Icon, count }) => {
                     style={style}
                     className={`w-[40px] text-white font-[700] h-[40px] flex justify-center items-center p-[1px] absolute top-0  shadow-md bg-[#fff] rounded-full`}
                   >
-                    {i.name}
+                    {i?.name}
                   </span>
                 );
               })}
-          {staffData.lenght > 5 && (
+          {staffData?.length > 5 && (
             <span
               className={`w-[40px] flex items-center justify-center bg-[--base_color] z-[9999] h-[40px] p-[1px] absolute top-0 left-[150px]  shadow-lg rounded-full`}
             >
@@ -72,7 +72,7 @@ const Card1 = ({ type, title, Icon, count }) => {
         </div>
       ) : (
         <div class="animate-pulse flex  relative">
-          {images.map((i, n) => {
+          {images?.map((i, n) => {
             const position = n * 30;
             let style = { left: `${position}px` };
 

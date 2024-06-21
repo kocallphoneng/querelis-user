@@ -13,6 +13,7 @@ import { staffService } from "../../../Controllers/Services/staff.service";
 import { ticketService } from "../../../Controllers/Services/ticket.service";
 import { toast } from "react-hot-toast";
 import { departmentService } from "../../../Controllers/Services/departmentService";
+import Loader from "../../UI/Utilities/Loader";
 
 const ReviewTicket = ({ ticket }) => {
   const { staffs } = useAppContext();
@@ -20,18 +21,15 @@ const ReviewTicket = ({ ticket }) => {
   const [staff, setStaff] = useState("");
   const [comment, setComment] = useState("");
   const [images, setImages] = useState([]);
+  const [loadingUnit, setLoadingUnit] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loading_, setLoading_] = useState(false);
   const [loading___, setLoading___] = useState(false);
   const [loading__, setLoading__] = useState(false);
   const [units, setUnits] = useState([]);
   const [unit, setUnit] = useState(null);
-  const {
-    assignTicket,
-    postComment,
-    updateTicketStatus,
-    assignTicketToUnit,
-  } = new ticketService();
+  const { assignTicket, postComment, updateTicketStatus, assignTicketToUnit } =
+    new ticketService();
   const { getUnitsByVendor } = new departmentService();
   const formData = new FormData();
   const changeStatus = async () => {
@@ -45,6 +43,7 @@ const ReviewTicket = ({ ticket }) => {
       setLoading(false);
     }
   };
+  console.log(status)
   const assignTicket_ = async () => {
     if (staff) {
       setLoading_(true);
@@ -86,9 +85,11 @@ const ReviewTicket = ({ ticket }) => {
   };
 
   const getAllUnits = async () => {
+    setLoadingUnit(true);
     const res = await getUnitsByVendor(ticket?.vendor?.id);
     console.log(res.data);
     setUnits(res.data.data?.units);
+    setLoadingUnit(false);
   };
 
   // console.log(departments.data)
@@ -99,130 +100,139 @@ const ReviewTicket = ({ ticket }) => {
     getAllUnits();
   }, []);
   console.log(ticket);
-  return (
-    <div className="border-l px-3 flex flex-col gap-4 relative h-full">
-      <div className=" flex flex-col gap-2 ">
-        <span className=" col-span-3 text-gray-600 whitespace-nowrap text-[12px] font-[700]">
-          Assign to unit
-        </span>
-        <div className="grid grid-cols-12 items-center gap-4">
-          <FormControl className="col-span-8">
-            <Select
-              value={unit}
-              onChange={(e) => setUnit(e.target.value)}
-              size="small"
-              id="staff"
-              className="w-full"
-            >
-              {units?.map((option) => (
-                <MenuItem className=" capitalize" value={option?.id}>
-                  {option.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <ButtonFill
-            label={"save"}
-            classes={"w-[120px] col-span-4 text-[#fff] h-[40px]"}
-            action={assignUnitTicket}
-            loading={loading___}
-          />
-        </div>
+  if (loadingUnit)
+    return (
+      <div className="w-full min-h-[300px] flex items-center justify-center">
+        <Loader size={[50, 50]} color={"blue"} />
       </div>
-      <hr />
-      {unit && (
+    );
+  else
+    return (
+      <div className="border-l px-3 flex flex-col gap-4 relative h-full">
         <div className=" flex flex-col gap-2 ">
           <span className=" col-span-3 text-gray-600 whitespace-nowrap text-[12px] font-[700]">
-            Assign to staff
+            Assign to unit
           </span>
           <div className="grid grid-cols-12 items-center gap-4">
             <FormControl className="col-span-8">
               <Select
-                value={staff}
-                onChange={(e) => setStaff(e.target.value)}
+                value={unit}
+                onChange={(e) => setUnit(e.target.value)}
                 size="small"
                 id="staff"
                 className="w-full"
               >
-                {staffs?.data?.map((option) => (
-                  <MenuItem className=" capitalize" value={option.id}>
-                    {option.first_name + " " + option.last_name}
+                {units?.map((option) => (
+                  <MenuItem className=" capitalize" value={option?.id}>
+                    {option.name}
                   </MenuItem>
                 ))}
               </Select>
             </FormControl>
             <ButtonFill
               label={"save"}
-              classes={"w-[120px] col-span-4 text-[#fff] h-[40px]"}
-              action={assignTicket_}
-              loading={loading_}
+              classes={"max-w-[120px] w-full col-span-4 text-[#fff] h-[40px]"}
+              action={assignUnitTicket}
+              loading={loading___}
             />
           </div>
         </div>
-      )}
-      <hr />
-      {unit && (
+        <hr />
+        {unit && (
+          <div className=" flex flex-col gap-2 ">
+            <span className=" col-span-3 text-gray-600 whitespace-nowrap text-[12px] font-[700]">
+              Assign to staff
+            </span>
+            <div className="grid grid-cols-12 items-center gap-4">
+              <FormControl className="col-span-8">
+                <Select
+                  value={staff}
+                  onChange={(e) => setStaff(e.target.value)}
+                  size="small"
+                  id="staff"
+                  className="w-full"
+                >
+                  {staffs?.data?.map((option) => (
+                    <MenuItem className=" capitalize" value={option.id}>
+                      {option.first_name + " " + option.last_name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <ButtonFill
+                label={"save"}
+                classes={"max-w-[120px] w-full col-span-4 text-[#fff] h-[40px]"}
+                action={assignTicket_}
+                loading={loading_}
+              />
+            </div>
+          </div>
+        )}
+        <hr />
+        {unit && (
+          <div className="flex flex-col gap-2 ">
+            <span className="col-span-3 text-gray-600 whitespace-nowrap text-[12px] font-[700]">
+              Update status
+            </span>
+            <div className="grid grid-cols-12 items-center gap-4">
+              <FormControl className="col-span-8">
+                <Select
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                  size="small"
+                >
+                  <MenuItem value="RESOLVED">Resolved</MenuItem>
+                  <MenuItem value={"PENDING"}>Pending</MenuItem>
+                  <MenuItem value={"WIP"}>Wip</MenuItem>
+                  <MenuItem value={"REJECTED"}>Rejected</MenuItem>
+                  {/* <MenuItem value={"escalated"}>Escalated</MenuItem> */}
+                </Select>
+              </FormControl>
+              <ButtonFill
+                label={"save"}
+                classes={"max-w-[120px] w-full col-span-4 text-[#fff] h-[40px]"}
+                action={changeStatus}
+                loading={loading}
+              />
+            </div>
+          </div>
+        )}
+        <hr />
         <div className="flex flex-col gap-2 ">
           <span className="col-span-3 text-gray-600 whitespace-nowrap text-[12px] font-[700]">
-            Update status
+            Add Comment
           </span>
           <div className="grid grid-cols-12 items-center gap-4">
-            <FormControl className="col-span-8">
-              <Select
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
+            {/* <input
+              onChange={(e) => setImages(e.target.files)}
+              className="col-span-8"
+              type="file"
+              id="files"
+              name="files"
+              multiple
+            /> */}
+            <FormControl className="sm:col-span-8 col-span-12">
+              <TextField
+                multiline
+                maxRows={4}
                 size="small"
-              >
-                <MenuItem value="resolved">Resolved</MenuItem>
-                <MenuItem value={"pending"}>Pending</MenuItem>
-                <MenuItem value={"wip"}>Wip</MenuItem>
-                <MenuItem value={"rejected"}>Rejected</MenuItem>
-                {/* <MenuItem value={"escalated"}>Escalated</MenuItem> */}
-              </Select>
+                id="outlined-multiline-flexible"
+                label="Enter the reasons for your actions"
+                onChange={(e) => setComment(e.target.value)}
+              />
             </FormControl>
             <ButtonFill
               label={"save"}
-              classes={"w-[120px] col-span-4 text-[#fff] h-[40px]"}
-              action={changeStatus}
-              loading={loading}
+              classes={
+                "w-[120px] sm:col-span-4 col-span-12 text-[#fff] h-[40px]"
+              }
+              action={addTicketComment}
+              loading={loading__}
             />
           </div>
         </div>
-      )}
-      <hr />
-      <div className="flex flex-col gap-2 ">
-        <span className="col-span-3 text-gray-600 whitespace-nowrap text-[12px] font-[700]">
-          Add Comment
-        </span>
-        <div className="grid grid-cols-12 items-center gap-4">
-          <input
-            onChange={(e) => setImages(e.target.files)}
-            className="col-span-8"
-            type="file"
-            id="files"
-            name="files"
-            multiple
-          />
-          <FormControl className="col-span-8">
-            <TextField
-              multiline
-              maxRows={4}
-              size="small"
-              id="outlined-multiline-flexible"
-              label="Enter the reasons for your actions"
-              onChange={(e) => setComment(e.target.value)}
-            />
-          </FormControl>
-          <ButtonFill
-            label={"save"}
-            classes={"w-[120px] col-span-4 text-[#fff] h-[40px]"}
-            action={addTicketComment}
-            loading={loading__}
-          />
-        </div>
       </div>
-    </div>
-  );
+    );
 };
 
 export default ReviewTicket;

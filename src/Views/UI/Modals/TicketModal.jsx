@@ -16,17 +16,17 @@ import Thread from "../../Components/Tickets/Thread";
 const TicketModal = () => {
   const { setModal, targetTicket } = useAppContext();
   const [activePage, setActivePage] = useState("ticket_info");
-  // console.log(targetTicket);
+  console.log(targetTicket);
   return (
     <div className="flex flex-col gap-2 min-h-[400px] max-h-[calc(100vh-200px)] overflow-y-auto">
       <div className="flex items-center justify-between ">
         <span className="font-[700] text-[21px]">Ticket 820uw9</span>
         <IoClose onClick={() => setModal(false)} className=" cursor-pointer" />
       </div>
-      <div className="flex w-full gap-10 ">
+      <div className="flex w-full sm:gap-10 gap-3 justify-between ">
         <span
           onClick={() => setActivePage("ticket_info")}
-          className="flex items-center gap-2 text-[14px] cursor-pointer"
+          className="flex items-center sm:gap-2 gap-1 sm:text-[14px] text-[12px] whitespace-nowrap cursor-pointer"
         >
           <span
             className={`${
@@ -37,7 +37,7 @@ const TicketModal = () => {
         </span>
         <span
           onClick={() => setActivePage("ticket_review")}
-          className="flex items-center gap-2 text-[14px] cursor-pointer"
+          className="flex items-center sm:gap-2 gap-1 sm:text-[14px] text-[12px] whitespace-nowrap cursor-pointer"
         >
           <span
             className={`${
@@ -48,7 +48,7 @@ const TicketModal = () => {
         </span>
         <span
           onClick={() => setActivePage("ticket_thread")}
-          className="flex items-center gap-2 text-[14px] cursor-pointer"
+          className="flex items-center sm:gap-2 gap-1 sm:text-[14px] text-[12px] whitespace-nowrap cursor-pointer"
         >
           <span
             className={`${
