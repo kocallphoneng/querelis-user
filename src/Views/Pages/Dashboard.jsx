@@ -9,6 +9,7 @@ const Dashboard = () => {
     <div className="">
       <CompanyDashboard />
       {/* <UserDashboard /> */}
+      {/* <UserDashboard /> */}
       {/* {localStorage.user_type === "support_staff" ? (
         <CompanyDashboard />
       ) : (

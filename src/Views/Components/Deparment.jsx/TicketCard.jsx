@@ -4,11 +4,11 @@ import { useAppContext } from "../../../Controllers/Context/AppContext";
 const TicketCard = ({ data }) => {
   const { setModal } = useAppContext();
   const getColors = () => {
-    if (data.status === "PENDING") return { color: "gold" };
-    else if (data.status === "RESOLVED") return { color: "green" };
-    else if (data.status === "REJECTED") return { color: "purple" };
-    else if (data.status === "ACCEPTED") return { color: "orange" };
-    else if (data.status === "ESCALTED") return { color: "red" };
+    if (data?.status === "PENDING") return { color: "gold" };
+    else if (data?.status === "RESOLVED") return { color: "green" };
+    else if (data?.status === "REJECTED") return { color: "purple" };
+    else if (data?.status === "ACCEPTED") return { color: "orange" };
+    else if (data?.status === "ESCALTED") return { color: "red" };
     else return { color: "gray" };
   };
   return (
